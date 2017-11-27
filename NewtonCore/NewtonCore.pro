@@ -37,3 +37,11 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
+
+unix|win32: LIBS += -L$$PWD/../libs/Box2D/ -lBox2D
+
+INCLUDEPATH += $$PWD/../libs
+DEPENDPATH += $$PWD/../libs
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../libs/Box2D/Box2D.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../libs/Box2D/libBox2D.a
