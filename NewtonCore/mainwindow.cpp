@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     tools->addAction(ui->actionForceTool);
     tools->addAction(ui->actionMoveTool);
     tools->addAction(ui->actionStaticBodyTool);
+    tools->setExclusive(true);
+
+    connect(ui->graphicsView, NewtonGraphicsView::mouseRelease, this, MainWindow::onGraphicsViewReleased);
 }
 
 MainWindow::~MainWindow()

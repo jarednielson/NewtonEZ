@@ -16,6 +16,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected slots:
+    void onGraphicsViewReleased(int x, int y);
 private:
     Ui::MainWindow *ui;
     QActionGroup *tools;
