@@ -14,11 +14,15 @@ MainWindow::MainWindow(QWidget *parent) :
     tools->addAction(ui->actionStaticBodyTool);
     tools->setExclusive(true);
 
-    connect(ui->graphicsView, NewtonGraphicsView::mouseRelease, this, MainWindow::onGraphicsViewReleased);
+    connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete tools;
+}
+
+void MainWindow::onGraphicsViewReleased(int x, int y){
+
 }

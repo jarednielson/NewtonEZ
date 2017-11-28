@@ -26,14 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    newtongraphicsview.cpp \
-    newtoncoremodel.cpp
+        newtongraphicsview.cpp \
+        newtonscene.cpp
 
 HEADERS += \
         mainwindow.h \
-    Interfaces/buildertool.h \
-    newtongraphicsview.h \
-    newtoncoremodel.h
+        Interfaces/buildertool.h \
+        newtongraphicsview.h \
+        newtonscene.h
 
 FORMS += \
         mainwindow.ui
