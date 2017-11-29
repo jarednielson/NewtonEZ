@@ -25,6 +25,7 @@ private:
     std::vector<QHBoxLayout*> layouts;
     std::vector<QLabel*> labels;
     std::vector<QDoubleSpinBox*> inputs;
+    void addInputPair(QString labelText);
 
 
 //    Model *model;
