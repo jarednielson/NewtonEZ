@@ -37,7 +37,6 @@ HEADERS += \
         Interfaces/buildertool.h \
         newtongraphicsview.h \
         newtondatamodels.h \
-        newtonscene.h \
         newtonmodel.h
 
 FORMS += \

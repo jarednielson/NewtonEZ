@@ -91,6 +91,8 @@ public:
 
     const QVector<QPointF>& getVertices() const;
 
+    virtual QString serialize() const;
+
 signals:
     void massChanged(float mass);
 
@@ -106,21 +108,20 @@ class NewtonScene : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(float gravity READ getGravity WRITE setGravity MEMBER m_Gravity NOTIFY gravityChanged)
-    Q_PROPERTY(NewtonConversion units READ getUnits)
-
-    float getGravity();
-    void setGravity(float gravity);
-
-    NewtonConversion getUnits();
 
 public:
-    explicit NewtonScene(QObject *parent = nullptr);
+    explicit NewtonScene(QObject *parent = Q_NULLPTR);
+    NewtonScene(float gravity, NewtonConversion* units, QObject *parent = Q_NULLPTR);
+    float getGravity();
+    void setGravity(float gravity);
+    NewtonConversion* getUnits();
 
 signals:
     void gravityChanged(float gravity);
 
 private:
     float m_Gravity;
+    NewtonConversion* units;
 
 };
 

@@ -36,11 +36,11 @@ void NewtonBody::setMass(float mass){
     m_Mass = mass;
 }
 
-QVector<QPointF>& NewtonBody::getVertices(){
+const QVector<QPointF>& NewtonBody::getVertices() const {
     return hull;
 }
 
-QString NewtonBody::serialize(){
-    return "";
+QString NewtonBody::serialize() const {
+    return QString("");
 }
 
