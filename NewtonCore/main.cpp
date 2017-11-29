@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     b2Vec2 gravity(0.0f, -10.0f);
 
     // Construct a world object, which will hold and simulate the rigid bodies.
-    b2World world(gravity);
+    //b2World world(gravity);
 
     return a.exec();
 }
