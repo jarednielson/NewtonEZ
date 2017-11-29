@@ -29,7 +29,8 @@ SOURCES += \
         newtongraphicsview.cpp \
         newtonscene.cpp \
         newtonbody.cpp \
-        newtonmodel.cpp
+        newtonmodel.cpp \
+    newtonobject.cpp
 
 HEADERS += \
         mainwindow.h \
