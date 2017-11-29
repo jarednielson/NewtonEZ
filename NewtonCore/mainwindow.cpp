@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent/*, Model *model*/) :
     addInputPair("5");
     addInputPair("6");
     addInputPair("7");
+    clearInputConAndVector();
 
 }
 
@@ -50,6 +51,11 @@ void MainWindow::addInputPair(QString labelText){
 /// Clears the inputContainer and the vectors holding the input
 ///
 void MainWindow::clearInputConAndVector(){
+    QLayoutItem *child = ui->inputContainer->takeAt(0);
+    while (child != 0) {
+      delete child;
+      child = ui->inputContainer->takeAt(0);
+    }
     // needs work...
     labels.clear();
     inputs.clear();
