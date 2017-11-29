@@ -1,6 +1,6 @@
-#include "newtoncoremodel.h"
+#include "newtondatamodels.h"
 
-NewtonCoreModel::NewtonCoreModel(QObject *parent) : QObject(parent)
+NewtonScene::NewtonScene(QObject *parent) : QObject(parent)
 {
 
 }

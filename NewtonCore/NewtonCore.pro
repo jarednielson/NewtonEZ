@@ -27,13 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         newtongraphicsview.cpp \
-        newtonscene.cpp
+        newtonscene.cpp \
+    newtonbody.cpp
 
 HEADERS += \
         mainwindow.h \
         Interfaces/buildertool.h \
         newtongraphicsview.h \
-        newtonscene.h
+    newtondatamodels.h
 
 FORMS += \
         mainwindow.ui
