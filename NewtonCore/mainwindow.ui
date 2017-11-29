@@ -101,8 +101,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>338</width>
-           <height>254</height>
+           <width>340</width>
+           <height>258</height>
           </rect>
          </property>
          <widget class="QWidget" name="verticalLayoutWidget">
@@ -110,40 +110,11 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>331</width>
-            <height>101</height>
+            <width>341</width>
+            <height>261</height>
            </rect>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>Demo 1</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Demo 2</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
+          <layout class="QVBoxLayout" name="inputContainer"/>
          </widget>
         </widget>
        </widget>
@@ -158,7 +129,7 @@
      <x>0</x>
      <y>0</y>
      <width>882</width>
-     <height>30</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

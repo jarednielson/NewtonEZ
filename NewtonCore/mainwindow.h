@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <vector>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QDoubleSpinBox>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +21,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    std::vector<QHBoxLayout*> layouts;
+    std::vector<QLabel*> labels;
+    std::vector<QDoubleSpinBox*> inputs;
+
+
 //    Model *model;
 };
 
