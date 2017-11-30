@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent/*, Model *model*/) :
     addInputPair("9");
     addInputPair("10");
     // Comment out to see inputs, uncomment to clear all inputs
-    clearInputConAndVector();
+    //clearInputConAndVector();
 
     tools = new QActionGroup(this);
     tools->addAction(ui->actionDynamicBodyTool);
