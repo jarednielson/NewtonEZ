@@ -112,13 +112,16 @@ class NewtonScene : public QObject
 
 public:
     explicit NewtonScene(QObject *parent = Q_NULLPTR);
-    NewtonScene(float gravity, NewtonConversion* units, QObject *parent = Q_NULLPTR);
+    NewtonScene(float gravity, NewtonConversion* units, QString tutorial, QString brief, QObject *parent = Q_NULLPTR);
 
     float getGravity() const;
     void setGravity(float gravity);
     NewtonConversion* getUnits() const;
     void addBody(NewtonBody* body);
     const QVector<NewtonBody*>& getBodies() const;
+
+    QString getTutorialText();
+    QString getBriefDescription();
 
 signals:
     void gravityChanged(float gravity);
@@ -127,6 +130,9 @@ private:
     float m_Gravity;
     NewtonConversion* units;
     QVector<NewtonBody*> bodies;
+
+    QString tutorial;
+    QString briefDescription;
 };
 
 #endif // NEWTONSCENE_H

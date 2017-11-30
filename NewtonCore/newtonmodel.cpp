@@ -17,3 +17,5 @@ NewtonModel::~NewtonModel(){
     delete graphicsScene;
 }
 
+
+
