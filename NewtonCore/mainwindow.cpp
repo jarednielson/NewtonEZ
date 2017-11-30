@@ -24,27 +24,7 @@ MainWindow::MainWindow(QWidget *parent/*, Model *model*/) :
     addInputPair("8");
     addInputPair("9");
     addInputPair("10");
-    addInputPair("1");
-    addInputPair("2");
-    addInputPair("3");
-    addInputPair("4");
-    addInputPair("5");
-    addInputPair("6");
-    addInputPair("7");
-    addInputPair("8");
-    addInputPair("9");
-    addInputPair("10");
-    addInputPair("1");
-    addInputPair("2");
-    addInputPair("3");
-    addInputPair("4");
-    addInputPair("5");
-    addInputPair("6");
-    addInputPair("7");
-    addInputPair("8");
-    addInputPair("9");
-    addInputPair("10");
-    //clearInputConAndVector();
+    clearInputConAndVector();
 
 }
 
@@ -68,9 +48,9 @@ void MainWindow::addInputPair(QString labelText){
     layouts.back()->addWidget(labels.back());
     layouts.back()->addWidget(inputs.back());
     ui->inputContainer->addLayout(layouts.back());
-    // Need to resize inputContainer somehow
-//    ui->inputContainer->update();
     ui->inputContainer->activate();
+
+//    ui->listView->
 
 }
 
@@ -79,10 +59,13 @@ void MainWindow::addInputPair(QString labelText){
 /// Clears the inputContainer and the vectors holding the input
 ///
 void MainWindow::clearInputConAndVector(){
-    foreach (auto child, ui->inputContainer->children()) {
-        delete child;
+
+    for(unsigned int i = 0; i < layouts.size(); i++){
+        delete labels[i];
+        delete inputs[i];
+        delete layouts[i];
     }
-    // needs work...
+
     labels.clear();
     inputs.clear();
     layouts.clear();
