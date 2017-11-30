@@ -10,9 +10,7 @@
 /// \brief The NewtonConversion class
 /// Interface for converting from an arbitrary unit system to SI units
 /// for mass, distance and time
-class NewtonConversion : public QObject{
-    Q_OBJECT
-
+class NewtonConversion {
 public:
     virtual float convertToKg(float unitMass) const = 0;
     virtual float convertToM(float unitDistance) const = 0;
@@ -111,10 +109,11 @@ class NewtonScene : public QObject
 
 public:
     explicit NewtonScene(QObject *parent = Q_NULLPTR);
-    NewtonScene(float gravity, NewtonConversion* units, QObject *parent = Q_NULLPTR);
+    NewtonScene(float gravity, NewtonConversion units, QObject *parent = Q_NULLPTR);
+
     float getGravity();
     void setGravity(float gravity);
-    NewtonConversion* getUnits();
+    NewtonConversion getUnits();
 
 signals:
     void gravityChanged(float gravity);
