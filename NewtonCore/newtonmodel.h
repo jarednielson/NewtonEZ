@@ -31,6 +31,8 @@ public slots:
     void setScene(int sceneIndex);
     void startSimulation();
     void endSimulation();
+    void getProblemDescriptions(QStringList descriptions);
+    void validateAnswer(float answer);
 
 
 signals:
@@ -42,8 +44,11 @@ signals:
     void instructionTextChanged(QString newText);
     void inputWidgetsChanged(QStringList widgetLabels, QList<bool> enabled);
 
+    void answerValidated(bool success);
+
 private:
     void clearModel();
+    void resetGraphicsView();
 };
 
 
