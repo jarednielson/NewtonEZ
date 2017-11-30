@@ -21,6 +21,7 @@ public:
     virtual QString timeSymbol() const = 0;
 };
 
+
 ///
 /// \brief The NewtonObject class
 /// Base class for all objects allowed in the scene
@@ -29,8 +30,10 @@ class NewtonObject : public QObject{
     Q_OBJECT
 
 public:
+    NewtonObject(QObject *parent = 0) : QObject(parent){}
     virtual QString serialize() const = 0;
 };
+
 
 ///
 /// \brief The NewtonSceneObject class
@@ -45,7 +48,7 @@ public:
     NewtonSceneObject(QPointF initPos, QObject *parent = Q_NULLPTR);
 
 public:
-    QPointF getInitPos();
+    QPointF getInitPos() const;
     void setInitPos(QPointF pos);
 signals:
     void initPosChanged(QPointF pos);
@@ -109,11 +112,13 @@ class NewtonScene : public QObject
 
 public:
     explicit NewtonScene(QObject *parent = Q_NULLPTR);
-    NewtonScene(float gravity, NewtonConversion units, QObject *parent = Q_NULLPTR);
+    NewtonScene(float gravity, NewtonConversion* units, QObject *parent = Q_NULLPTR);
 
-    float getGravity();
+    float getGravity() const;
     void setGravity(float gravity);
-    NewtonConversion getUnits();
+    NewtonConversion* getUnits() const;
+    void addBody(NewtonBody* body);
+    const QVector<NewtonBody*>& getBodies() const;
 
 signals:
     void gravityChanged(float gravity);
@@ -121,7 +126,7 @@ signals:
 private:
     float m_Gravity;
     NewtonConversion* units;
-
+    QVector<NewtonBody*> bodies;
 };
 
 #endif // NEWTONSCENE_H
