@@ -20,7 +20,30 @@ MainWindow::MainWindow(QWidget *parent/*, Model *model*/) :
     addInputPair("5");
     addInputPair("6");
     addInputPair("7");
-    clearInputConAndVector();
+    addInputPair("8");
+    addInputPair("9");
+    addInputPair("10");
+    addInputPair("1");
+    addInputPair("2");
+    addInputPair("3");
+    addInputPair("4");
+    addInputPair("5");
+    addInputPair("6");
+    addInputPair("7");
+    addInputPair("8");
+    addInputPair("9");
+    addInputPair("10");
+    addInputPair("1");
+    addInputPair("2");
+    addInputPair("3");
+    addInputPair("4");
+    addInputPair("5");
+    addInputPair("6");
+    addInputPair("7");
+    addInputPair("8");
+    addInputPair("9");
+    addInputPair("10");
+    //clearInputConAndVector();
 
 }
 
@@ -44,6 +67,8 @@ void MainWindow::addInputPair(QString labelText){
     layouts.back()->addWidget(labels.back());
     layouts.back()->addWidget(inputs.back());
     ui->inputContainer->addLayout(layouts.back());
+    // This doesn't work but needs to resize somehow
+    ui->inputContainer->update();
 }
 
 ///
