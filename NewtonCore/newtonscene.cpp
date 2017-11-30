@@ -5,7 +5,7 @@ NewtonScene::NewtonScene(QObject *parent) : QObject(parent)
 
 }
 
-NewtonScene::NewtonScene(float gravity, NewtonConversion* units, QString tutorial, QString brief QObject *parent) : QObject(parent),
+NewtonScene::NewtonScene(float gravity, NewtonConversion* units, QString tutorial, QString brief, QObject *parent) : QObject(parent),
     m_Gravity(gravity),
     units(units),
     tutorial(tutorial),
