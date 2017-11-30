@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDoubleSpinBox>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent/*, Model *model*/) :
     QMainWindow(parent),
@@ -67,8 +68,10 @@ void MainWindow::addInputPair(QString labelText){
     layouts.back()->addWidget(labels.back());
     layouts.back()->addWidget(inputs.back());
     ui->inputContainer->addLayout(layouts.back());
-    // This doesn't work but needs to resize somehow
-    ui->inputContainer->update();
+    // Need to resize inputContainer somehow
+//    ui->inputContainer->update();
+    ui->inputContainer->activate();
+
 }
 
 ///
@@ -76,10 +79,8 @@ void MainWindow::addInputPair(QString labelText){
 /// Clears the inputContainer and the vectors holding the input
 ///
 void MainWindow::clearInputConAndVector(){
-    QLayoutItem *child = ui->inputContainer->takeAt(0);
-    while (child != 0) {
-      delete child;
-      child = ui->inputContainer->takeAt(0);
+    foreach (auto child, ui->inputContainer->children()) {
+        delete child;
     }
     // needs work...
     labels.clear();
