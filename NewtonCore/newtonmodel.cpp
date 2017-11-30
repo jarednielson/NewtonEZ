@@ -23,7 +23,7 @@ void NewtonModel::loadFile(QString filePath){
 
 void NewtonModel::setScene(int sceneIndex){
     if(sceneIndex < 0 ||
-       sceneIndex >= (int) scenes.lenght() ||
+       sceneIndex >= (int) scenes.length() ||
        sceneIndex == currentSceneIndex){
         return;
     }

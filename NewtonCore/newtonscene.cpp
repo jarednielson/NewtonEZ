@@ -5,7 +5,7 @@ NewtonScene::NewtonScene(QObject *parent) : QObject(parent)
 
 }
 
-NewtonScene::NewtonScene(float gravity, NewtonConversion* units, QString tutorial, QString brief QObject *parent) : QObject(parent),
+NewtonScene::NewtonScene(float gravity, NewtonConversion* units, QString tutorial, QString brief, QObject *parent) : QObject(parent),
     m_Gravity(gravity),
     units(units),
     tutorial(tutorial),
@@ -35,10 +35,10 @@ const QVector<NewtonBody*>& NewtonScene::getBodies() const {
     return bodies;
 }
 
-QString getTutorialText(){
+QString NewtonScene::getTutorialText(){
     return tutorial;
 }
 
-QString getBriefDescription(){
+QString NewtonScene::getBriefDescription(){
     return briefDescription;
 }
