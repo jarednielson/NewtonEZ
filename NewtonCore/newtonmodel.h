@@ -31,7 +31,7 @@ public slots:
     void setScene(int sceneIndex);
     void startSimulation();
     void endSimulation();
-    void getProblemDescriptions(QStringList descriptions);
+    void getProblemDescriptions(QStringList& descriptions);
     void validateAnswer(float answer);
 
 

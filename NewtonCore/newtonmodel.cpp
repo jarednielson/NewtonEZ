@@ -4,8 +4,8 @@
 
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {
-    currenSceneIndex = 0;
-    graphicsScene = new graphicsScene();
+    currentSceneIndex = 0;
+    graphicsScene = new QGraphicsScene();
 }
 
 NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
@@ -57,14 +57,16 @@ void NewtonModel::endSimulation(){
     //TODO: notify end simulation
 }
 
-QStringList NewtonModel::getProblemDescriptions(){
-    QStringList descriptions;
-
-    for(auto it = scenes.begin(); it != scenes.end(); it++){
-        descriptions.append(*(it).getTutorialText);
+void NewtonModel::getProblemDescriptions(QStringList& descriptions){
+    for(size_t i = 0; i < scenes.length(); i++){
+        descriptions.append(scenes[i]->getTutorialText());
     }
 
-    return descriptions;
+}
+
+void NewtonModel::validateAnswer(float answer){
+    //TODO: validate
+    //TODO: notify validated
 }
 
 

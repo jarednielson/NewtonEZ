@@ -35,10 +35,10 @@ const QVector<NewtonBody*>& NewtonScene::getBodies() const {
     return bodies;
 }
 
-QString getTutorialText(){
+QString NewtonScene::getTutorialText(){
     return tutorial;
 }
 
-QString getBriefDescription(){
+QString NewtonScene::getBriefDescription(){
     return briefDescription;
 }
