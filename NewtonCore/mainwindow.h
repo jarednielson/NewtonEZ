@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDoubleSpinBox>
+#include <QActionGroup>
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +20,8 @@ public:
     explicit MainWindow(QWidget *parent = 0/*, Model *model*/);
     ~MainWindow();
 
+protected slots:
+    void onGraphicsViewReleased(int x, int y);
 private:
     Ui::MainWindow *ui;
 
@@ -28,8 +31,7 @@ private:
 
     void addInputPair(QString labelText);
     void clearInputConAndVector();
-
-//    Model *model;
+    QActionGroup *tools;
 };
 
 #endif // MAINWINDOW_H

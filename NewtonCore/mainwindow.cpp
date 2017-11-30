@@ -24,13 +24,27 @@ MainWindow::MainWindow(QWidget *parent/*, Model *model*/) :
     addInputPair("8");
     addInputPair("9");
     addInputPair("10");
+    // Comment out to see inputs, uncomment to clear all inputs
     clearInputConAndVector();
 
+    tools = new QActionGroup(this);
+    tools->addAction(ui->actionDynamicBodyTool);
+    tools->addAction(ui->actionForceTool);
+    tools->addAction(ui->actionMoveTool);
+    tools->addAction(ui->actionStaticBodyTool);
+    tools->setExclusive(true);
+
+    connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete tools;
+}
+
+void MainWindow::onGraphicsViewReleased(int x, int y){
+
 }
 
 ///

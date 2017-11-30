@@ -110,7 +110,7 @@
      </layout>
     </item>
     <item row="0" column="0">
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="NewtonGraphicsView" name="graphicsView">
       <property name="minimumSize">
        <size>
         <width>500</width>
@@ -138,10 +138,62 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionDynamicBodyTool"/>
+   <addaction name="actionStaticBodyTool"/>
+   <addaction name="actionForceTool"/>
+   <addaction name="actionMoveTool"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionDynamicBodyTool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>DynamicBodyTool</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add Dynamic Bodies&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionStaticBodyTool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>StaticBodyTool</string>
+   </property>
+  </action>
+  <action name="actionForceTool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ForceTool</string>
+   </property>
+   <property name="toolTip">
+    <string>Use to add forces</string>
+   </property>
+  </action>
+  <action name="actionMoveTool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>MoveTool</string>
+   </property>
+   <property name="toolTip">
+    <string>Use to move items around the scene</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>NewtonGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>newtongraphicsview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
