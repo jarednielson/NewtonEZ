@@ -30,11 +30,7 @@ SOURCES += \
         newtonscene.cpp \
         newtonbody.cpp \
         newtonmodel.cpp \
-<<<<<<< HEAD
-    newtonobject.cpp
-=======
-    newtonsceneobject.cpp
->>>>>>> ba3fc11154be01a4620508049c9abfbbb02b74d5
+        newtonsceneobject.cpp
 
 HEADERS += \
         mainwindow.h \
