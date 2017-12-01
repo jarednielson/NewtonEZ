@@ -1,6 +1,8 @@
 #include <QGraphicsScene>
 #include <QObject>
 #include "newtonmodel.h"
+#include "QFile"
+#include "QJsonObject"
 
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {
@@ -19,6 +21,64 @@ NewtonModel::~NewtonModel(){
 
 void NewtonModel::loadFile(QString filePath){
     //TODO Brian implement
+
+    //open stream and read next unit as string
+    QFile nextUnitFile(filePath);
+    nextUnit.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString nextUnit = nextUnitFile.readAll();
+    nextUnitFile.close();
+
+    QJsonDocument doc = QJsonObject::fromJson(nextUnit.toUtf8());
+    QJsonObject unit = doc.object();
+    QJsonArray scenelist = unit["scenes"].toArray();
+    for(int i = 0; i < scenelist.size(); i++){
+
+
+        QJsonObject currentScene = scenelist[i];
+        float grav = currentScene["gravity"];
+        QString tutorial(currentScene["tutorial"]);
+        QString problemText(currentScene["problemText"]);
+        scenes.push_back(new NewtonScene(grav, nullptr, tutorial,problemText,this));
+
+        QJsonArray objs = currentScene["objects"];
+        for(int i = 0; i < objs.size(); i++){
+            //TODO: populate objects in currentScene
+        }
+        emit instructionTextChanged(problemText);
+
+        QJsonObject widge = currentScene["widgets"];
+        QJsonArray formulas = widge["formulas"];
+        QJsonArray inputFields = widge["inputFieldUnits"];
+
+        QStringList labels;
+        QList<bool> labelsEnabled;
+
+        for(int i = 0 ; i < formulas.size(); i++){
+                labels.push_back(formulas[i]);
+                labelsEnabled.push_back(false);
+        }
+        for(int j = 0; j < inputFields.size(); j++){
+            labels.push_back(inputFields[j]);
+            labelsEnabled.push_back(true);
+        }
+        emit inputWidgetsChanged(labels, labelsEnabled);
+
+
+
+        //add answers to holder
+        //emit units and question info
+
+
+
+        //void instructionTextChanged(QString newText);
+        //void inputWidgetsChanged(QStringList widgetLabels, QList<bool> enabled);
+
+    }
+
+
+
+
+
 }
 
 void NewtonModel::setScene(int sceneIndex){
