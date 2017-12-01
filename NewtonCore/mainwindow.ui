@@ -38,7 +38,7 @@
          </size>
         </property>
         <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
+         <enum>Qt::ScrollBarAsNeeded</enum>
         </property>
         <property name="autoFormatting">
          <set>QTextEdit::AutoNone</set>
@@ -77,11 +77,11 @@
         <property name="maximumSize">
          <size>
           <width>500</width>
-          <height>500</height>
+          <height>750</height>
          </size>
         </property>
         <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
+         <enum>Qt::ScrollBarAsNeeded</enum>
         </property>
         <property name="widgetResizable">
          <bool>true</bool>
@@ -91,8 +91,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>338</width>
-           <height>254</height>
+           <width>358</width>
+           <height>246</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
