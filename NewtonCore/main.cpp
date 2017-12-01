@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "Box2D.h"
+#include "newtonmodel.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    NewtonModel* model = new NewtonModel();
+    MainWindow w(model);
     w.show();
 
     b2Vec2 gravity(0.0f, -10.0f);

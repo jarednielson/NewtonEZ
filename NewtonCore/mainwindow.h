@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QActionGroup>
+#include "newtonmodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,7 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0/*, Model *model*/);
+    explicit MainWindow(NewtonModel *model, QWidget *parent = 0);
     ~MainWindow();
 
 protected slots:
@@ -32,6 +33,7 @@ private:
     void addInputPair(QString labelText);
     void clearInputConAndVector();
     QActionGroup *tools;
+    NewtonModel *model;
 };
 
 #endif // MAINWINDOW_H
