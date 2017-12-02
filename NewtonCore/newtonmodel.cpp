@@ -3,6 +3,8 @@
 #include "newtonmodel.h"
 #include "QFile"
 #include "QJsonObject"
+#include "QJsonArray"
+#include "QJsonDocument"
 
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {
@@ -20,65 +22,77 @@ NewtonModel::~NewtonModel(){
 }
 
 void NewtonModel::loadFile(QString filePath){
-    //TODO Brian implement
 
     //open stream and read next unit as string
     QFile nextUnitFile(filePath);
-    nextUnit.open(QIODevice::ReadOnly | QIODevice::Text);
+    nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QString nextUnit = nextUnitFile.readAll();
     nextUnitFile.close();
 
-    QJsonDocument doc = QJsonObject::fromJson(nextUnit.toUtf8());
+    //deserialize json doc
+    QJsonDocument doc = QJsonDocument::fromJson(nextUnit.toUtf8());
     QJsonObject unit = doc.object();
     QJsonArray scenelist = unit["scenes"].toArray();
+
+    //for each scene grab info
     for(int i = 0; i < scenelist.size(); i++){
 
+        //deserialize scene information
+        QJsonObject currentScene = scenelist[i].toObject();
+        float grav = currentScene["gravity"].toDouble();
+        QString tutorial(currentScene["tutorial"].toString());
+        QString problemText(currentScene["problemText"].toString());
 
-        QJsonObject currentScene = scenelist[i];
-        float grav = currentScene["gravity"];
-        QString tutorial(currentScene["tutorial"]);
-        QString problemText(currentScene["problemText"]);
-        scenes.push_back(new NewtonScene(grav, nullptr, tutorial,problemText,this));
+        //TODO: if meters pass nullptr, otherwise, pass conversion
+        //NewtonConversion* units = nullptr;
+        NewtonScene* scene = new NewtonScene(grav, nullptr, tutorial,problemText,this);
+        scenes.push_back(scene);
 
-        QJsonArray objs = currentScene["objects"];
+        //get objects from document and populate the scene
+        QJsonArray objs = currentScene["objects"].toArray();
         for(int i = 0; i < objs.size(); i++){
-            //TODO: populate objects in currentScene
-        }
-        emit instructionTextChanged(problemText);
+            //TODO: test
+            QVector<QPointF>* vertPoints = new QVector<QPointF>;
+            QJsonArray verts = objs[i].toObject()["verts"].toArray();
+            for(int j =0; j < verts.size(); j++){
+                QString ptstr = verts[j].toString();
+                QStringList xy = ptstr.split(',');
+                float y = xy.back().toFloat();
+                xy.pop_back();
+                float x =  xy.back().toFloat();
+                xy.pop_back();
+                QPointF point(x,y);
+                vertPoints->push_back(point);
+            }
+            bool isDynamic = objs[i].toObject()["isDynamic"].toBool();
+            float mass = objs[i].toObject()["mass"].toDouble();
+            float angle = objs[i].toObject()["angle"].toDouble();
 
-        QJsonObject widge = currentScene["widgets"];
-        QJsonArray formulas = widge["formulas"];
-        QJsonArray inputFields = widge["inputFieldUnits"];
+            //TODO: add angle
+            scene->addBody(new NewtonBody(isDynamic,mass,*vertPoints,this));
+        }
+
+        QJsonObject widge = currentScene["widgets"].toObject();
+        QJsonArray formulas = widge["formulas"].toArray();
+        QJsonArray inputFields = widge["inputFieldUnits"].toArray();
 
         QStringList labels;
         QList<bool> labelsEnabled;
 
         for(int i = 0 ; i < formulas.size(); i++){
-                labels.push_back(formulas[i]);
+                labels.push_back(formulas[i].toString());
                 labelsEnabled.push_back(false);
         }
         for(int j = 0; j < inputFields.size(); j++){
-            labels.push_back(inputFields[j]);
+            labels.push_back(inputFields[j].toString());
             labelsEnabled.push_back(true);
         }
-        emit inputWidgetsChanged(labels, labelsEnabled);
+        //TODO: set labels and labelsEnabled datamembers
 
+        //store units and question info tutorial
 
-
-        //add answers to holder
-        //emit units and question info
-
-
-
-        //void instructionTextChanged(QString newText);
-        //void inputWidgetsChanged(QStringList widgetLabels, QList<bool> enabled);
 
     }
-
-
-
-
-
 }
 
 void NewtonModel::setScene(int sceneIndex){
