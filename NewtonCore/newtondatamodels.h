@@ -129,8 +129,10 @@ public:
     QString getBriefDescription();
 
     QStringList& getWidgetLabels();
-    QStringList& getWidgetValues();
+    QList<QPair<float, float>> getWidgetValueRanges();
     QList<bool>& getWidgetEditable();
+
+    void addWidget(QString label, bool editable, QPair<float, float> range);
 
 signals:
     void gravityChanged(float gravity);
@@ -142,6 +144,10 @@ private:
 
     QString tutorial;
     QString briefDescription;
+
+    QStringList widgetLabels;
+    QList<bool> editableWidgets;
+    QList<QPair<float, float>> widgetValueRanges;
 };
 
 #endif // NEWTONSCENE_H

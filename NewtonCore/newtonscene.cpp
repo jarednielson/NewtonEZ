@@ -42,3 +42,21 @@ QString NewtonScene::getTutorialText(){
 QString NewtonScene::getBriefDescription(){
     return briefDescription;
 }
+
+QStringList& NewtonScene::getWidgetLabels(){
+    return widgetLabels;
+}
+
+QList<QPair<float, float>>& NewtonScene::getWidgetValueRanges(){
+    return widgetValueRanges;
+}
+
+QList<bool>& NewtonScene::getEditableWidgets(){
+    return editableWidgets;
+}
+
+void NewtonScene::addWidget(QString label, bool editable, QPair<float, float> range){
+    widgetLabels.append(label);
+    editableWidgets.append(editable);
+    widgetValueRanges.append(range);
+}
