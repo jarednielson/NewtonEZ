@@ -55,7 +55,7 @@ public:
     void setInitOrientation(float theta);
 signals:
     void initPosChanged(QPointF pos);
-    void initOrienationChanged(float theta);
+    void initOrientationChanged(float theta);
 
 private:
     QPointF m_initPos;
@@ -129,8 +129,8 @@ public:
     QString getBriefDescription();
 
     QStringList& getWidgetLabels();
-    QList<QPair<float, float>> getWidgetValueRanges();
-    QList<bool>& getWidgetEditable();
+    QList<QPair<float, float>>& getWidgetValueRanges();
+    QList<bool>& getEditableWidgets();
 
     void addWidget(QString label, bool editable, QPair<float, float> range);
 

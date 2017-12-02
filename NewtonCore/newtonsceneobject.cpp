@@ -29,4 +29,5 @@ float NewtonSceneObject::getInitOrientation(){
 
 void NewtonSceneObject::setInitOrientation(float theta){
     m_initOrientation = theta;
+    emit initOrientationChanged(m_initOrientation);
 }
