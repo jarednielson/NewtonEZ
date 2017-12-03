@@ -42,6 +42,7 @@ public:
 class NewtonSceneObject : public NewtonObject {
     Q_OBJECT
     Q_PROPERTY(QPointF initPos READ getInitPos WRITE setInitPos NOTIFY initPosChanged MEMBER m_initPos)
+    Q_PROPERTY(float initOrientation READ getInitOrientation WRITE setInitOrientation NOTIFY initOrientationChanged MEMBER m_initOrientation)
 
 public:
     NewtonSceneObject(QObject *parent = Q_NULLPTR);
@@ -50,11 +51,15 @@ public:
 public:
     QPointF getInitPos() const;
     void setInitPos(QPointF pos);
+    float getInitOrientation();
+    void setInitOrientation(float theta);
 signals:
     void initPosChanged(QPointF pos);
+    void initOrientationChanged(float theta);
 
 private:
     QPointF m_initPos;
+    float m_initOrientation;
 };
 
 ///
@@ -123,6 +128,12 @@ public:
     QString getTutorialText();
     QString getBriefDescription();
 
+    QStringList& getWidgetLabels();
+    QList<QPair<float, float>>& getWidgetValueRanges();
+    QList<bool>& getEditableWidgets();
+
+    void addWidget(QString label, bool editable, QPair<float, float> range);
+
 signals:
     void gravityChanged(float gravity);
 
@@ -133,6 +144,10 @@ private:
 
     QString tutorial;
     QString briefDescription;
+
+    QStringList widgetLabels;
+    QList<bool> editableWidgets;
+    QList<QPair<float, float>> widgetValueRanges;
 };
 
 #endif // NEWTONSCENE_H
