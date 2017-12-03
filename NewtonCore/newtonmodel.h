@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QGraphicsScene>
 #include <QImage>
-
+#include "exprtk.h"
 
 
 class NewtonModel : public QObject{
@@ -20,6 +20,7 @@ private:
     int currentSceneIndex;
 
     QGraphicsScene* graphicsScene;
+    double evaluateFormula(QString formula, QVector<double> varVals);
 
 public:
     NewtonModel(QObject *parent = 0);

@@ -6,6 +6,7 @@
 #include "QJsonArray"
 #include "QJsonDocument"
 
+
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {
     currentSceneIndex = 0;
@@ -93,6 +94,38 @@ void NewtonModel::loadFile(QString filePath){
 
 
     }
+}
+
+// TODO: Test using formulas from json doc. Currently I'm not sure if the x1, x2, ..., xn variable naming scheme will work with
+// the formula parser. I really hope it does, otherwise we need to come up with a different variable naming scheme that will
+// allow us to iterate through the variables, inserting their respective values. If it doesn't work, I'll probably just use
+// a, b, c, ..., z and iterate over their ASCII values. I can't imagine us ever using any more than 26 variables.
+double NewtonModel::evaluateFormula(QString formula, QVector<double> varVals)
+{
+    typedef exprtk::symbol_table<double> symbol_table_t;
+    typedef exprtk::expression<double>     expression_t;
+    typedef exprtk::parser<double>             parser_t;
+
+    std::string expressionStr = formula.toStdString();
+
+    // Register formula variables with the symbol_table. Variables will be of the form x1, x2, x3, ..., xn
+    symbol_table_t symbolTable;
+    for(int i = 0; i < varVals.size(); i++)
+    {
+        symbolTable.add_variable("x"+std::to_string(i+1),varVals[i]);
+    }
+
+    // Instantiate expression and register symbol_table
+    expression_t expression;
+    expression.register_symbol_table(symbolTable);
+
+    // Instantiate parser and compile the expression
+    parser_t parser;
+    parser.compile(expressionStr, expression);
+
+    double result = expression.value();
+
+    return result;
 }
 
 void NewtonModel::setScene(int sceneIndex){
