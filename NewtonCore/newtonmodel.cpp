@@ -17,6 +17,14 @@ NewtonModel::~NewtonModel(){
     delete graphicsScene;
 }
 
+///
+/// \brief NewtonModel::getGraphicsScene
+/// \return
+///
+QGraphicsScene* NewtonModel::getGraphicsScene(){
+    return graphicsScene;
+}
+
 void NewtonModel::loadFile(QString filePath){
     //TODO Brian implement
 }

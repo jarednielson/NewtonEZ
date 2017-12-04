@@ -25,6 +25,7 @@ public:
     NewtonModel(QObject *parent = 0);
     NewtonModel(QString filePath, QObject *parent = 0);
     ~NewtonModel();
+    QGraphicsScene* getGraphicsScene();
 
 public slots:
     void loadFile(QString filePath);
