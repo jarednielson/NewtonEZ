@@ -10,7 +10,9 @@ NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 
 NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
 {
+    graphicsScene = new QGraphicsScene();
     loadFile(filePath);
+    currentSceneIndex = 0;
 }
 
 NewtonModel::~NewtonModel(){
@@ -39,9 +41,15 @@ void NewtonModel::setScene(int sceneIndex){
     currentSceneIndex = sceneIndex;
 
     //TODO: clear graphicsScene
+    graphicsScene->clear();
     //TODO: populate graphicsScene with the elements in the scene
+    for(size_t i = 0; i < scenes[currentSceneIndex]->getBodies().length(); i++){
+        NewtonBody* curr = scenes[currentSceneIndex]->getBodies()[i];
+        graphicsScene->addPolygon(curr->getVertices());
+    }
     //TODO: notify widgets changed
     //TODO: notify instructionTextChanged
+    emit instructionTextChanged(scenes[currentSceneIndex]->getTutorialText());
     //TODO: update answervalidation
     //TODO: clear any box2d stuff
 }
@@ -74,7 +82,9 @@ void NewtonModel::getProblemDescriptions(QStringList& descriptions){
 
 void NewtonModel::validateAnswer(float answer){
     //TODO: validate
-    //TODO: notify validated
+
+    //Place holder
+    emit answerValidated(true);
 }
 
 
