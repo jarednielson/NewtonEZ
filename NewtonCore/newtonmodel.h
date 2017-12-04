@@ -42,7 +42,7 @@ signals:
     void simulationEnd();
 
     void instructionTextChanged(QString newText);
-    void inputWidgetsChanged(QStringList widgetLabels, QList<bool> enabled);
+    void inputWidgetsChanged(QStringList widgetLabels, QStringList values, QList<bool> enabled);
 
     void answerValidated(bool success);
 
