@@ -199,6 +199,9 @@
          <property name="styleSheet">
           <string notr="true">color: white;</string>
          </property>
+         <property name="intValue" stdset="0">
+          <number>0</number>
+         </property>
         </widget>
        </item>
        <item>

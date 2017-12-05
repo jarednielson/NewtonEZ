@@ -69,9 +69,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::answerValidated, this, &MainWindow::updateAnswerLabel);
 
-    timer = new QTimer(this);
-    seconds = 0;
-    connect(timer, SIGNAL(timeout()), this, SLOT(clockTick()));
+    updateTime(100);
 }
 
 MainWindow::~MainWindow()
@@ -148,7 +146,6 @@ void MainWindow::updateAnswerLabel(bool answer){
     }
 }
 
-void MainWindow::clockTick(){
-    ui->simClock->display("" + seconds);
-    seconds++;
+void MainWindow::updateTime(int seconds){
+    ui->simClock->display(seconds);
 }
