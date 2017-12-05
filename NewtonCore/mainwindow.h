@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <vector>
+#include <QTimer>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDoubleSpinBox>
@@ -24,12 +25,15 @@ public:
 public slots:
     void replaceAndSetText(QString text);
     void updateAnswerLabel(bool answer);
+    void clockTick();
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
 private:
     Ui::MainWindow *ui;
 
+    int seconds;
+    QTimer *timer;
     std::vector<QHBoxLayout*> layouts;
     std::vector<QLabel*> labels;
     std::vector<QDoubleSpinBox*> inputs;

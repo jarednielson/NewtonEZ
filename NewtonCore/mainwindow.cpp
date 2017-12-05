@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <vector>
+#include <QTimer>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDoubleSpinBox>
@@ -68,6 +69,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::answerValidated, this, &MainWindow::updateAnswerLabel);
 
+    timer = new QTimer(this);
+    seconds = 0;
+    connect(timer, SIGNAL(timeout()), this, SLOT(clockTick()));
 }
 
 MainWindow::~MainWindow()
@@ -142,4 +146,9 @@ void MainWindow::updateAnswerLabel(bool answer){
     } else {
         ui->answerLabel->setText("Incorrect");
     }
+}
+
+void MainWindow::clockTick(){
+    ui->simClock->display("" + seconds);
+    seconds++;
 }

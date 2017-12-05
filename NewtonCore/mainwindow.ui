@@ -195,6 +195,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QLCDNumber" name="simClock">
+         <property name="styleSheet">
+          <string notr="true">color: white;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="answerLabel">
          <property name="text">
           <string/>
