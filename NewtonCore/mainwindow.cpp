@@ -14,8 +14,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->menuBar->setStyleSheet("background-color:\"#353535\";color:\"white\"");
+    ui->menuFile->setStyleSheet("background-color:\"#353535\";color:\"white\"");
     this->setStyle(QStyleFactory::create("Fusion"));
-    // modify palette to dark
     QPalette darkPalette;
     darkPalette.setColor(QPalette::Window,QColor(53,53,53));
     darkPalette.setColor(QPalette::WindowText,Qt::white);
@@ -37,7 +38,6 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     darkPalette.setColor(QPalette::Disabled,QPalette::Highlight,QColor(80,80,80));
     darkPalette.setColor(QPalette::HighlightedText,Qt::white);
     darkPalette.setColor(QPalette::Disabled,QPalette::HighlightedText,QColor(127,127,127));
-
     this->setPalette(darkPalette);
 
     ui->graphicsView->setScene(model->getGraphicsScene());
