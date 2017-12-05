@@ -57,7 +57,6 @@ void NewtonModel::startSimulation(){
     //TODO: run simulation
     //TODO: update graphics view as simulation goes
     //TODO: end simulation
-    clearModel();  // Not sure
     //TODO: reset graphicsScene
     graphicsScene->clear();
     //TODO: notify end simulation
