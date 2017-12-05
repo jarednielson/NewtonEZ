@@ -86,4 +86,14 @@ void NewtonModel::validateAnswer(float answer){
     emit answerValidated(true);
 }
 
+void NewtonModel::clearModel(){
+    graphicsScene->clear();
+}
+
+void NewtonModel::resetGraphicsView(){
+    graphs.clear();
+    scenes.clear();  // Remove all elements in Qvectors
+    currentSceneIndex = 0;
+}
+
 
