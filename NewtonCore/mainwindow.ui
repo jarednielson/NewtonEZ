@@ -48,6 +48,13 @@
      <height>30</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Fi&amp;le</string>
+    </property>
+    <addaction name="actionOpen_Problem"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -153,7 +160,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>254</width>
+            <width>252</width>
             <height>246</height>
            </rect>
           </property>
@@ -213,6 +220,11 @@
    </property>
    <property name="toolTip">
     <string>Use to move items around the scene</string>
+   </property>
+  </action>
+  <action name="actionOpen_Problem">
+   <property name="text">
+    <string>Open Problem</string>
    </property>
   </action>
  </widget>

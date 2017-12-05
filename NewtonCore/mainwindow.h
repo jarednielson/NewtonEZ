@@ -34,6 +34,7 @@ private:
     std::vector<QDoubleSpinBox*> inputs;
 
     void addInputPair(QString labelText);
+    void addInputPair(QString labelText, double inputBoxValue, bool inputEnabled);
     void clearInputConAndVector();
     QActionGroup *tools;
     NewtonModel *model;
