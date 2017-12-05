@@ -20,7 +20,77 @@ NewtonModel::~NewtonModel(){
 }
 
 void NewtonModel::loadFile(QString filePath){
-    //TODO Brian implement
+
+    //open stream and read next unit as string
+    QFile nextUnitFile(filePath);
+    nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString nextUnit = nextUnitFile.readAll();
+    nextUnitFile.close();
+
+    //deserialize json doc
+    QJsonDocument doc = QJsonDocument::fromJson(nextUnit.toUtf8());
+    QJsonObject unit = doc.object();
+    QJsonArray scenelist = unit["scenes"].toArray();
+
+    //for each scene grab info
+    for(int i = 0; i < scenelist.size(); i++){
+
+        //deserialize scene information
+        QJsonObject currentScene = scenelist[i].toObject();
+        float grav = currentScene["gravity"].toDouble();
+        QString tutorial(currentScene["tutorial"].toString());
+        QString problemText(currentScene["problemText"].toString());
+
+        //TODO: if meters pass nullptr, otherwise, pass conversion
+        //NewtonConversion* units = nullptr;
+        NewtonScene* scene = new NewtonScene(grav, nullptr, tutorial,problemText,this);
+        scenes.push_back(scene);
+
+        //get objects from document and populate the scene
+        QJsonArray objs = currentScene["objects"].toArray();
+        for(int i = 0; i < objs.size(); i++){
+            //TODO: test
+            QVector<QPointF>* vertPoints = new QVector<QPointF>;
+            QJsonArray verts = objs[i].toObject()["verts"].toArray();
+            for(int j =0; j < verts.size(); j++){
+                QString ptstr = verts[j].toString();
+                QStringList xy = ptstr.split(',');
+                float y = xy.back().toFloat();
+                xy.pop_back();
+                float x =  xy.back().toFloat();
+                xy.pop_back();
+                QPointF point(x,y);
+                vertPoints->push_back(point);
+            }
+            bool isDynamic = objs[i].toObject()["isDynamic"].toBool();
+            float mass = objs[i].toObject()["mass"].toDouble();
+            float angle = objs[i].toObject()["angle"].toDouble();
+
+            //TODO: add angle
+            scene->addBody(new NewtonBody(isDynamic,mass,*vertPoints,this));
+        }
+
+        QJsonObject widge = currentScene["widgets"].toObject();
+        QJsonArray formulas = widge["formulas"].toArray();
+        QJsonArray inputFields = widge["inputFieldUnits"].toArray();
+
+        QStringList labels;
+        QList<bool> labelsEnabled;
+
+        for(int i = 0 ; i < formulas.size(); i++){
+                labels.push_back(formulas[i].toString());
+                labelsEnabled.push_back(false);
+        }
+        for(int j = 0; j < inputFields.size(); j++){
+            labels.push_back(inputFields[j].toString());
+            labelsEnabled.push_back(true);
+        }
+        //TODO: set labels and labelsEnabled datamembers
+
+        //store units and question info tutorial
+
+
+    }
 }
 
 void NewtonModel::setScene(int sceneIndex){
@@ -97,5 +167,3 @@ void NewtonModel::resetGraphicsView(){
     scenes.clear();  // Remove all elements in Qvectors
     currentSceneIndex = 0;
 }
-
-
