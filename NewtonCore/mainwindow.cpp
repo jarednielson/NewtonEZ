@@ -66,6 +66,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
     // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
+    connect(model, &NewtonModel::answerValidated, this, &MainWindow::updateAnswerLabel);
 
 }
 
@@ -129,4 +130,16 @@ void MainWindow::clearInputConAndVector(){
 
 void MainWindow::replaceAndSetText(QString text){
     ui->textEdit->setText(text);
+}
+
+void MainWindow::resetAnswerLabel(){
+    ui->answerLabel->setText("");
+}
+
+void MainWindow::updateAnswerLabel(bool answer){
+    if(answer){
+        ui->answerLabel->setText("Correct");
+    } else {
+        ui->answerLabel->setText("Incorrect");
+    }
 }
