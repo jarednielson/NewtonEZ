@@ -35,6 +35,9 @@
         <height>0</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;#232629&quot;</string>
+      </property>
      </widget>
     </item>
    </layout>

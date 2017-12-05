@@ -36,6 +36,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     tools->setExclusive(true);
 
     connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
+    // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
 
 }
