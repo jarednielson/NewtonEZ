@@ -76,6 +76,12 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="maximumSize">
+    <size>
+     <width>500</width>
+     <height>524287</height>
+    </size>
+   </property>
    <property name="floating">
     <bool>false</bool>
    </property>
@@ -190,6 +196,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="startEndButton">
+         <property name="maximumSize">
+          <size>
+           <width>500</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color:&quot;#31363B&quot;</string>
          </property>

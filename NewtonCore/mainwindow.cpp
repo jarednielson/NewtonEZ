@@ -14,23 +14,31 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->setStyle(QStyleFactory::create("fusion"));
+    this->setStyle(QStyleFactory::create("Fusion"));
+    // modify palette to dark
+    QPalette darkPalette;
+    darkPalette.setColor(QPalette::Window,QColor(53,53,53));
+    darkPalette.setColor(QPalette::WindowText,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));
+    darkPalette.setColor(QPalette::Base,QColor(42,42,42));
+    darkPalette.setColor(QPalette::AlternateBase,QColor(66,66,66));
+    darkPalette.setColor(QPalette::ToolTipBase,Qt::white);
+    darkPalette.setColor(QPalette::ToolTipText,Qt::white);
+    darkPalette.setColor(QPalette::Text,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::Text,QColor(127,127,127));
+    darkPalette.setColor(QPalette::Dark,QColor(35,35,35));
+    darkPalette.setColor(QPalette::Shadow,QColor(20,20,20));
+    darkPalette.setColor(QPalette::Button,QColor(53,53,53));
+    darkPalette.setColor(QPalette::ButtonText,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::ButtonText,QColor(127,127,127));
+    darkPalette.setColor(QPalette::BrightText,Qt::red);
+    darkPalette.setColor(QPalette::Link,QColor(42,130,218));
+    darkPalette.setColor(QPalette::Highlight,QColor(42,130,218));
+    darkPalette.setColor(QPalette::Disabled,QPalette::Highlight,QColor(80,80,80));
+    darkPalette.setColor(QPalette::HighlightedText,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::HighlightedText,QColor(127,127,127));
 
-    QPalette palette;
-    palette.setColor(QPalette::Window, QColor(53,53,53));
-    palette.setColor(QPalette::WindowText, Qt::white);
-    palette.setColor(QPalette::Base, QColor(15,15,15));
-    palette.setColor(QPalette::AlternateBase, QColor(53,53,53));
-    palette.setColor(QPalette::ToolTipBase, Qt::white);
-    palette.setColor(QPalette::ToolTipText, Qt::white);
-    palette.setColor(QPalette::Text, Qt::white);
-    palette.setColor(QPalette::Button, QColor(53,53,53));
-    palette.setColor(QPalette::ButtonText, Qt::white);
-    palette.setColor(QPalette::BrightText, Qt::red);
-    palette.setColor(QPalette::Highlight, QColor(142,45,197).lighter());
-    palette.setColor(QPalette::HighlightedText, Qt::black);
-    this->setPalette(palette);
-
+    this->setPalette(darkPalette);
 
     ui->graphicsView->setScene(model->getGraphicsScene());
     replaceAndSetText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
