@@ -23,6 +23,7 @@ public:
 
 public slots:
     void replaceAndSetText(QString text);
+    void updateAnswerLabel(bool answer);
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
@@ -36,6 +37,7 @@ private:
     void addInputPair(QString labelText);
     void addInputPair(QString labelText, double inputBoxValue, bool inputEnabled);
     void clearInputConAndVector();
+    void resetAnswerLabel();
     QActionGroup *tools;
     NewtonModel *model;
 };
