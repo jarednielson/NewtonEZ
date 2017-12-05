@@ -57,6 +57,7 @@ void NewtonModel::startSimulation(){
     //TODO: run simulation
     //TODO: update graphics view as simulation goes
     //TODO: end simulation
+    clearModel();
     //TODO: reset graphicsScene
     graphicsScene->clear();
     //TODO: notify end simulation
@@ -68,6 +69,7 @@ void NewtonModel::endSimulation(){
     emit simulationStart();  // Besides this, actual running also be notified?
     //TODO: kill timer and callbacks
     //TODO: restore graphisScene
+    graphicsScene->clear();
     //TODO: notify end simulation
     emit simulationEnd();
 }
