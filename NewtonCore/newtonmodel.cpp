@@ -52,6 +52,7 @@ void NewtonModel::startSimulation(){
     //TODO: build box2d scene
     //TODO: create timer and callbacks
     //TODO: nofity simulationStart
+    emit simulationStart();
     //TODO: run simulation
     //TODO: update graphics view as simulation goes
     //TODO: end simulation

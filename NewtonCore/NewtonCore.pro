@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += script
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,14 +31,16 @@ SOURCES += \
         newtonscene.cpp \
         newtonbody.cpp \
         newtonmodel.cpp \
-        newtonsceneobject.cpp
+        newtonsceneobject.cpp \
+    newtonformula.cpp
 
 HEADERS += \
         mainwindow.h \
         Interfaces/buildertool.h \
         newtongraphicsview.h \
         newtondatamodels.h \
-        newtonmodel.h
+        newtonmodel.h \
+    newtonformula.h
 
 FORMS += \
         mainwindow.ui
