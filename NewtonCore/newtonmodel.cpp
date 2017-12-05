@@ -49,6 +49,7 @@ void NewtonModel::setScene(int sceneIndex){
 void NewtonModel::startSimulation(){
     //TODO: check to make sure scene isn't running
     graphicsScene->clear();
+    emit simulationStart();
     //TODO: build box2d scene
     //TODO: create timer and callbacks
     //TODO: nofity simulationStart
@@ -59,14 +60,16 @@ void NewtonModel::startSimulation(){
     //TODO: reset graphicsScene
     graphicsScene->clear();
     //TODO: notify end simulation
-    return;
+    emit simulationEnd();
 }
 
 void NewtonModel::endSimulation(){
     //TODO: check to make sure scene is running
+    emit simulationStart();  // Besides this, actual running also be notified?
     //TODO: kill timer and callbacks
     //TODO: restore graphisScene
     //TODO: notify end simulation
+    emit simulationEnd();
 }
 
 void NewtonModel::getProblemDescriptions(QStringList& descriptions){
@@ -81,6 +84,16 @@ void NewtonModel::validateAnswer(float answer){
 
     //Place holder
     emit answerValidated(true);
+}
+
+void NewtonModel::clearModel(){
+    graphicsScene->clear();
+}
+
+void NewtonModel::resetGraphicsView(){
+    graphs.clear();
+    scenes.clear();  // Remove all elements in Qvectors
+    currentSceneIndex = 0;
 }
 
 
