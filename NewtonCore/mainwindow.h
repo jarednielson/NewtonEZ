@@ -21,6 +21,9 @@ public:
     explicit MainWindow(NewtonModel *model, QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void replaceAndSetText(QString text);
+
 protected slots:
     void onGraphicsViewReleased(int x, int y);
 private:

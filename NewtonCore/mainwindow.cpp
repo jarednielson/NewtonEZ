@@ -85,3 +85,7 @@ void MainWindow::clearInputConAndVector(){
     inputs.clear();
     layouts.clear();
 }
+
+void MainWindow::replaceAndSetText(QString text){
+    ui->textEdit->setText(text);
+}
