@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Newton2D</string>
   </property>
   <property name="animated">
    <bool>true</bool>
@@ -103,7 +103,7 @@
          <property name="maximumSize">
           <size>
            <width>500</width>
-           <height>500</height>
+           <height>16777215</height>
           </size>
          </property>
          <property name="verticalScrollBarPolicy">
@@ -146,7 +146,7 @@
          <property name="maximumSize">
           <size>
            <width>500</width>
-           <height>750</height>
+           <height>16777215</height>
           </size>
          </property>
          <property name="verticalScrollBarPolicy">
@@ -174,6 +174,13 @@
            </item>
           </layout>
          </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="startEndButton">
+         <property name="text">
+          <string>Check Answer</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -224,7 +231,7 @@
   </action>
   <action name="actionOpen_Problem">
    <property name="text">
-    <string>Open Problem</string>
+    <string>&amp;Open Problem</string>
    </property>
   </action>
  </widget>
