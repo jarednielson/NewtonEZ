@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Newton2D</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:&quot;#31363B&quot;</string>
+  </property>
   <property name="animated">
    <bool>true</bool>
   </property>
@@ -109,6 +112,9 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;#232629&quot;</string>
+         </property>
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
@@ -152,6 +158,9 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;#31363B&quot;</string>
+         </property>
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
@@ -181,6 +190,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="startEndButton">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;#31363B&quot;</string>
+         </property>
          <property name="text">
           <string>Check Answer</string>
          </property>
