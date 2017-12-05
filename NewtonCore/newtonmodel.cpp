@@ -56,6 +56,7 @@ void NewtonModel::setScene(int sceneIndex){
 
 void NewtonModel::startSimulation(){
     //TODO: check to make sure scene isn't running
+    graphicsScene->clear();
     //TODO: build box2d scene
     //TODO: create timer and callbacks
     //TODO: nofity simulationStart
@@ -63,7 +64,9 @@ void NewtonModel::startSimulation(){
     //TODO: update graphics view as simulation goes
     //TODO: end simulation
     //TODO: reset graphicsScene
+    graphicsScene->clear();
     //TODO: notify end simulation
+    return;
 }
 
 void NewtonModel::endSimulation(){
