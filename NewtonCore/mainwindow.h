@@ -24,9 +24,12 @@ public:
 
 public slots:
     void replaceAndSetText(QString text);
-    void updateAnswerLabel(bool answer);
     void updateTime(int seconds);
     void getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled);
+    void prepareEnabledInputs();
+
+signals:
+    void sendEnabledInputs(std::vector<QString> enabledInputs);
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
@@ -40,7 +43,6 @@ private:
     void addInputPair(QString labelText);
     void addInputPair(QString labelText, double inputBoxValue, bool inputEnabled);
     void clearInputConAndVector();
-    void resetAnswerLabel();
     QActionGroup *tools;
     NewtonModel *model;
 };

@@ -67,8 +67,8 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
     // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
-    connect(model, &NewtonModel::answerValidated, this, &MainWindow::updateAnswerLabel);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
+    connnect(ui->startEndButton, QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
 
     updateTime(100);
 }
@@ -136,18 +136,6 @@ void MainWindow::replaceAndSetText(QString text){
     ui->textEdit->setText(text);
 }
 
-void MainWindow::resetAnswerLabel(){
-    ui->answerLabel->setText("");
-}
-
-void MainWindow::updateAnswerLabel(bool answer){
-    if(answer){
-        ui->answerLabel->setText("Correct");
-    } else {
-        ui->answerLabel->setText("Incorrect");
-    }
-}
-
 void MainWindow::updateTime(int seconds){
     ui->simClock->setText(QString::number(seconds));
 }
@@ -157,4 +145,15 @@ void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList value
     for(int i = 0; i < widgetLabels.length(); i++){
         addInputPair(widgetLabels[i], values[i].toDouble(), enabled[i]);
     }
+}
+
+void MainWindow::prepareEnabledInputs(){
+    std::vector<float> enabledFloat;
+    for(int i = 0; i < inputs.size(); i++){
+        if(inputs[i]->isEnabled()){
+            enabledFloat.push_back(inputs[i]->value());
+        }
+    }
+
+    // emit signal that will take this vector to the model
 }

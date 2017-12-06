@@ -195,13 +195,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="answerLabel">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="simClock">
          <property name="text">
           <string>0</string>
