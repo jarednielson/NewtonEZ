@@ -1,6 +1,10 @@
 #include <QGraphicsScene>
 #include <QObject>
 #include "newtonmodel.h"
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {
@@ -105,7 +109,7 @@ void NewtonModel::setScene(int sceneIndex){
     //TODO: clear graphicsScene
     graphicsScene->clear();
     //TODO: populate graphicsScene with the elements in the scene
-    for(size_t i = 0; i < scenes[currentSceneIndex]->getBodies().length(); i++){
+    for(int i = 0; i < scenes[currentSceneIndex]->getBodies().length(); i++){
         NewtonBody* curr = scenes[currentSceneIndex]->getBodies()[i];
         graphicsScene->addPolygon(curr->getVertices());
     }
@@ -145,13 +149,13 @@ void NewtonModel::endSimulation(){
 }
 
 void NewtonModel::getProblemDescriptions(QStringList& descriptions){
-    for(size_t i = 0; i < scenes.length(); i++){
+    for(int i = 0; i < scenes.length(); i++){
         descriptions.append(scenes[i]->getTutorialText());
     }
 
 }
 
-void NewtonModel::validateAnswer(float answer){
+void NewtonModel::validateAnswer(float answer, QVector<float>& parameters){
     //TODO: validate
 
     //Place holder

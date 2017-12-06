@@ -26,3 +26,7 @@ float NewtonFormula::evaluate(const QVector<float>& vals)
 QString NewtonFormula::getFormula(){
     return formula;
 }
+
+bool NewtonFormula::isValid(){
+    return validFunc;
+}
