@@ -9,6 +9,7 @@
 #include <QDoubleSpinBox>
 #include <QActionGroup>
 #include "newtonmodel.h"
+#include "newtoninputbox.h"
 
 namespace Ui {
 class MainWindow;

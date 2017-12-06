@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <vector>
-#include <QTimer>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDoubleSpinBox>

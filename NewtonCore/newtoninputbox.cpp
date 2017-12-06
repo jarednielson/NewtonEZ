@@ -1,11 +1,14 @@
 #include "newtoninputbox.h"
+#include "mainwindow.h"
 #include <QDoubleSpinBox>
 
-NewtonInputBox::NewtonInputBox(int index, QWidget *parent = Q_NULLPTR) :
+NewtonInputBox::NewtonInputBox(int index, QWidget *parent) :
     index(index)
 {
+}
 
-    connect(this, QDoubleSpinBox::valueChanged, this, NewtonInputBox::interceptChange);
+NewtonInputBox::~NewtonInputBox(){
+
 }
 
 void NewtonInputBox::interceptChange(double d){
