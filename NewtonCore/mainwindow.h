@@ -26,6 +26,7 @@ public slots:
     void replaceAndSetText(QString text);
     void updateAnswerLabel(bool answer);
     void updateTime(int seconds);
+    void getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled);
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);

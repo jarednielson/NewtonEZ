@@ -101,6 +101,7 @@ void MainWindow::addInputPair(QString labelText){
 /// \param labelText
 ///
 void MainWindow::addInputPair(QString labelText, double inputBoxValue, bool inputEnabled){
+    // can change min and max with setMaximum and setMinimun
     labels.push_back(new QLabel());
     labels.back()->setText(labelText);
     inputs.push_back(new QDoubleSpinBox());
@@ -148,4 +149,11 @@ void MainWindow::updateAnswerLabel(bool answer){
 
 void MainWindow::updateTime(int seconds){
     ui->simClock->display(seconds);
+}
+
+void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){
+    clearInputConAndVector();
+    for(int i = 0; i < widgetLabels.length(); i++){
+        addInputPair(widgetLabels[i], values[i].toDouble(), enabled[i]);
+    }
 }
