@@ -30,16 +30,14 @@ SOURCES += \
         newtonscene.cpp \
         newtonbody.cpp \
         newtonmodel.cpp \
-        newtonsceneobject.cpp \
-    newtoninputbox.cpp
+        newtonsceneobject.cpp
 
 HEADERS += \
         mainwindow.h \
         Interfaces/buildertool.h \
         newtongraphicsview.h \
         newtondatamodels.h \
-        newtonmodel.h \
-    newtoninputbox.h
+        newtonmodel.h
 
 FORMS += \
         mainwindow.ui
