@@ -149,7 +149,7 @@ void MainWindow::updateAnswerLabel(bool answer){
 }
 
 void MainWindow::updateTime(int seconds){
-    ui->simClock->display(seconds);
+    ui->simClock->setText(QString::number(seconds));
 }
 
 void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){

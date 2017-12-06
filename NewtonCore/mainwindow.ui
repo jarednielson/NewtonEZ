@@ -51,7 +51,7 @@
      <x>0</x>
      <y>0</y>
      <width>880</width>
-     <height>30</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -178,8 +178,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>252</width>
-            <height>246</height>
+            <width>254</width>
+            <height>248</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -195,19 +195,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QLCDNumber" name="simClock">
-         <property name="styleSheet">
-          <string notr="true">color: white;</string>
-         </property>
-         <property name="intValue" stdset="0">
-          <number>0</number>
+        <widget class="QLabel" name="answerLabel">
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="answerLabel">
+        <widget class="QLabel" name="simClock">
          <property name="text">
-          <string/>
+          <string>0</string>
          </property>
         </widget>
        </item>
