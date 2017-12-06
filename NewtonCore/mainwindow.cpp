@@ -140,6 +140,9 @@ void MainWindow::updateTime(int seconds){
     ui->simClock->setText(QString::number(seconds));
 }
 
+// We need to refactor this to two functions... because there are going to be two signals
+// one signal for enabled and the other non enabled
+
 void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){
     clearInputConAndVector();
     for(int i = 0; i < widgetLabels.length(); i++){
