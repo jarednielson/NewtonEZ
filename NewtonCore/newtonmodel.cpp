@@ -105,15 +105,39 @@ void NewtonModel::setScene(int sceneIndex){
     }
 
     currentSceneIndex = sceneIndex;
+    NewtonScene* currentScene = scenes[currentSceneIndex];
 
     //TODO: clear graphicsScene
     graphicsScene->clear();
     //TODO: populate graphicsScene with the elements in the scene
-    for(int i = 0; i < scenes[currentSceneIndex]->getBodies().length(); i++){
-        NewtonBody* curr = scenes[currentSceneIndex]->getBodies()[i];
-        graphicsScene->addPolygon(curr->getVertices());
+    for(int i = 0; i < currentScene->getBodies().length(); i++){
+        NewtonBody* curr = currentScene->getBodies()[i];
+        //Add a circle
+        if(curr->getShapeType() == NewtonBody::Shape::Circle){
+            NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
+            //TODO convert to graphcis scene coordinates
+            //Track the returned graphics item so we can update it
+            graphicsScene->addEllipse(shapeVal.circle.cX,
+                                      shapeVal.circle.cY,
+                                      shapeVal.circle.r,
+                                      shapeVal.circle.r);
+        }
+        else if(curr->getShapeType() == NewtonBody::Shape::Rect){
+            NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
+            graphicsScene->addRect(shapeVal.rect.cX - 0.5 * shapeVal.rect.width,
+                                   shapeVal.rect.cY - 0.5 * shapeVal.rect.height,
+                                   shapeVal.rect.width,
+                                   shapeVal.rect.height);
+        }
+
+    }
+    //TODO: set Initial values for problem
+    QVector<int> editableIndices;
+    for(int i = 0; i < currentScene->getEditableWidgets(); i++){
+
     }
     //TODO: notify widgets changed
+
     //TODO: notify instructionTextChanged
     emit instructionTextChanged(scenes[currentSceneIndex]->getTutorialText());
     //TODO: update answervalidation
