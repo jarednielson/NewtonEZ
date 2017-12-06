@@ -68,6 +68,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::answerValidated, this, &MainWindow::updateAnswerLabel);
+    connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
 
     updateTime(100);
 }
