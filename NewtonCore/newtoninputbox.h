@@ -9,10 +9,16 @@ class NewtonInputBox : public QDoubleSpinBox
 {
     Q_OBJECT
 public:
-    NewtonInputBox(QWidget *parent = Q_NULLPTR);
+    NewtonInputBox(int index, QWidget *parent = Q_NULLPTR);
     ~NewtonGraphicsView();
+public slots:
+    void interceptChange(double d);
+
+private:
+    int index;
 
 signals:
+    void inputBoxChanged(int index, double d);
 
 protected:
 
