@@ -6,6 +6,9 @@
 #include <QDoubleSpinBox>
 #include <QStyleFactory>
 #include <QDebug>
+#include <QFileDialog>
+#include <QDir>
+#include <QAction>
 
 MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     QMainWindow(parent),
@@ -68,8 +71,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
-    connnect(ui->startEndButton, QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
+    connect(ui->startEndButton, QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
+    connect(ui->actionOpen_Problem, QAction::triggered, this, &MainWindow::createOpenFileDialog);
 
     updateTime(100);
 }
@@ -166,4 +170,12 @@ void MainWindow::prepareEnabledInputs(){
 // Needs to do other stuff
 void MainWindow::cleanUpAfterSimulation(){
     ui->startEndButton->setEnabled(true);
+}
+
+void MainWindow::createOpenFileDialog(){
+    QString filename =  QFileDialog::getOpenFileName(
+              this,
+              "Open Problem",
+              QDir::currentPath(),
+              "All files (*.*)");
 }
