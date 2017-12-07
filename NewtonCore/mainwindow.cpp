@@ -71,9 +71,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
-    connect(ui->startEndButton, QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
+    connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
-    connect(ui->actionOpen_Problem, QAction::triggered, this, &MainWindow::createOpenFileDialog);
+    connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
 
     updateTime(100);
 }
