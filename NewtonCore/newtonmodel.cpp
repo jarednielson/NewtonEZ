@@ -316,6 +316,10 @@ void NewtonModel::validateAnswer(float answer){
     emit answerValidated(diff < TOL);
 }
 
+void NewtonModel::loadDefaultScene(){
+
+}
+
 void NewtonModel::clearModel(){
     graphicsScene->clear();
 }
