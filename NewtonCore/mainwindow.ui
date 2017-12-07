@@ -196,8 +196,17 @@
        </item>
        <item>
         <widget class="QLabel" name="simClock">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -208,6 +217,12 @@
            <width>500</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>14</pointsize>
+          </font>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color:&quot;#31363B&quot;</string>
