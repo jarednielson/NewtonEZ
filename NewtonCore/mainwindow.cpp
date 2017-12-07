@@ -69,6 +69,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
     connnect(ui->startEndButton, QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
+    connect(model, &NewtonModel::simulationEnd. this, )
 
     updateTime(100);
 }
@@ -141,8 +142,8 @@ void MainWindow::updateTime(int seconds){
 }
 
 // We need to refactor this to two functions... because there are going to be two signals
-// one signal for enabled and the other non enabled
-
+// one signal for enabled and the other non enabled although we could use the same method
+// to hook up for both....
 void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){
     clearInputConAndVector();
     for(int i = 0; i < widgetLabels.length(); i++){
@@ -157,6 +158,12 @@ void MainWindow::prepareEnabledInputs(){
             enabledFloat.push_back(inputs[i]->value());
         }
     }
-
+    // disable button...
+    ui->startEndButton->setEnabled(false);
     // emit signal that will take this vector to the model
+}
+
+// Needs to do other stuff
+void MainWindow::cleanUpAfterSimulation(){
+    ui->startEndButton->setEnabled(true);
 }

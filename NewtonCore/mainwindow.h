@@ -27,6 +27,7 @@ public slots:
     void updateTime(int seconds);
     void getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled);
     void prepareEnabledInputs();
+    void cleanUpAfterSimulation();
 
 signals:
     void sendEnabledInputs(std::vector<QString> enabledInputs);
