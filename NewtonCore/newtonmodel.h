@@ -13,7 +13,6 @@
 #include <QScriptEngine>
 
 
-
 class NewtonModel : public QObject{
     Q_OBJECT
 private:
