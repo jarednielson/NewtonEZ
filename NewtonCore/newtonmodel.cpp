@@ -254,6 +254,24 @@ void NewtonModel::setScene(int sceneIndex){
     //TODO: clear any box2d stuff
 }
 
+void NewtonModel::nextScene(){
+    if(currentSceneIndex < scenes.length() - 1){
+        setScene(++currentSceneIndex);
+        if(currentSceneIndex == scenes.length() -1){
+            emit lastSceneSelected();
+        }
+    }
+}
+
+void NewtonModel::prevScene(){
+    if(currentSceneIndex > 0){
+        setScene(--currentSceneIndex);
+        if(currentSceneIndex == 0){
+            emit firstSceneSelected();
+        }
+    }
+}
+
 void NewtonModel::startSimulation(){
     //TODO: check to make sure scene isn't running
     graphicsScene->clear();
@@ -300,10 +318,4 @@ void NewtonModel::validateAnswer(float answer){
 
 void NewtonModel::clearModel(){
     graphicsScene->clear();
-}
-
-void NewtonModel::resetGraphicsView(){
-    graphs.clear();
-    scenes.clear();  // Remove all elements in Qvectors
-    currentSceneIndex = 0;
 }
