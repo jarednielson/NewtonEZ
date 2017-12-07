@@ -74,6 +74,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
     connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
+    connect(this, &MainWindow::sendEnabledInputs, model, &NewtonModel::loadFile);
 
     updateTime(100);
 }
