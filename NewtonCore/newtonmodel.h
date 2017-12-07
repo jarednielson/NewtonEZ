@@ -33,11 +33,12 @@ public:
 public slots:
     void loadFile(QString filePath);
     void setScene(int sceneIndex);
+    void nextScene();
+    void prevScene();
     void startSimulation();
     void endSimulation();
     void getProblemDescriptions(QStringList& descriptions);
     void validateAnswer(float answer);
-
 
 signals:
     // the button pressed will send this signal
@@ -50,10 +51,11 @@ signals:
     void displayWidgetsChanged(QStringList widgetLabels, QList<float> widgetValues);
 
     void answerValidated(bool success);
+    void lastSceneSelected();
+    void firstSceneSelected();
 
 private:
     void clearModel();
-    void resetGraphicsView();
     float answer;
     void verifyScene(int sceneIndex);
 };
