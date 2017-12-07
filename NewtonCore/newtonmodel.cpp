@@ -40,34 +40,47 @@ void NewtonModel::loadFile(QString filePath){
     QJsonArray scenelist = unit["scenes"].toArray();
 
     //for each scene grab info
-    for(int i = 0; i < scenelist.size(); i++){
+    for(size_t i = 0; i < scenelist.size(); i++){
 
         //deserialize scene information
         QJsonObject currentScene = scenelist[i].toObject();
         float grav = currentScene["gravity"].toDouble();
         QString tutorial(currentScene["tutorial"].toString());
-        QString problemText(currentScene["problemText"].toString());
+
 
 
         QJsonArray varVals = currentScene["varVals"].toArray();
-        QVector<float> chosenRangeValues;
-        for(int curRange = 0; curRange < varVals.size(); curRange++){
-            QJsonArray range = varVals[i].toArray();
+        std::map<std::string, float> chosenRangeValues;
+        for(int curRange = 0; curRange < valVals.size(); curRange++){
+            std::string currentKey = "{"+curRange+"}";
+            QJsonArray range = varVals[i].toObject()[currentKey];
+
+
             std::random_device rd;
             std::mt19937 eng(rd());
             std::uniform_int_distribution<> distr(range[0].toDouble(), range[1].toDouble()); // define the range
             float calculated = distr(eng); //calculate our value
-            chosenRangeValues.push_back(calculated);
+            chosenRangeValues.insert(currentKey,calculated);
         }
 
         // Replace the variables in the probelm with the values that were randomly chosen
         // This will capture any character a-z inside of square brackets
         QRegularExpression regExp("\\[([a-z])\\]");
 
-        // Iterate through each variable, replacing it with its selected value
+	// Iterate through each variable, replacing it with its selected value
         for(int i = 0; i < varVals.size(); i++)
         {
             problemText.replace(regExp, varVals[i].toString());
+        }
+
+        //Swapping in ranged value pairs for the problem text
+        QString problemText(currentScene["problemText"].toString());
+
+        for(std::pair<std::string, float> pair : chosenRangeValues){
+            size_t len;
+            while( len = problemText.indexOf(pair.first)!=0){
+                problemText.replace(len,pair.first.length(), QString(pair.second));
+            }
         }
 
         //TODO: if meters pass nullptr, otherwise, pass conversion
@@ -77,8 +90,10 @@ void NewtonModel::loadFile(QString filePath){
 
         //get objects from document and populate the scene
         QJsonArray objs = currentScene["objects"].toArray();
-        for(int i = 0; i < objs.size(); i++){
-            QString shapeType = objs[i].toObject()["type"].toString();
+        for(size_t j = 0; j < objs.size(); j++){
+            QString shapeType = obj[i].toObject()["type"];
+            float centerX;
+            float centerY;
 
             //check for variable
             float centerX = objs[i].toObject()["centerX"].toDouble();
@@ -93,19 +108,19 @@ void NewtonModel::loadFile(QString filePath){
             float angle = objs[i].toObject()["angle"].toDouble();
 
 
-//            if(shapeType == "rect"){
-//                float width = objs[i].toObject()["width"].toDouble();
-//                float height = objs[i].toObject()["height"].toDouble();
-//                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
-//                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat);
-//                scene->addBody(rect);
-//            }
-//            else if(shapeType == "circ"){
-//                float radius = objs[i].toObject()["radius"].toFloat();
-//                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
+            if(shapeType == "rect"){
+                float width = objs[i].toObject()["width"].toFloat();
+                float height = objs[i].toObject()["height"].toFloat();
+                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
+                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat());
+                scene->addBody(rect);
+            }
+            else if(shapeType == "circ"){
+                float radius = objs[i].toObject()["radius"].toFloat();
+                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
 
-//                scene->addBody(circle);
-//            }
+                scene->addBody(circle);
+            }
 
         }
 
@@ -114,28 +129,20 @@ void NewtonModel::loadFile(QString filePath){
         QJsonArray inputFields = widge["inputFieldUnits"].toArray();
         QJsonArray solvingFormulas = widge["solvingFormulas"].toArray();
 
-        // Evaluate solving formulas for answer-checking
+	// Evaluate solving formulas for answer-checking
         double answer = evaluateFormulas(solvingFormulas, chosenRangeValues);
 
-        QStringList labels;
-        QList<bool> labelsEnabled;
-
-        for(int i = 0 ; i < formulas.size(); i++){
-                labels.push_back(formulas[i].toString());
-                labelsEnabled.push_back(false);
-        }
-        for(int j = 0; j < inputFields.size(); j++){
-            labels.push_back(inputFields[j].toString());
-            labelsEnabled.push_back(true);
+        //TODO: RESOLVE!!!!
+        for(size_t j = 0; j < referenceFormulas.size(); j++ ){
+            //scene->addWidget("",false,);  //Are we taking care of this with a reference sheet?
         }
 
+        for(size_t j=0;j<inputWidgetUnits.size(); j++){
+            scene->addWidget(inputWidgetUnits[j], true,chosenRangeValues.at("{"+j+"}"),funcs[j]);
 
+        }
 
-        //TODO: set labels and labelsEnabled datamembers
-
-        //store units and question info tutorial
-
-
+        setScene(0);
     }
 }
 
