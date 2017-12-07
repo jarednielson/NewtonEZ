@@ -1,28 +1,37 @@
 {
-  "Problems": [
-    {
-      "units": "m",
-      "gravity": -9.8,
-      "objects":[
-        {"type": "rect", "centerX": 2.0,"centerY": "{a}", "mass (kg)": 5, "isDynamic": false, "angle": 0.0, "width":2, "height":2},
-        {"type": "rect", "centerX": 40.0, "centerY": -0.5, "mass (kg)": 10, "isDynamic": true, "angle":0.0, "width": 50, "height":1}
-      ],
-      "varVals":[
-        {
-          "{a}": [8, 11]
-        },
-      ],
-      varValLabels:[
-        "height"
-      ],
-      "problemText": "A block falls from a height of {a}, how long does it take ot hit the ground"[
-        {
-          "displayWidgets":["s=.5at^2"],
-          "solvingFormulas":["function(a) { return Math.sqrt(a*2/9.8)}"],
-          "inputWidgetUnits":["sec"]
-        }
-      ]
+	"Problems": [{
+		"units": "m",
+		"gravity": -9.8,
+		"objects": [{
+				"type": "rect",
+				"centerX": 2.0,
+				"centerY": "{0}",
+				"mass (kg)": 5,
+				"isDynamic": false,
+				"angle": 0.0,
+				"width": 2,
+				"height": 2
+			},
+			{
+				"type": "rect",
+				"centerX": 40.0,
+				"centerY": -0.5,
+				"mass (kg)": 10,
+				"isDynamic": true,
+				"angle": 0.0,
+				"width": 50,
+				"height": 1
+			}
+		],
+		"varVals": [{
+			"{0}": [8, 11]
+		}],
+		"varValLabels": ["height"],
+		"problemText": "A block falls from a height of {a}, how long does it take to hit the ground",
+		"displayWidgets": ["s=.5at^2"],
+		"solvingFormulas": ["function(a) { return Math.sqrt(a*2/9.8)}"],
+		"inputWidgetUnits": ["sec"]
 
-    }
-  ]
+
+	}]
 }
