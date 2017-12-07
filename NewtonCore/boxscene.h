@@ -16,6 +16,8 @@ private:
     void buildWalls();
     void buildRect();
     void buildCirc();
+    void buildDynamicRect();
+    void buildDynamicCirc();
 
 };
 
