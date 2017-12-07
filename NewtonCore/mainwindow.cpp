@@ -52,20 +52,20 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 //    this->setPalette(darkPalette);
 
     ui->graphicsView->setScene(model->getGraphicsScene());
-    replaceAndSetText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+    setProblemText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
 
-    addInputPair("1");
-    addInputPair("2", 2.0, false);
-    addInputPair("3", 3.0, false);
-    addInputPair("4", 4.0, false);
-    addInputPair("5", 5.0, false);
-    addInputPair("6", 6.0, false);
-    addInputPair("7", 7.0, false);
-    addInputPair("8", 8.0, false);
-    addInputPair("9", 9.0, false);
-    addInputPair("10", 10.0, true);
+    addInputBox("1");
+    addInputBox("2", 2.0, false);
+    addInputBox("3", 3.0, false);
+    addInputBox("4", 4.0, false);
+    addInputBox("5", 5.0, false);
+    addInputBox("6", 6.0, false);
+    addInputBox("7", 7.0, false);
+    addInputBox("8", 8.0, false);
+    addInputBox("9", 9.0, false);
+    addInputBox("10", 10.0, true);
     // Comment out to see inputs, uncomment to clear all inputs
-    //clearInputConAndVector();
+    //clearInputBoxes();
 
     tools = new QActionGroup(this);
     tools->addAction(ui->actionFormulaSheet);
@@ -75,7 +75,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 
     connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
     // TODO: test
-    connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
+    connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::setProblemText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
     connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
@@ -106,8 +106,8 @@ void MainWindow::onGraphicsViewReleased(int x, int y){
 ///
 /// \param labelText
 ///
-void MainWindow::addInputPair(QString labelText){
-    MainWindow::addInputPair(labelText, 0.0, true);
+void MainWindow::addInputBox(QString labelText){
+    MainWindow::addInputBox(labelText, 0.0, true);
 }
 
 ///
@@ -117,7 +117,7 @@ void MainWindow::addInputPair(QString labelText){
 ///
 /// \param labelText
 ///
-void MainWindow::addInputPair(QString labelText, double inputBoxValue, bool inputEnabled){
+void MainWindow::addInputBox(QString labelText, double inputBoxValue, bool inputEnabled){
     // can change min and max with setMaximum and setMinimun
     labels.push_back(new QLabel());
     labels.back()->setText(labelText);
@@ -135,7 +135,7 @@ void MainWindow::addInputPair(QString labelText, double inputBoxValue, bool inpu
 /// \brief MainWindow::clearInputConAndVector
 /// Clears the inputContainer and the vectors holding the input
 ///
-void MainWindow::clearInputConAndVector(){
+void MainWindow::clearInputBoxes(){
 
     for(unsigned int i = 0; i < layouts.size(); i++){
         delete labels[i];
@@ -155,7 +155,7 @@ void MainWindow::clearInputConAndVector(){
 ///
 /// \param text - new instructional text
 ///
-void MainWindow::replaceAndSetText(QString text){
+void MainWindow::setProblemText(QString text){
     ui->textEdit->setText(text);
 }
 
@@ -180,9 +180,9 @@ void MainWindow::updateTime(int seconds){
 /// \param enabled
 ///
 void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){
-    clearInputConAndVector();
+    clearInputBoxes();
     for(int i = 0; i < widgetLabels.length(); i++){
-        addInputPair(widgetLabels[i], values[i].toDouble(), enabled[i]);
+        addInputBox(widgetLabels[i], values[i].toDouble(), enabled[i]);
     }
 }
 

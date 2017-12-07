@@ -23,7 +23,7 @@ public:
     ~MainWindow();
 
 public slots:
-    void replaceAndSetText(QString text);
+    void setProblemText(QString text);
     void updateTime(int seconds);
     void getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled);
     void prepareEnabledInputs();
@@ -44,9 +44,9 @@ private:
     std::vector<QLabel*> labels;
     std::vector<QDoubleSpinBox*> inputs;
 
-    void addInputPair(QString labelText);
-    void addInputPair(QString labelText, double inputBoxValue, bool inputEnabled);
-    void clearInputConAndVector();
+    void addInputBox(QString labelText);
+    void addInputBox(QString labelText, double inputBoxValue, bool inputEnabled);
+    void clearInputBoxes();
     QActionGroup *tools;
     NewtonModel *model;
 };
