@@ -51,9 +51,9 @@ void NewtonModel::loadFile(QString filePath){
 
         QJsonArray varVals = currentScene["varVals"].toArray();
         std::map<std::string, float> chosenRangeValues;
-        for(int curRange = 0; curRange < valVals.size(); curRange++){
+        for(int curRange = 0; curRange < varVals.size(); curRange++){
             std::string currentKey = "{"+curRange+"}";
-            QJsonArray range = varVals[i].toObject()[currentKey];
+            QJsonArray range = varVals[i].toObject()[currentKey].toArray();
 
 
             std::random_device rd;
@@ -63,18 +63,21 @@ void NewtonModel::loadFile(QString filePath){
             chosenRangeValues.insert(currentKey,calculated);
         }
 
+        //Swapping in ranged value pairs for the problem text
+        QString problemText(currentScene["problemText"].toString());
+
         // Replace the variables in the probelm with the values that were randomly chosen
         // This will capture any character a-z inside of square brackets
         QRegularExpression regExp("\\[([a-z])\\]");
+        QRegularExpressionMatchIterator matches = regExp.globalMatch(problemText);
 
-	// Iterate through each variable, replacing it with its selected value
-        for(int i = 0; i < varVals.size(); i++)
+        // Iterate through each variable, replacing it with its selected value
+        while(matches.hasNext())
         {
-            problemText.replace(regExp, varVals[i].toString());
-        }
+            QRegularExpressionMatch match = matches.next();
 
-        //Swapping in ranged value pairs for the problem text
-        QString problemText(currentScene["problemText"].toString());
+            problemText.replace(match.captured(0), varVals[i].toString());
+        }
 
         for(std::pair<std::string, float> pair : chosenRangeValues){
             size_t len;
@@ -91,9 +94,7 @@ void NewtonModel::loadFile(QString filePath){
         //get objects from document and populate the scene
         QJsonArray objs = currentScene["objects"].toArray();
         for(size_t j = 0; j < objs.size(); j++){
-            QString shapeType = obj[i].toObject()["type"];
-            float centerX;
-            float centerY;
+            QString shapeType = objs[i].toObject()["type"];
 
             //check for variable
             float centerX = objs[i].toObject()["centerX"].toDouble();
@@ -108,19 +109,19 @@ void NewtonModel::loadFile(QString filePath){
             float angle = objs[i].toObject()["angle"].toDouble();
 
 
-            if(shapeType == "rect"){
-                float width = objs[i].toObject()["width"].toFloat();
-                float height = objs[i].toObject()["height"].toFloat();
-                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
-                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat());
-                scene->addBody(rect);
-            }
-            else if(shapeType == "circ"){
-                float radius = objs[i].toObject()["radius"].toFloat();
-                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
+//            if(shapeType == "rect"){
+//                float width = objs[i].toObject()["width"].toDouble();
+//                float height = objs[i].toObject()["height"].toDouble();
+//                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
+//                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat());
+//                scene->addBody(rect);
+//            }
+//            else if(shapeType == "circ"){
+//                float radius = objs[i].toObject()["radius"].toFloat();
+//                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
 
-                scene->addBody(circle);
-            }
+//                scene->addBody(circle);
+//            }
 
         }
 
@@ -133,9 +134,9 @@ void NewtonModel::loadFile(QString filePath){
         double answer = evaluateFormulas(solvingFormulas, chosenRangeValues);
 
         //TODO: RESOLVE!!!!
-        for(size_t j = 0; j < referenceFormulas.size(); j++ ){
+       // for(size_t j = 0; j < referenceFormulas.size(); j++ ){
             //scene->addWidget("",false,);  //Are we taking care of this with a reference sheet?
-        }
+       // }
 
         for(size_t j=0;j<inputWidgetUnits.size(); j++){
             scene->addWidget(inputWidgetUnits[j], true,chosenRangeValues.at("{"+j+"}"),funcs[j]);
