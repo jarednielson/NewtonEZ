@@ -138,10 +138,24 @@ void MainWindow::clearInputConAndVector(){
     layouts.clear();
 }
 
+/// SLOT
+/// \brief MainWindow::replaceAndSetText
+/// This a slot that connect to a signal in the model that will update the instructional
+/// text.
+///
+/// \param text - new instructional text
+///
 void MainWindow::replaceAndSetText(QString text){
     ui->textEdit->setText(text);
 }
 
+/// SLOT
+/// \brief MainWindow::updateTime
+/// This slot connects with a signal in the model which will pass in it the current seconds.
+/// We then update the label simClock with the new seconds.
+///
+/// \param seconds - current seconds
+///
 void MainWindow::updateTime(int seconds){
     ui->simClock->setText(QString::number(seconds));
 }
@@ -149,6 +163,12 @@ void MainWindow::updateTime(int seconds){
 // We need to refactor this to two functions... because there are going to be two signals
 // one signal for enabled and the other non enabled although we could use the same method
 // to hook up for both....
+///
+/// \brief MainWindow::getInputsForProblem
+/// \param widgetLabels
+/// \param values
+/// \param enabled
+///
 void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){
     clearInputConAndVector();
     for(int i = 0; i < widgetLabels.length(); i++){
@@ -156,6 +176,11 @@ void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList value
     }
 }
 
+/// SLOT
+/// \brief MainWindow::prepareEnabledInputs
+/// This slot is connected to the startEndButton click signal. It will prepare the data
+/// and then send it to the model via a signal.
+///
 void MainWindow::prepareEnabledInputs(){
     std::vector<float> enabledFloat;
     for(unsigned int i = 0; i < inputs.size(); i++){
@@ -165,20 +190,31 @@ void MainWindow::prepareEnabledInputs(){
     }
     // disable button...
     ui->startEndButton->setEnabled(false);
+
     // emit signal that will take this vector to the model
+    // - TODO - STILL NEEDS A SIGNAL HERE
 }
 
-// Needs to do other stuff
+/// SLOT
+/// \brief MainWindow::cleanUpAfterSimulation
+/// This slot will connect with a signal in the model. We can clean up
+/// after a simulation here. Currently we are just re-enabling the startEndButton.
+///
 void MainWindow::cleanUpAfterSimulation(){
     ui->startEndButton->setEnabled(true);
 }
 
+/// SLOT
+/// \brief MainWindow::createOpenFileDialog
+/// This slot hooks up to open menu button. When run it will call the getOpenFileName
+/// method which will allow the user to store a file path. It then emits a sendFilPath
+/// signal passing in the file path sending it to the model.
+///
 void MainWindow::createOpenFileDialog(){
-    QString filename =  QFileDialog::getOpenFileName(
-              this,
-              "Open Problem",
-              QDir::currentPath(),
-              "All files (*.*)");
+    QString filename =  QFileDialog::getOpenFileName( this,
+                                                      "Open Problem",
+                                                      QDir::currentPath(),
+                                                      "All files (*.*)");
 
     emit sendFilePath(filename);
 }
