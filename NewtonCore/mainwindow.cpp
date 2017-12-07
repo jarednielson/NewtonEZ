@@ -23,6 +23,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     model(model)
 {
     ui->setupUi(this);
+    ui->formulaWidget->hide();
 
     // (nathan): Not a huge fan of how this is setting universal os styles, looking for a better way
 //    ui->menuBar->setStyleSheet("background-color:\"#353535\";color:\"white\"");
@@ -67,6 +68,8 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // Comment out to see inputs, uncomment to clear all inputs
     //clearInputBoxes();
 
+    updateTime(100);
+
     tools = new QActionGroup(this);
     tools->addAction(ui->actionFormulaSheet);
     tools->addAction(ui->actionPreviousScene);
@@ -82,7 +85,10 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
     connect(this, &MainWindow::sendFilePath, model, &NewtonModel::loadFile);
 
-    updateTime(100);
+    connect(ui->actionFormulaSheet, &QAction::triggered, this, &MainWindow::openFormulaSheet);
+    // TODO: connect to model signals to actually change scene index
+    connect(ui->actionPreviousScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
+    connect(ui->actionNextScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
 }
 
 ///
@@ -227,4 +233,10 @@ void MainWindow::createOpenFileDialog(){
                                                       "All files (*.*)");
 
     emit sendFilePath(filename);
+}
+
+void MainWindow::openFormulaSheet(){
+    //TODO: get formula data from model
+    //TODO: add formulas to widget in a nice way
+    ui->formulaWidget->show();
 }

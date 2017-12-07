@@ -47,6 +47,7 @@ private:
     void addInputBox(QString labelText);
     void addInputBox(QString labelText, double inputBoxValue, bool inputEnabled);
     void clearInputBoxes();
+    void openFormulaSheet();
     QActionGroup *tools;
     NewtonModel *model;
 };
