@@ -49,6 +49,7 @@ signals:
 private:
     void clearModel();
     void resetGraphicsView();
+    float answer;
 };
 
 

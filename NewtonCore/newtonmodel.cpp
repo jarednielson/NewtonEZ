@@ -107,9 +107,8 @@ void NewtonModel::setScene(int sceneIndex){
     currentSceneIndex = sceneIndex;
     NewtonScene* currentScene = scenes[currentSceneIndex];
 
-    //TODO: clear graphicsScene
+    //populate graphicsScene with the elements in the scene
     graphicsScene->clear();
-    //TODO: populate graphicsScene with the elements in the scene
     for(int i = 0; i < currentScene->getBodies().length(); i++){
         NewtonBody* curr = currentScene->getBodies()[i];
         //Add a circle
@@ -131,11 +130,16 @@ void NewtonModel::setScene(int sceneIndex){
         }
 
     }
-    //TODO: set Initial values for problem
-    QVector<int> editableIndices;
-    for(int i = 0; i < currentScene->getEditableWidgets(); i++){
-
+    //set Initial value for problem
+    //Search for first editable widget
+    NewtonFormula* f = currentScene->getEditableFunctions()[0];
+    //Right now we are assuming EVERY display widget is used in order for hte func
+    QVector<float> args;
+    for(int i = 0; i < currentScene->getDisplayWidgetValues(); i++){
+        args.push_back(currentScene->getDisplayWidgetValues()[i]);
     }
+
+    answer = f->evaluate(args);
     //TODO: notify widgets changed
 
     //TODO: notify instructionTextChanged
