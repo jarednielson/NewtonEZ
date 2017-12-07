@@ -33,7 +33,7 @@ SOURCES += \
         newtonmodel.cpp \
         newtonsceneobject.cpp \
     newtonformula.cpp \
-    box2dscene.cpp
+    boxscene.cpp
 
 HEADERS += \
         mainwindow.h \

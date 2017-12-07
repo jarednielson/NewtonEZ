@@ -54,6 +54,5 @@ bool BoxScene::RunScene(){
     this->buildRect();
 
     return true;
-
 }
 
