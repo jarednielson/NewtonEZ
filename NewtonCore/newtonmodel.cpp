@@ -50,27 +50,27 @@ void NewtonModel::loadFile(QString filePath){
 
 
         QJsonArray varVals = currentScene["varVals"].toArray();
-        std::map<std::string, float> chosenRangeValues;
-        for(int curRange = 0; curRange < valVals.size(); curRange++){
-            std::string currentKey = "{"+curRange+"}";
-            QJsonArray range = varVals[i].toObject()[currentKey];
+        QMap<QString, float> chosenRangeValues;
+        for(int curRange = 0; curRange < varVals.size(); curRange++){
+            QString currentKey = QString("{").append(curRange).append("}");
+            QJsonArray range = varVals[i].toObject()[currentKey].toArray();
 
 
-            std::random_device rd;
-            std::mt19937 eng(rd());
-            std::uniform_int_distribution<> distr(range[0], range[1]); // define the range
-            float calculated = distr(eng); //calculate our value
-            chosenRangeValues.insert(currentKey,calculated);
+//            std::random_device rd;
+//            std::mt19937 eng(rd);
+//            std::uniform_int_distribution<> distr(range[0].toDouble(), range[1].toDouble()); // define the range
+//            float calculated = distr(eng); //calculate our value
+//            chosenRangeValues.insert(currentKey,calculated);
         }
 
 
         //Swapping in ranged value pairs for the problem text
         QString problemText(currentScene["problemText"].toString());
 
-        for(std::pair<std::string, float> pair : chosenRangeValues){
-            size_t len;
-            while( len = problemText.indexOf(pair.first)!=0){
-                problemText.replace(len,pair.first.length(), QString(pair.second));
+        for(QString key : chosenRangeValues.keys()){
+            int len;
+            while( (len = problemText.indexOf(key)) != -1){
+                problemText.replace(len,key.length(), QString().setNum(chosenRangeValues[key]));
             }
         }
 
@@ -82,32 +82,32 @@ void NewtonModel::loadFile(QString filePath){
         //get objects from document and populate the scene
         QJsonArray objs = currentScene["objects"].toArray();
         for(size_t j = 0; j < objs.size(); j++){
-            QString shapeType = obj[i].toObject()["type"];
+            QString shapeType = objs[i].toObject()["type"].toString();
             float centerX;
             float centerY;
 
             //check for variable
-            if(std::all_of(obj[i].toObject()["centerX"].toString().begin(),obj[i].toObject()["centerX"].toString().end(), ::isdigit)){
-                centerX = obj[i].toObject()["centerX"].toDouble();
+            if(std::all_of(objs[i].toObject()["centerX"].toString().toStdString().begin(), objs[i].toObject()["centerX"].toString().toStdString().end(), ::isdigit)){
+                centerX = objs[i].toObject()["centerX"].toDouble();
             }
             else{
-                centerX = chosenRangeValues.at("{"+j+"}");
+                centerX = chosenRangeValues[(QString("{").append(QString().setNum(j)).append("}"))];
             }
-            if(std::all_of(obj[i].toObject()["centerY"].toString().begin(),obj[i].toObject()["centerY"].toString().end(), ::isdigit)){
-                centerY= obj[i].toObject()["centerY"].toDouble();
+            if(std::all_of(objs[i].toObject()["centerY"].toString().toStdString().begin(),objs[i].toObject()["centerY"].toString().toStdString().end(), ::isdigit)){
+                centerY= objs[i].toObject()["centerY"].toDouble();
             }
             else{
-                centerY = chosenRangeValues.at("{"+j+"}");
+                centerY = chosenRangeValues[(QString("{").append(QString().setNum(j)).append("}"))];
             }
             bool isDynamic = objs[i].toObject()["isDynamic"].toBool();
 
             //check for variable
             float mass;
-            if(std::all_of(obj[i].toObject()["mass"].toString().begin(),obj[i].toObject()["mass"].toString().end(), ::isdigit)){
-                mass = obj[i].toObject()["mass"].toDouble();
+            if(std::all_of(objs[i].toObject()["mass"].toString().toStdString().begin(),objs[i].toObject()["mass"].toString().toStdString().end(), ::isdigit)){
+                mass = objs[i].toObject()["mass"].toDouble();
             }
             else{
-                mass = chosenRangeValues.at("{"+j+"}");
+                mass = chosenRangeValues[(QString("{").append(QString().setNum(j)).append("}"))];
             }
 
             float angle = objs[i].toObject()["angle"].toDouble();
@@ -115,13 +115,13 @@ void NewtonModel::loadFile(QString filePath){
             if(shapeType == "rect"){
                 float width = objs[i].toObject()["width"].toDouble();
                 float height = objs[i].toObject()["height"].toDouble();
-                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
-                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat());
+                NewtonBody* rect = new NewtonBody(isDynamic, (float) mass, (float) centerX, (float) centerY, (float) width, (float) height, this);
+                rect->setInitOrientation(objs[i].toObject()["angle"].toDouble());
                 scene->addBody(rect);
             }
             else if(shapeType == "circ"){
-                float radius = objs[i].toObject()["radius"].toFloat();
-                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
+                float radius = objs[i].toObject()["radius"].toDouble();
+                NewtonBody* circle = new NewtonBody(isDynamic, mass, centerX, centerY, radius, this);
 
                 scene->addBody(circle);
             }
@@ -131,8 +131,14 @@ void NewtonModel::loadFile(QString filePath){
         QJsonArray inputWidgetUnits = currentScene["inputWidgetUnits"].toArray();
 
         for(size_t j=0;j<inputWidgetUnits.size(); j++){
-            scene->addWidget(inputWidgetUnits[j], true,chosenRangeValues.at("{"+j+"}"),funcs[j]);
+            scene->addEditableWidget(inputWidgetUnits[j].toString(),funcs[j].toString());
         }
+        QList<float> rangeVals = chosenRangeValues.values();
+        QJsonArray labels = objs[i].toObject()["varValLabels"].toArray();
+        for(size_t j = 0; j < labels.size(); j++){
+            scene->addDisplayWidget(labels[j].toString(),rangeVals[j]);
+        }
+
         setScene(0);
     }
 }

@@ -9,8 +9,11 @@
       ],
       "varVals":[
         {
-          "aRange": [8, 11]    
-        }
+          "aRange": [8, 11]
+        },
+      ],
+      varValLabels:[
+        "height"
       ],
       "problemText": "A block falls from a height of {a}, how long does it take ot hit the ground"[
         {
