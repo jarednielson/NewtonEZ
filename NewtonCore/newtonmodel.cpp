@@ -308,9 +308,3 @@ void NewtonModel::loadDefaultScene(){
 void NewtonModel::clearModel(){
     graphicsScene->clear();
 }
-
-void NewtonModel::resetGraphicsView(){
-    graphs.clear();
-    scenes.clear();  // Remove all elements in Qvectors
-    currentSceneIndex = 0;
-}
