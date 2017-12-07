@@ -29,15 +29,15 @@ NewtonModel::~NewtonModel(){
 void NewtonModel::loadFile(QString filePath){
 
     //open stream and read next unit as string
-    QFile nextUnitFile(filePath);
+    QFile nextUnitFile("./fallingBlock.json");
     nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString nextUnit = nextUnitFile.readAll();
+    QByteArray nextUnit = nextUnitFile.readAll();
     nextUnitFile.close();
 
     //deserialize json doc
-    QJsonDocument doc = QJsonDocument::fromJson(nextUnit.toUtf8());
+    QJsonDocument doc = QJsonDocument::fromJson(nextUnit);
     QJsonObject unit = doc.object();
-    QJsonArray scenelist = unit["scenes"].toArray();
+    QJsonArray scenelist = unit["Problems"].toArray();
 
     //for each scene grab info
     for(size_t i = 0; i < scenelist.size(); i++){
@@ -53,9 +53,12 @@ void NewtonModel::loadFile(QString filePath){
         QMap<QString, float> chosenRangeValues;
         for(int curRange = 0; curRange < varVals.size(); curRange++){
             QString indexKey = "{"+ QString::number(curRange) +"}";
-            float lowerBound = varVals[curRange].toArray()[0].toDouble();
-            float upperBound = varVals[curRange].toArray()[1].toDouble();
 
+            // Extract ranges for each variable
+            float lowerBound = varVals[curRange].toObject()[indexKey].toArray()[0].toDouble();
+            float upperBound = varVals[curRange].toObject()[indexKey].toArray()[1].toDouble();
+
+            // Randomly select a value from the given range
             float calculated = lowerBound + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(upperBound-lowerBound)));
 
             chosenRangeValues.insert(indexKey,calculated);
@@ -254,24 +257,6 @@ void NewtonModel::setScene(int sceneIndex){
     //TODO: clear any box2d stuff
 }
 
-void NewtonModel::nextScene(){
-    if(currentSceneIndex < scenes.length() - 1){
-        setScene(++currentSceneIndex);
-        if(currentSceneIndex == scenes.length() -1){
-            emit lastSceneSelected();
-        }
-    }
-}
-
-void NewtonModel::prevScene(){
-    if(currentSceneIndex > 0){
-        setScene(--currentSceneIndex);
-        if(currentSceneIndex == 0){
-            emit firstSceneSelected();
-        }
-    }
-}
-
 void NewtonModel::startSimulation(){
     //TODO: check to make sure scene isn't running
     graphicsScene->clear();
@@ -318,4 +303,10 @@ void NewtonModel::validateAnswer(float answer){
 
 void NewtonModel::clearModel(){
     graphicsScene->clear();
+}
+
+void NewtonModel::resetGraphicsView(){
+    graphs.clear();
+    scenes.clear();  // Remove all elements in Qvectors
+    currentSceneIndex = 0;
 }
