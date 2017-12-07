@@ -2,6 +2,7 @@
 #define BOX2DSCENE_H
 
 #define pixelToMeter 30
+#include <QObject>
 #include "Box2D.h"
 
 class BoxScene : public QObject{
