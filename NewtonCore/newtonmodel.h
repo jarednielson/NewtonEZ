@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QGraphicsScene>
 #include <QImage>
+#include <QScriptEngine>
 
 
 
@@ -20,6 +21,7 @@ private:
     int currentSceneIndex;
 
     QGraphicsScene* graphicsScene;
+    double evaluateFormulas(QJsonArray& formulas, QVector<float>& varVals);
 
 public:
     NewtonModel(QObject *parent = 0);
@@ -32,7 +34,7 @@ public slots:
     void startSimulation();
     void endSimulation();
     void getProblemDescriptions(QStringList& descriptions);
-    void validateAnswer(float answer);
+    void validateAnswer(float answer, QVector<float>& parameters);
 
 
 signals:
