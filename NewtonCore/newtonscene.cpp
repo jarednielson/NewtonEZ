@@ -51,7 +51,7 @@ QStringList& NewtonScene::getDisplayWidgetLabels(){
     return displayWidgetLabels;
 }
 
-QList<float>& NewtonScene::getDisplaywidgetValues(){
+QList<float>& NewtonScene::getDisplayWidgetValues(){
     return displayWidgetValues;
 }
 
@@ -66,7 +66,7 @@ QList<NewtonFormula*>& NewtonScene::getEditableFunctions(){
 void NewtonScene::addDisplayWidget(QString label, float value)
 {
     displayWidgetLabels.push_back(label);
-    displayWidgetValues.push_back(values);
+    displayWidgetValues.push_back(value);
 }
 void NewtonScene::addEditableWidget(QString label, QString formula){
     editableWidgetLabels.push_back(label);

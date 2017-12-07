@@ -7,8 +7,6 @@ NewtonBody::NewtonBody(QObject *parent) :
     m_Mass(1.0f)
 {
     m_shape = NewtonBody::Rect;
-    shapeVal.rect.cX = 0.0f;
-    shapeVal.rect.cY = 0.0f;
     shapeVal.rect.width = 1.0f;
     shapeVal.rect.height= 1.0f;
 }
@@ -19,8 +17,6 @@ NewtonBody::NewtonBody(bool isDynamic, float mass, float centerX, float centerY,
     m_Mass(mass)
 {
     m_shape = Shape::Circle;
-    shapeVal.circle.cX = centerX;
-    shapeVal.circle.cY = centerY;
     shapeVal.circle.r = radius;
 
 }
@@ -31,8 +27,6 @@ NewtonBody::NewtonBody(bool isDynamic, float mass, float centerX, float centerY,
     m_Mass(mass)
 {
     m_shape = Shape::Rect;
-    shapeVal.rect.cX = centerX;
-    shapeVal.rect.cY = centerY;
     shapeVal.rect.width = width;
     shapeVal.rect.height = height;
 }
@@ -68,8 +62,6 @@ void NewtonBody::setShape(float centerX, float centerY, float radius){
         radius = 0.0f;
     }
 
-    shapeVal.circle.cX = centerX;
-    shapeVal.circle.cY = centerY;
     shapeVal.circle.r = radius;
 }
 
@@ -82,8 +74,6 @@ void NewtonBody::setShape(float centerX, float centerY, float width, float heigh
         height = 0.0f;
     }
 
-    shapeVal.rect.cX = centerX;
-    shapeVal.rect.cY = centerY;
     shapeVal.rect.width = width;
     shapeVal.rect.height = height;
 
