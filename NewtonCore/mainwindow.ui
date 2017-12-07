@@ -225,7 +225,7 @@
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color:&quot;#31363B&quot;</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>Check Answer</string>

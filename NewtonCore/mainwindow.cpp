@@ -157,7 +157,7 @@ void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList value
 
 void MainWindow::prepareEnabledInputs(){
     std::vector<float> enabledFloat;
-    for(int i = 0; i < inputs.size(); i++){
+    for(unsigned int i = 0; i < inputs.size(); i++){
         if(inputs[i]->isEnabled()){
             enabledFloat.push_back(inputs[i]->value());
         }
