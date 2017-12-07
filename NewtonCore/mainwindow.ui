@@ -51,7 +51,7 @@
      <x>0</x>
      <y>0</y>
      <width>880</width>
-     <height>20</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -67,12 +67,13 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
-   <addaction name="actionDynamicBodyTool"/>
-   <addaction name="actionStaticBodyTool"/>
-   <addaction name="actionForceTool"/>
-   <addaction name="actionMoveTool"/>
+   <addaction name="actionFormulaSheet"/>
+   <addaction name="separator"/>
+   <addaction name="actionPreviousScene"/>
+   <addaction name="actionNextScene"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -178,8 +179,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>254</width>
-            <height>248</height>
+            <width>252</width>
+            <height>246</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -237,31 +238,31 @@
     </layout>
    </widget>
   </widget>
-  <action name="actionDynamicBodyTool">
+  <action name="actionFormulaSheet">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>DynamicBodyTool</string>
+    <string>Formula Sheet</string>
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add Dynamic Bodies&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
-  <action name="actionStaticBodyTool">
+  <action name="actionPreviousScene">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>StaticBodyTool</string>
+    <string>Previous Problem</string>
    </property>
   </action>
-  <action name="actionForceTool">
+  <action name="actionNextScene">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>ForceTool</string>
+    <string>Next Problem</string>
    </property>
    <property name="toolTip">
     <string>Use to add forces</string>

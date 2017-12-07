@@ -68,10 +68,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     //clearInputConAndVector();
 
     tools = new QActionGroup(this);
-    tools->addAction(ui->actionDynamicBodyTool);
-    tools->addAction(ui->actionForceTool);
-    tools->addAction(ui->actionMoveTool);
-    tools->addAction(ui->actionStaticBodyTool);
+    tools->addAction(ui->actionFormulaSheet);
+    tools->addAction(ui->actionPreviousScene);
+    tools->addAction(ui->actionNextScene);
     tools->setExclusive(true);
 
     connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
