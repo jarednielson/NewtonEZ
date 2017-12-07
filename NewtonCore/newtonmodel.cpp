@@ -44,12 +44,18 @@ void NewtonModel::loadFile(QString filePath){
         float grav = currentScene["gravity"].toDouble();
         QString tutorial(currentScene["tutorial"].toString());
         QString problemText(currentScene["problemText"].toString());
-        QJsonAray valRange = currentScene["aRange"]; //may change key later
 
-        std::random_device rd;
-        std::mt19937 eng(rd());
-        std::uniform_int_distribution<> distr(valRange[0], valRange[1]); // define the range
-        float calculated = distr(eng); //calculate our value
+
+        QJsonArray varVals = currentScene["varVals"].toArray();
+        std::vector<float> chosenRangeValues;
+        for(int curRange = 0; curRange < valVals.size(); curRange++){
+            QJsonArray range = varVals[i];
+            std::random_device rd;
+            std::mt19937 eng(rd());
+            std::uniform_int_distribution<> distr(range[0], range[1]); // define the range
+            float calculated = distr(eng); //calculate our value
+            chosenRangeValues.push_back(calculated);
+        }
 
         //TODO: if meters pass nullptr, otherwise, pass conversion
         //NewtonConversion* units = nullptr;

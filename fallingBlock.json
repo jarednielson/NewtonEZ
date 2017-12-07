@@ -4,20 +4,19 @@
       "units": "m",
       "gravity": -9.8,
       "objects":[
-        {"type": "rect", "centerX": 2.0,"centerY": "{a}", "mass": 5, "isDynamic": false, "angle": 0.0, "width":2, "height":2},
-        {"type": "rect", "centerX": 40.0, "centerY": -0.5, "mass": 10, "isDynamic": true, "angle":0.0, "width": 50, "height":1}
+        {"type": "rect", "centerX": 2.0,"centerY": "{a}", "mass (kg)": 5, "isDynamic": false, "angle": 0.0, "width":2, "height":2},
+        {"type": "rect", "centerX": 40.0, "centerY": -0.5, "mass (kg)": 10, "isDynamic": true, "angle":0.0, "width": 50, "height":1}
       ],
       "varVals":[
         {
-          "aRange": [8, 11]
-          
+          "aRange": [8, 11]    
         }
       ],
       "problemText": "A block falls from a height of {a}, how long does it take ot hit the ground"[
         {
-          "displayFormulas":["s=.5at^2"],
-          "solvingFormulas":["sqrt({a}*2/9.8)"],
-          "inputFieldUnits":["sec"]
+          "displayWidgets":["s=.5at^2"],
+          "solvingFormulas":["function(a) { return Math.sqrt(a*2/9.8)}"],
+          "inputWidgetUnits":["sec"]
         }
       ]
 
