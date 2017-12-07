@@ -32,7 +32,8 @@ SOURCES += \
         newtonbody.cpp \
         newtonmodel.cpp \
         newtonsceneobject.cpp \
-    newtonformula.cpp
+    newtonformula.cpp \
+    boxscene.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,7 +41,8 @@ HEADERS += \
         newtongraphicsview.h \
         newtondatamodels.h \
         newtonmodel.h \
-    newtonformula.h
+    newtonformula.h \
+    boxscene.h
 
 FORMS += \
         mainwindow.ui

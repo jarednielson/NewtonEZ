@@ -52,6 +52,7 @@ private:
     void clearModel();
     void resetGraphicsView();
     float answer;
+    void verifyScene(int sceneIndex);
 };
 
 
