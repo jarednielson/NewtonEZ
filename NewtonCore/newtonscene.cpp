@@ -1,6 +1,10 @@
 #include "newtondatamodels.h"
+#include "newtonformula.h"
 
-NewtonScene::NewtonScene(QObject *parent) : QObject(parent)
+NewtonScene::NewtonScene(QObject *parent) : QObject(parent),
+    m_Gravity(-9.8),
+    tutorial(""),
+    briefDescription("")
 {
 
 }
@@ -43,20 +47,33 @@ QString NewtonScene::getBriefDescription(){
     return briefDescription;
 }
 
-QStringList& NewtonScene::getWidgetLabels(){
-    return widgetLabels;
+QStringList& NewtonScene::getDisplayWidgetLabels(){
+    return displayWidgetLabels;
 }
 
-QList<QPair<float, float>>& NewtonScene::getWidgetValueRanges(){
-    return widgetValueRanges;
+QList<float>& NewtonScene::getDisplayWidgetValues(){
+    return displayWidgetValues;
 }
 
-QList<bool>& NewtonScene::getEditableWidgets(){
-    return editableWidgets;
+QStringList& NewtonScene::getEditableWidgetLabels(){
+    return editableWidgetLabels;
 }
 
-void NewtonScene::addWidget(QString label, bool editable, QPair<float, float> range){
-    widgetLabels.append(label);
-    editableWidgets.append(editable);
-    widgetValueRanges.append(range);
+QList<NewtonFormula*>& NewtonScene::getEditableFunctions(){
+    return functions;
+}
+
+void NewtonScene::addDisplayWidget(QString label, float value)
+{
+    displayWidgetLabels.push_back(label);
+    displayWidgetValues.push_back(value);
+}
+void NewtonScene::addEditableWidget(QString label, QString formula){
+    editableWidgetLabels.push_back(label);
+    NewtonFormula* f = new NewtonFormula(formula);
+    if(f->isValid()){
+        functions.push_back(f);
+    } else {
+        functions.push_back(Q_NULLPTR);
+    }
 }

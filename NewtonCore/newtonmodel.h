@@ -1,6 +1,8 @@
 #ifndef NEWTONMODEL_H
 #define NEWTONMODEL_H
 
+#define TOL 0.001f
+
 // This model needs to connect the view and model: listen to the view and repond to that by signal
 
 #include "newtondatamodels.h"
@@ -8,7 +10,7 @@
 #include <QObject>
 #include <QGraphicsScene>
 #include <QImage>
-
+#include <QScriptEngine>
 
 
 class NewtonModel : public QObject{
@@ -20,6 +22,7 @@ private:
     int currentSceneIndex;
 
     QGraphicsScene* graphicsScene;
+    double evaluateFormulas(QJsonArray& formulas, QVector<float>& varVals);
 
 public:
     NewtonModel(QObject *parent = 0);
@@ -43,13 +46,16 @@ signals:
     void simulationEnd();
 
     void instructionTextChanged(QString newText);
-    void inputWidgetsChanged(QStringList widgetLabels, QStringList values, QList<bool> enabled);
+    void inputWidgetsChanged(QStringList widgetLabels);
+    void displayWidgetsChanged(QStringList widgetLabels, QList<float> widgetValues);
 
     void answerValidated(bool success);
 
 private:
     void clearModel();
     void resetGraphicsView();
+    float answer;
+    void verifyScene(int sceneIndex);
 };
 
 

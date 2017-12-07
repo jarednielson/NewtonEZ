@@ -5,6 +5,8 @@
 
 int main(int argc, char *argv[])
 {
+    srand(static_cast <unsigned> (time(0)));
+
     QApplication a(argc, argv);
     NewtonModel* model = new NewtonModel();
     MainWindow w(model);
