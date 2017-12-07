@@ -51,33 +51,21 @@ void NewtonModel::loadFile(QString filePath){
 
         QJsonArray varVals = currentScene["varVals"].toArray();
         std::map<std::string, float> chosenRangeValues;
-        for(int curRange = 0; curRange < varVals.size(); curRange++){
+        for(int curRange = 0; curRange < valVals.size(); curRange++){
             std::string currentKey = "{"+curRange+"}";
-            QJsonArray range = varVals[i].toObject()[currentKey].toArray();
+            QJsonArray range = varVals[i].toObject()[currentKey];
 
 
             std::random_device rd;
             std::mt19937 eng(rd());
-            std::uniform_int_distribution<> distr(range[0].toDouble(), range[1].toDouble()); // define the range
+            std::uniform_int_distribution<> distr(range[0], range[1]); // define the range
             float calculated = distr(eng); //calculate our value
             chosenRangeValues.insert(currentKey,calculated);
         }
 
+
         //Swapping in ranged value pairs for the problem text
         QString problemText(currentScene["problemText"].toString());
-
-        // Replace the variables in the probelm with the values that were randomly chosen
-        // This will capture any character a-z inside of square brackets
-        QRegularExpression regExp("\\[([a-z])\\]");
-        QRegularExpressionMatchIterator matches = regExp.globalMatch(problemText);
-
-        // Iterate through each variable, replacing it with its selected value
-        while(matches.hasNext())
-        {
-            QRegularExpressionMatch match = matches.next();
-
-            problemText.replace(match.captured(0), varVals[i].toString());
-        }
 
         for(std::pair<std::string, float> pair : chosenRangeValues){
             size_t len;
@@ -94,55 +82,57 @@ void NewtonModel::loadFile(QString filePath){
         //get objects from document and populate the scene
         QJsonArray objs = currentScene["objects"].toArray();
         for(size_t j = 0; j < objs.size(); j++){
-            QString shapeType = objs[i].toObject()["type"];
+            QString shapeType = obj[i].toObject()["type"];
+            float centerX;
+            float centerY;
 
             //check for variable
-            float centerX = objs[i].toObject()["centerX"].toDouble();
-            float centerY = objs[i].toObject()["centerY"].toDouble();
-
+            if(std::all_of(obj[i].toObject()["centerX"].toString().begin(),obj[i].toObject()["centerX"].toString().end(), ::isdigit)){
+                centerX = obj[i].toObject()["centerX"].toDouble();
+            }
+            else{
+                centerX = chosenRangeValues.at("{"+j+"}");
+            }
+            if(std::all_of(obj[i].toObject()["centerY"].toString().begin(),obj[i].toObject()["centerY"].toString().end(), ::isdigit)){
+                centerY= obj[i].toObject()["centerY"].toDouble();
+            }
+            else{
+                centerY = chosenRangeValues.at("{"+j+"}");
+            }
             bool isDynamic = objs[i].toObject()["isDynamic"].toBool();
 
             //check for variable
-            float mass = objs[i].toObject()["mass"].toDouble();
-
+            float mass;
+            if(std::all_of(obj[i].toObject()["mass"].toString().begin(),obj[i].toObject()["mass"].toString().end(), ::isdigit)){
+                mass = obj[i].toObject()["mass"].toDouble();
+            }
+            else{
+                mass = chosenRangeValues.at("{"+j+"}");
+            }
 
             float angle = objs[i].toObject()["angle"].toDouble();
 
+            if(shapeType == "rect"){
+                float width = objs[i].toObject()["width"].toDouble();
+                float height = objs[i].toObject()["height"].toDouble();
+                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
+                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat());
+                scene->addBody(rect);
+            }
+            else if(shapeType == "circ"){
+                float radius = objs[i].toObject()["radius"].toFloat();
+                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
 
-//            if(shapeType == "rect"){
-//                float width = objs[i].toObject()["width"].toDouble();
-//                float height = objs[i].toObject()["height"].toDouble();
-//                NewtonBody rect = new NewtonBody(isDynamic,mass,centerX,centerY,width,height,this);
-//                rect.setInitOrientation(objs[i].toObject()["angle"].toFloat());
-//                scene->addBody(rect);
-//            }
-//            else if(shapeType == "circ"){
-//                float radius = objs[i].toObject()["radius"].toFloat();
-//                NewtonBody circle = new NewtonBody(isDynamic,mass,centerX,centerY,radius,this);
-
-//                scene->addBody(circle);
-//            }
+                scene->addBody(circle);
+            }
 
         }
-
-        QJsonObject widge = currentScene["widgets"].toObject();
-        QJsonArray formulas = widge["displayFormulas"].toArray();
-        QJsonArray inputFields = widge["inputFieldUnits"].toArray();
-        QJsonArray solvingFormulas = widge["solvingFormulas"].toArray();
-
-	// Evaluate solving formulas for answer-checking
-        double answer = evaluateFormulas(solvingFormulas, chosenRangeValues);
-
-        //TODO: RESOLVE!!!!
-       // for(size_t j = 0; j < referenceFormulas.size(); j++ ){
-            //scene->addWidget("",false,);  //Are we taking care of this with a reference sheet?
-       // }
+        QJsonArray funcs= currentScene["solvingFormulas"].toArray();
+        QJsonArray inputWidgetUnits = currentScene["inputWidgetUnits"].toArray();
 
         for(size_t j=0;j<inputWidgetUnits.size(); j++){
             scene->addWidget(inputWidgetUnits[j], true,chosenRangeValues.at("{"+j+"}"),funcs[j]);
-
         }
-
         setScene(0);
     }
 }
@@ -218,9 +208,8 @@ void NewtonModel::setScene(int sceneIndex){
     currentSceneIndex = sceneIndex;
     NewtonScene* currentScene = scenes[currentSceneIndex];
 
-    //TODO: clear graphicsScene
+    //populate graphicsScene with the elements in the scene
     graphicsScene->clear();
-    //TODO: populate graphicsScene with the elements in the scene
     for(int i = 0; i < currentScene->getBodies().length(); i++){
         NewtonBody* curr = currentScene->getBodies()[i];
         //Add a circle
@@ -228,30 +217,36 @@ void NewtonModel::setScene(int sceneIndex){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
             //TODO convert to graphcis scene coordinates
             //Track the returned graphics item so we can update it
-            graphicsScene->addEllipse(shapeVal.circle.cX,
-                                      shapeVal.circle.cY,
+            graphicsScene->addEllipse(curr->getInitPos().x(),
+                                      curr->getInitPos().y(),
                                       shapeVal.circle.r,
                                       shapeVal.circle.r);
         }
         else if(curr->getShapeType() == NewtonBody::Shape::Rect){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
-            graphicsScene->addRect(shapeVal.rect.cX - 0.5 * shapeVal.rect.width,
-                                   shapeVal.rect.cY - 0.5 * shapeVal.rect.height,
+            graphicsScene->addRect(curr->getInitPos().x()  - 0.5 * shapeVal.rect.width,
+                                   curr->getInitPos().y() - 0.5 * shapeVal.rect.height,
                                    shapeVal.rect.width,
                                    shapeVal.rect.height);
         }
 
     }
-    //TODO: set Initial values for problem
-    QVector<int> editableIndices;
-    for(int i = 0; i < currentScene->getEditableWidgets().size(); i++){
-
+    //set Initial value for problem
+    //Search for first editable widget
+    NewtonFormula* f = currentScene->getEditableFunctions()[0];
+    //Right now we are assuming EVERY display widget is used in order for hte func
+    QVector<float> args;
+    for(int i = 0; i < currentScene->getDisplayWidgetValues().length(); i++){
+        args.push_back(currentScene->getDisplayWidgetValues()[i]);
     }
-    //TODO: notify widgets changed
 
-    //TODO: notify instructionTextChanged
-    emit instructionTextChanged(scenes[currentSceneIndex]->getTutorialText());
-    //TODO: update answervalidation
+    answer = f->evaluate(args);
+    //notify widgets changed
+    emit inputWidgetsChanged(currentScene->getEditableWidgetLabels());
+    emit displayWidgetsChanged(currentScene->getDisplayWidgetLabels(),
+                               currentScene->getDisplayWidgetValues());
+    //notify instructionTextChanged
+    emit instructionTextChanged(currentScene->getTutorialText());
     //TODO: clear any box2d stuff
 }
 
@@ -290,11 +285,13 @@ void NewtonModel::getProblemDescriptions(QStringList& descriptions){
 
 }
 
-void NewtonModel::validateAnswer(float answer, QVector<float>& parameters){
-    //TODO: validate
+void NewtonModel::validateAnswer(float answer){
+    float diff = NewtonModel::answer - answer;
+    if(diff < 0){
+        diff = diff * -1;
+    }
 
-    //Place holder
-    emit answerValidated(true);
+    emit answerValidated(diff < TOL);
 }
 
 void NewtonModel::clearModel(){

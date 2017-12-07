@@ -1,6 +1,8 @@
 #ifndef NEWTONMODEL_H
 #define NEWTONMODEL_H
 
+#define TOL 0.001f
+
 // This model needs to connect the view and model: listen to the view and repond to that by signal
 
 #include "newtondatamodels.h"
@@ -34,7 +36,7 @@ public slots:
     void startSimulation();
     void endSimulation();
     void getProblemDescriptions(QStringList& descriptions);
-    void validateAnswer(float answer, QVector<float>& parameters);
+    void validateAnswer(float answer);
 
 
 signals:
@@ -44,13 +46,15 @@ signals:
     void simulationEnd();
 
     void instructionTextChanged(QString newText);
-    void inputWidgetsChanged(QStringList widgetLabels, QStringList values, QList<bool> enabled);
+    void inputWidgetsChanged(QStringList widgetLabels);
+    void displayWidgetsChanged(QStringList widgetLabels, QList<float> widgetValues);
 
     void answerValidated(bool success);
 
 private:
     void clearModel();
     void resetGraphicsView();
+    float answer;
     void verifyScene(int sceneIndex);
 };
 

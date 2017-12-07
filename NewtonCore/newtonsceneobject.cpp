@@ -13,6 +13,14 @@ NewtonSceneObject::NewtonSceneObject(QPointF initPos, QObject *parent) : NewtonO
 
 }
 
+NewtonSceneObject::NewtonSceneObject(QPointF initPos, float orientation, QObject *parent) :
+    NewtonObject(*parent),
+    m_initPos(initPos),
+    m_initOrientation(orientation)
+{
+
+}
+
 QPointF NewtonSceneObject::getInitPos() const{
     return m_initPos;
 }

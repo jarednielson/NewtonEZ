@@ -27,17 +27,6 @@ public:
 /// Holds data for a circle
 ///
 struct NewtonCircle {
-    ///
-    /// \brief cX x Coordinate of center
-    ///
-    float cX;
-    ///
-    /// \brief cY y Coordinate of center
-    ///
-    float cY;
-    ///
-    /// \brief r - Radius
-    ///
     float r;
 };
 
@@ -46,8 +35,6 @@ struct NewtonCircle {
 /// Holds data for a rect who's cX and cY are the center coordinates of the rect
 ///
 struct NewtonRect {
-    float cX;
-    float cY;
     float width;
     float height;
 };
@@ -77,6 +64,7 @@ class NewtonSceneObject : public NewtonObject {
 public:
     NewtonSceneObject(QObject *parent = Q_NULLPTR);
     NewtonSceneObject(QPointF initPos, QObject *parent = Q_NULLPTR);
+    NewtonSceneObject(QPointF initPos, float orientation, QObject *parent = Q_NULLPTR);
 
 public:
     QPointF getInitPos() const;
@@ -221,33 +209,29 @@ public:
     /// \brief getWidgetLabels - Labels for each of the input/output widgets
     /// \return
     ///
-    QStringList& getWidgetLabels();
+    QStringList& getDisplayWidgetLabels();
     ///
     /// \brief getWidgetValueRanges - maximum and minimum values for a given parameter for the problem
     /// \return
     ///
-    QList<QPair<float, float>>& getWidgetValueRanges();
+    QList<float>& getDisplayWidgetValues();
     ///
     /// \brief getEditableWidgets - Parallel to WidgetLabels, true if the widget can be used
     /// as an input param
     /// \return
     ///
-    QList<bool>& getEditableWidgets();
+    QStringList& getEditableWidgetLabels();
     ///
     /// \brief getFormulas - Parallell to WidgetLabels, formula for generating value for the widget
     /// given values for other widgets.
     /// \return
     ///
-    QList<NewtonFormula*> getFormulas();
+    QList<NewtonFormula*>& getEditableFunctions();
 
-    ///
-    /// \brief addWidget - adds a widget to the scene with the given params
-    /// \param label
-    /// \param editable
-    /// \param range
-    /// \param formula - nullptr if no formula is needed
-    ///
-    void addWidget(QString label, bool editable, QPair<float, float> range, QString formula = "");
+
+    void addDisplayWidget(QString label, float value);
+
+    void addEditableWidget(QString label, QString function);
 
 signals:
     ///
@@ -258,16 +242,19 @@ signals:
 
 private:
     float m_Gravity;
+
     NewtonConversion* units;
     QVector<NewtonBody*> bodies;
 
     QString tutorial;
     QString briefDescription;
 
-    QStringList widgetLabels;
-    QList<bool> editableWidgets;
-    QList<QPair<float, float>> widgetValueRanges;
-    QList<NewtonFormula*> formulas;
+    //Tightly coupled parallel lists
+    QStringList displayWidgetLabels;
+    QList<float> displayWidgetValues;
+
+    QStringList editableWidgetLabels;
+    QList<NewtonFormula*> functions;
 };
 
 #endif // NEWTONSCENE_H
