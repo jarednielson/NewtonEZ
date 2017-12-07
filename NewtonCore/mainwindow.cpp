@@ -178,4 +178,6 @@ void MainWindow::createOpenFileDialog(){
               "Open Problem",
               QDir::currentPath(),
               "All files (*.*)");
+
+    emit sendFilePath(filename);
 }

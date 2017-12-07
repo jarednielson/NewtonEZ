@@ -32,9 +32,11 @@ public slots:
 
 signals:
     void sendEnabledInputs(std::vector<QString> enabledInputs);
+    void sendFilePath(QString path);
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
+
 private:
     Ui::MainWindow *ui;
 
