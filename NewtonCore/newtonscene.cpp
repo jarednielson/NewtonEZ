@@ -1,6 +1,10 @@
 #include "newtondatamodels.h"
+#include "newtonformula.h"
 
-NewtonScene::NewtonScene(QObject *parent) : QObject(parent)
+NewtonScene::NewtonScene(QObject *parent) : QObject(parent),
+    m_Gravity(-9.8),
+    tutorial(""),
+    briefDescription("")
 {
 
 }
@@ -55,8 +59,14 @@ QList<bool>& NewtonScene::getEditableWidgets(){
     return editableWidgets;
 }
 
-void NewtonScene::addWidget(QString label, bool editable, QPair<float, float> range){
+void NewtonScene::addWidget(QString label, bool editable, QPair<float, float> range, QString formula){
     widgetLabels.append(label);
     editableWidgets.append(editable);
     widgetValueRanges.append(range);
+    NewtonFormula* f = new NewtonFormula(formula);
+    if(f->isValid()){
+        formulas.push_back(f);
+    } else {
+        formulas.push_back(Q_NULLPTR);
+    }
 }

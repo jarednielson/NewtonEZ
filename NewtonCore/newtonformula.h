@@ -13,6 +13,7 @@ public:
 
     float evaluate(const QVector<float>& args);
     QString getFormula();
+    bool isValid();
 
 private:
     QScriptEngine engine;
