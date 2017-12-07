@@ -10,6 +10,13 @@
 #include <QDir>
 #include <QAction>
 
+///
+/// \brief MainWindow::MainWindow
+/// Main Constructor. It sets up UI, prepares stuff, connects slots and signals.
+///
+/// \param model
+/// \param parent
+///
 MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -74,11 +81,15 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
     connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
-    connect(this, &MainWindow::sendEnabledInputs, model, &NewtonModel::loadFile);
+    connect(this, &MainWindow::sendFilePath, model, &NewtonModel::loadFile);
 
     updateTime(100);
 }
 
+///
+/// \brief MainWindow::~MainWindow
+/// Destructor
+///
 MainWindow::~MainWindow()
 {
     delete ui;
