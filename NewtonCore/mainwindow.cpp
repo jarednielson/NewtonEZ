@@ -69,7 +69,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::replaceAndSetText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
     connnect(ui->startEndButton, QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
-    connect(model, &NewtonModel::simulationEnd. this, )
+    connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
 
     updateTime(100);
 }
