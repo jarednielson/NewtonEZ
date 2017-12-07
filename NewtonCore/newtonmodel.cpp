@@ -52,15 +52,13 @@ void NewtonModel::loadFile(QString filePath){
         QJsonArray varVals = currentScene["varVals"].toArray();
         QMap<QString, float> chosenRangeValues;
         for(int curRange = 0; curRange < varVals.size(); curRange++){
-            QString currentKey = QString("{").append(curRange).append("}");
-            QJsonArray range = varVals[i].toObject()[currentKey].toArray();
+            QString indexKey = "{"+ QString::number(curRange) +"}";
+            float lowerBound = varVals[curRange].toArray()[0].toDouble();
+            float upperBound = varVals[curRange].toArray()[1].toDouble();
 
+            float calculated = lowerBound + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(upperBound-lowerBound)));
 
-//            std::random_device rd;
-//            std::mt19937 eng(rd);
-//            std::uniform_int_distribution<> distr(range[0].toDouble(), range[1].toDouble()); // define the range
-//            float calculated = distr(eng); //calculate our value
-//            chosenRangeValues.insert(currentKey,calculated);
+            chosenRangeValues.insert(indexKey,calculated);
         }
 
 
