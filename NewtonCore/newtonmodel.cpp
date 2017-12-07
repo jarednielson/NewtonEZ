@@ -90,6 +90,7 @@ void NewtonModel::validateAnswer(float answer){
 
 void NewtonModel::clearModel(){
     graphicsScene->clear();
+    //TODO: need to clean other attibutes as well
 }
 
 void NewtonModel::resetGraphicsView(){
@@ -97,5 +98,23 @@ void NewtonModel::resetGraphicsView(){
     scenes.clear();  // Remove all elements in Qvectors
     currentSceneIndex = 0;
 }
+
+//TODO:
+//loop and check the passed in shapes are dynamic or static and report.
+// Actual box2d goes here
+// Check the types of shapes passed in (rectangle or the circle)
+// IsDdynamic in the  newtonObject.cpp
+// Set up the world and shape of the box2d
+
+void NewtonModel::verifyScene(int sceneIndex){
+    if (sceneIndex == currentSceneIndex)
+    {
+        for(size_t i = 0; i < scenes[currentSceneIndex]->getBodies().length(); i++){
+
+        }
+
+    }
+}
+
 
 
