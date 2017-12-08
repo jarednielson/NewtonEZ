@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QAction>
+#include <QVector>
 
 ///
 /// \brief MainWindow::MainWindow
@@ -68,7 +69,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // Comment out to see inputs, uncomment to clear all inputs
     //clearInputBoxes();
 
-    updateTime(100);
+    updateTime(0);
 
     tools = new QActionGroup(this);
     tools->addAction(ui->actionFormulaSheet);
@@ -91,6 +92,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->actionPreviousScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
     connect(ui->actionNextScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
     connect(ui->actionLoad_Default_Problem, &QAction::triggered, model, &NewtonModel::loadDefaultScene);
+
+    connect(this, &MainWindow::sendEnabledInputs, model, &NewtonModel::validateAnswer);
+    connect(model, &NewtonModel::answerValidated, this, &MainWindow::cleanUpAfterSimulation);
 }
 
 ///
@@ -211,17 +215,17 @@ void MainWindow::getDisplayForProblem(QStringList widgetLabels, QList<float> val
 /// and then send it to the model via a signal.
 ///
 void MainWindow::prepareEnabledInputs(){
-    std::vector<float> enabledFloat;
+    QVector<float> enabledFloats;
     for(unsigned int i = 0; i < inputs.size(); i++){
         if(inputs[i]->isEnabled()){
-            enabledFloat.push_back(inputs[i]->value());
+            enabledFloats.push_back(inputs[i]->value());
         }
     }
     // disable button...
     ui->startEndButton->setEnabled(false);
 
     // emit signal that will take this vector to the model
-    // - TODO - STILL NEEDS A SIGNAL HERE
+    emit sendEnabledInputs(enabledFloats);
 }
 
 /// SLOT
@@ -229,8 +233,11 @@ void MainWindow::prepareEnabledInputs(){
 /// This slot will connect with a signal in the model. We can clean up
 /// after a simulation here. Currently we are just re-enabling the startEndButton.
 ///
-void MainWindow::cleanUpAfterSimulation(){
+void MainWindow::cleanUpAfterSimulation(QVector<bool> answers){
     ui->startEndButton->setEnabled(true);
+    if(!answers.first()){
+        ui->startEndButton->setText("incorrect");
+    }
 }
 
 /// SLOT
