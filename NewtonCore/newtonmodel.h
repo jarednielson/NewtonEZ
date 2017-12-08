@@ -38,7 +38,7 @@ public slots:
     void startSimulation();
     void endSimulation();
     void getProblemDescriptions(QStringList& descriptions);
-    void validateAnswer(float answer);
+    void validateAnswer(QVector<float> answers);
     void loadDefaultScene();
 
 signals:
@@ -51,7 +51,7 @@ signals:
     void inputWidgetsChanged(QStringList widgetLabels);
     void displayWidgetsChanged(QStringList widgetLabels, QList<float> widgetValues);
 
-    void answerValidated(bool success);
+    void answerValidated(QVector<bool> success);
     void lastSceneSelected();
     void firstSceneSelected();
 

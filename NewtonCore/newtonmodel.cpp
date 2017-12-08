@@ -319,13 +319,18 @@ void NewtonModel::getProblemDescriptions(QStringList& descriptions){
 
 }
 
-void NewtonModel::validateAnswer(float answer){
-    float diff = NewtonModel::answer - answer;
-    if(diff < 0){
-        diff = diff * -1;
+void NewtonModel::validateAnswer(QVector<float> answers){
+    QVector<bool> validaters;
+    //TODO: update anwswer to list of answers for multi input
+    for(int i = 0; i < answers.length(); i++){
+        float diff = NewtonModel::answer - answers[i];
+        if(diff < 0){
+            diff = diff * -1;
+        }
+        validaters.push_back(diff < TOL);
     }
 
-    emit answerValidated(diff < TOL);
+    emit answerValidated(validaters);
 }
 
 void NewtonModel::loadDefaultScene(){
