@@ -289,7 +289,6 @@ void NewtonModel::startSimulation(){
     //TODO: run simulation
     //TODO: update graphics view as simulation goes
     //TODO: end simulation
-    clearModel();
     //TODO: reset graphicsScene
     graphicsScene->clear();
     //TODO: notify end simulation
@@ -298,11 +297,10 @@ void NewtonModel::startSimulation(){
 
 void NewtonModel::endSimulation(){
     //TODO: check to make sure scene is running
-    emit simulationStart();  // Besides this, actual running also be notified?
     //TODO: kill timer and callbacks
     //TODO: restore graphisScene
     graphicsScene->clear();
-    //TODO: notify end simulation
+    //notify end simulation
     emit simulationEnd();
 }
 
