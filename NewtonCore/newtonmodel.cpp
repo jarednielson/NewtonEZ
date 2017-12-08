@@ -235,8 +235,8 @@ void NewtonModel::setScene(int sceneIndex){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
             //TODO convert to graphcis scene coordinates
             //Track the returned graphics item so we can update it
-            graphicsScene->addEllipse(curr->getInitPos().x(),
-                                      curr->getInitPos().y(),
+            graphicsScene->addEllipse(curr->getInitPos().x() - 0.5 * shapeVal.circle.r,
+                                      curr->getInitPos().y() - 0.5 * shapeVal.circle.r,
                                       shapeVal.circle.r,
                                       shapeVal.circle.r);
         }
