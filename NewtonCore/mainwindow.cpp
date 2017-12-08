@@ -56,6 +56,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     ui->graphicsView->setScene(model->getGraphicsScene());
     ui->graphicsView->setTransform(QTransform::fromScale(6.5, 6.5));
     setProblemText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+    isSimPlaying = false;
 
     addInputBox("1");
     addInputBox("2", 2.0, false);
@@ -95,6 +96,9 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 
     connect(this, &MainWindow::sendEnabledInputs, model, &NewtonModel::validateAnswer);
     connect(model, &NewtonModel::answerValidated, this, &MainWindow::cleanUpAfterSimulation);
+
+    // hook up play / pause button to model to show simulation
+    connect(ui->PlayStopButton, &QPushButton::clicked, this, &MainWindow::prepToPlay);
 }
 
 ///
@@ -261,6 +265,18 @@ void MainWindow::openFormulaSheet(){
     //TODO: get formula data from model
     //TODO: add formulas to widget in a nice way
     ui->formulaWidget->show();
+}
+
+void MainWindow::prepToPlay(){
+    if(isSimPlaying){
+        ui->PlayStopButton->setText("Play");
+        isSimPlaying = false;
+        emit sendEndSimRequest();
+    } else {
+        ui->PlayStopButton->setText("Stop");
+        isSimPlaying = true;
+        emit sendPlaySimRequest();
+    }
 }
 
 void MainWindow::on_actionLoad_Default_Problem_triggered()

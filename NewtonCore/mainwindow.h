@@ -30,10 +30,13 @@ public slots:
     void prepareEnabledInputs();
     void cleanUpAfterSimulation(QVector<bool> answers);
     void createOpenFileDialog();
+    void prepToPlay();
 
 signals:
     void sendEnabledInputs(QVector<float> enabledInputs);
     void sendFilePath(QString path);
+    void sendPlaySimRequest();
+    void sendEndSimRequest();
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
@@ -54,6 +57,7 @@ private:
     void openFormulaSheet();
     QActionGroup *tools;
     NewtonModel *model;
+    bool isSimPlaying;
 };
 
 #endif // MAINWINDOW_H
