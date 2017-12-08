@@ -23,11 +23,12 @@ NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
 }
 
 NewtonModel::~NewtonModel(){
+    clearModel();
     delete graphicsScene;
 }
 
 void NewtonModel::loadFile(QString filePath){
-
+    clearModel();
     //open stream and read next unit as string
     QFile nextUnitFile("./fallingBlock.json");
     nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -257,6 +258,24 @@ void NewtonModel::setScene(int sceneIndex){
     //TODO: clear any box2d stuff
 }
 
+void NewtonModel::nextScene(){
+    if(currentSceneIndex < scenes.length() - 1){
+        setScene(++currentSceneIndex);
+        if(currentSceneIndex == scenes.length() - 1){
+            emit lastSceneSelected();
+        }
+    }
+}
+
+void NewtonModel::prevScene(){
+    if(currentSceneIndex > 0){
+        setScene(--currentSceneIndex);
+        if(currentSceneIndex == 0){
+            emit firstSceneSelected();
+        }
+    }
+}
+
 void NewtonModel::startSimulation(){
     //TODO: check to make sure scene isn't running
     graphicsScene->clear();
@@ -302,9 +321,33 @@ void NewtonModel::validateAnswer(float answer){
 }
 
 void NewtonModel::loadDefaultScene(){
+    clearModel();
 
+    NewtonScene* scene = new NewtonScene(-9.8f,
+                                         Q_NULLPTR,
+                                         QString("Two objects with mass m1 = 10kg and m2 = 5 kg ") +
+                                         QString("are dropped from a height of 10 m. ") +
+                                         QString("If gravity is -9.8 m/sec^2 at what time will ") +
+                                         QString("they hit the ground?"),
+                                         QString("Two Objects Falling"),
+                                         this);
+
+    scene->addBody(new NewtonBody(true, 10, 5, 10, 5, 5, scene));
+    scene->addBody(new NewtonBody(true, 5, 20, 10, 5, scene));
+    scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
+    scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
+    scene->addEditableWidget(QString("Time (sec)"),
+                             QString("function(a) { return Math.sqrt(a*2/9.8)}"));
+
+    scenes.push_back(scene);
+    setScene(0);
 }
 
 void NewtonModel::clearModel(){
     graphicsScene->clear();
+    for(int i = 0; i < scenes.length(); i++){
+        delete scenes[i];
+    }
+    scenes.clear();
+    //TODO: free b2d resources if needed
 }

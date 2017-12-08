@@ -38,6 +38,7 @@ public slots:
     void endSimulation();
     void getProblemDescriptions(QStringList& descriptions);
     void validateAnswer(float answer);
+    void loadDefaultScene();
 
 signals:
     // the button pressed will send this signal
