@@ -79,11 +79,10 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 
     connect(ui->graphicsView, static_cast<void (NewtonGraphicsView::*) (int, int)>(&NewtonGraphicsView::mouseRelease), this, &MainWindow::onGraphicsViewReleased);
     // TODO: test
-    connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::setProblemText);
+    connect(model, &NewtonModel::briefTextChanged, this, &MainWindow::setProblemText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
     connect(model, &NewtonModel::displayWidgetsChanged, this, &MainWindow::getDisplayForProblem);
     connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
-    connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
     connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
     connect(this, &MainWindow::sendFilePath, model, &NewtonModel::loadFile);
 
@@ -249,9 +248,10 @@ void MainWindow::cleanUpAfterSimulation(QVector<bool> answers){
 void MainWindow::createOpenFileDialog(){
     QString filename =  QFileDialog::getOpenFileName( this,
                                                       "Open Problem",
-                                                      QDir::currentPath(),
+                                                      QDir::homePath(),
                                                       "All files (*.*)");
 
+    qDebug() << filename;
     emit sendFilePath(filename);
 }
 

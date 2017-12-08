@@ -47,7 +47,7 @@ signals:
     void simulationStart();
     void simulationEnd();
 
-    void instructionTextChanged(QString newText);
+    void briefTextChanged(QString newText);
     void inputWidgetsChanged(QStringList widgetLabels);
     void displayWidgetsChanged(QStringList widgetLabels, QList<float> widgetValues);
 

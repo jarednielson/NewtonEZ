@@ -38,7 +38,7 @@ QGraphicsScene* NewtonModel::getGraphicsScene(){
 void NewtonModel::loadFile(QString filePath){
     clearModel();
     //open stream and read next unit as string
-    QFile nextUnitFile("./fallingBlock.json");
+    QFile nextUnitFile(filePath);
     nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray nextUnit = nextUnitFile.readAll();
     nextUnitFile.close();
@@ -86,53 +86,54 @@ void NewtonModel::loadFile(QString filePath){
 
         //TODO: if meters pass nullptr, otherwise, pass conversion
         //NewtonConversion* units = nullptr;
-        NewtonScene* scene = new NewtonScene(grav, nullptr, tutorial,problemText,this);
+        NewtonScene* scene = new NewtonScene(grav, nullptr, tutorial, problemText, this);
         scenes.push_back(scene);
 
         //get objects from document and populate the scene
         QJsonArray objs = currentScene["objects"].toArray();
         for(size_t j = 0; j < objs.size(); j++){
-            QString shapeType = objs[i].toObject()["type"].toString();
+            QString shapeType = objs[j].toObject()["type"].toString();
             QString indexKey = "{" + QString::number(j) + "}";
 
             float centerX;
             float centerY;
 
             //check for variable
-            if(objs[i].toObject()["centerX"].toString()[0] !='{'){
-                centerX = objs[i].toObject()["centerX"].toDouble();
+            if(objs[j].toObject()["centerX"].toString()[0] !='{'){
+                centerX = objs[j].toObject()["centerX"].toDouble();
             }
             else{
                 centerX = chosenRangeValues[indexKey];
             }
-            if(objs[i].toObject()["centerY"].toString()[0] !='{'){
-                centerY= objs[i].toObject()["centerY"].toDouble();
+            if(objs[j].toObject()["centerY"].toString()[0] !='{'){
+                centerY= objs[j].toObject()["centerY"].toDouble();
             }
             else{
                 centerY = chosenRangeValues[indexKey];
             }
-            bool isDynamic = objs[i].toObject()["isDynamic"].toBool();
+            //TODO: Get width, height, radius
+            bool isDynamic = objs[j].toObject()["isDynamic"].toBool();
 
             //check for variable
             float mass;
-            if(objs[i].toObject()["mass"].toString()[0] !='{'){
-                mass = objs[i].toObject()["mass"].toDouble();
+            if(objs[j].toObject()["mass"].toString()[0] !='{'){
+                mass = objs[j].toObject()["mass"].toDouble();
             }
             else{
                 mass = chosenRangeValues[indexKey];
             }
 
-            float angle = objs[i].toObject()["angle"].toDouble();
+            float angle = objs[j].toObject()["angle"].toDouble();
 
             if(shapeType == "rect"){
-                float width = objs[i].toObject()["width"].toDouble();
-                float height = objs[i].toObject()["height"].toDouble();
+                float width = objs[j].toObject()["width"].toDouble();
+                float height = objs[j].toObject()["height"].toDouble();
                 NewtonBody* rect = new NewtonBody(isDynamic, (float) mass, (float) centerX, (float) centerY, (float) width, (float) height, this);
-                rect->setInitOrientation(objs[i].toObject()["angle"].toDouble());
+                rect->setInitOrientation(objs[j].toObject()["angle"].toDouble());
                 scene->addBody(rect);
             }
             else if(shapeType == "circ"){
-                float radius = objs[i].toObject()["radius"].toDouble();
+                float radius = objs[j].toObject()["radius"].toDouble();
                 NewtonBody* circle = new NewtonBody(isDynamic, mass, centerX, centerY, radius, this);
 
                 scene->addBody(circle);
@@ -146,7 +147,7 @@ void NewtonModel::loadFile(QString filePath){
             scene->addEditableWidget(inputWidgetUnits[j].toString(),funcs[j].toString());
         }
         QList<float> rangeVals = chosenRangeValues.values();
-        QJsonArray labels = objs[i].toObject()["varValLabels"].toArray();
+        QJsonArray labels = currentScene["varValLabels"].toArray();
         for(size_t j = 0; j < labels.size(); j++){
             scene->addDisplayWidget(labels[j].toString(),rangeVals[j]);
         }
@@ -264,7 +265,7 @@ void NewtonModel::setScene(int sceneIndex){
                                currentScene->getDisplayWidgetValues());
     emit inputWidgetsChanged(currentScene->getEditableWidgetLabels());
     //notify instructionTextChanged
-    emit instructionTextChanged(currentScene->getTutorialText());
+    emit briefTextChanged(currentScene->getBriefDescription());
     //TODO: clear any box2d stuff
 }
 

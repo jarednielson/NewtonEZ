@@ -28,11 +28,11 @@ public slots:
     void getInputsForProblem(QStringList widgetLabels);
     void getDisplayForProblem(QStringList widgetLabels, QList<float> values);
     void prepareEnabledInputs();
-    void cleanUpAfterSimulation();
+    void cleanUpAfterSimulation(QVector<bool> answers);
     void createOpenFileDialog();
 
 signals:
-    void sendEnabledInputs(std::vector<QString> enabledInputs);
+    void sendEnabledInputs(QVector<float> enabledInputs);
     void sendFilePath(QString path);
 
 protected slots:

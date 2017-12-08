@@ -7,20 +7,20 @@
 				"centerX": 2.0,
 				"centerY": "{0}",
 				"mass": 5,
-				"isDynamic": false,
+				"isDynamic": true,
 				"angle": 0.0,
 				"width": 2,
 				"height": 2
 			},
 			{
 				"type": "rect",
-				"centerX": 40.0,
-				"centerY": -0.5,
+				"centerX": 0.0,
+				"centerY": 10,
 				"mass": 10,
-				"isDynamic": true,
+				"isDynamic": false,
 				"angle": 0.0,
 				"width": 50,
-				"height": 1
+				"height": 5
 			}
 		],
 		"varVals": [{
@@ -29,7 +29,7 @@
 		"varValLabels": ["height"],
 		"problemText": "A block falls from a height of {0} meters, how long does it take to hit the ground",
 		"displayWidgets": ["s=.5at^2"],
-		"solvingFormulas": ["function(a) { return Math.sqrt(a*2/9.8)}"],
+		"solvingFormulas": ["(function(a) { return Math.sqrt(a*2/9.8);})"],
 		"inputWidgetUnits": ["sec"]
 
 
