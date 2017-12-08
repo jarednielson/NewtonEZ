@@ -99,6 +99,8 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 
     // hook up play / pause button to model to show simulation
     connect(ui->PlayStopButton, &QPushButton::clicked, this, &MainWindow::prepToPlay);
+    connect(this, &MainWindow::sendPlaySimRequest, model, &NewtonModel::startSimulation);
+    connect(this, &MainWindow::sendStopSimRequest, model, &NewtonModel::endSimulation);
 }
 
 ///
@@ -267,11 +269,14 @@ void MainWindow::openFormulaSheet(){
     ui->formulaWidget->show();
 }
 
+///
+/// \brief MainWindow::prepToPlay
+///
 void MainWindow::prepToPlay(){
     if(isSimPlaying){
         ui->PlayStopButton->setText("Play");
         isSimPlaying = false;
-        emit sendEndSimRequest();
+        emit sendStopSimRequest();
     } else {
         ui->PlayStopButton->setText("Stop");
         isSimPlaying = true;

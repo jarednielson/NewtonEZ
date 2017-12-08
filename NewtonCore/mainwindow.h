@@ -36,7 +36,7 @@ signals:
     void sendEnabledInputs(QVector<float> enabledInputs);
     void sendFilePath(QString path);
     void sendPlaySimRequest();
-    void sendEndSimRequest();
+    void sendStopSimRequest();
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
