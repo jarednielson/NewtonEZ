@@ -11,6 +11,7 @@
 #include <QGraphicsScene>
 #include <QImage>
 #include <QScriptEngine>
+#include <QGraphicsItem>
 
 
 class NewtonModel : public QObject{
@@ -19,6 +20,8 @@ private:
     // This is box2d simulation list, the list type maybe change to box2d type
     QVector<b2Body*> graphs;
     QVector<NewtonScene*> scenes;
+    QVector<QGraphicsItem*> scBodies;
+
     int currentSceneIndex;
     bool simRunning;
 

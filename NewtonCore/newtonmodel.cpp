@@ -236,17 +236,20 @@ void NewtonModel::setScene(int sceneIndex){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
             //TODO convert to graphcis scene coordinates
             //Track the returned graphics item so we can update it
-            graphicsScene->addEllipse(curr->getInitPos().x() - 0.5 * shapeVal.circle.r,
+            QGraphicsItem* item =graphicsScene->addEllipse(curr->getInitPos().x() - 0.5 * shapeVal.circle.r,
                                       curr->getInitPos().y() - 0.5 * shapeVal.circle.r,
                                       shapeVal.circle.r,
                                       shapeVal.circle.r);
+            scBodies.push_back(item);
+
         }
         else if(curr->getShapeType() == NewtonBody::Shape::Rect){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
-            graphicsScene->addRect(curr->getInitPos().x()  - 0.5 * shapeVal.rect.width,
+            QGraphicsItem* item = graphicsScene->addRect(curr->getInitPos().x()  - 0.5 * shapeVal.rect.width,
                                    curr->getInitPos().y() - 0.5 * shapeVal.rect.height,
                                    shapeVal.rect.width,
                                    shapeVal.rect.height);
+            scBodies.push_back(item);
         }
 
     }
@@ -294,7 +297,16 @@ void NewtonModel::startSimulation(){
     }
     simRunning = true;
     graphicsScene->clear();
-    //TODO: build box2d scene
+    //build box2d scene
+    NewtonScene* curScn = scenes[currentSceneIndex];
+    b2Vec2 gravity = b2Vec2(0.0f,
+                             curScn->getGravity());
+    b2World world(gravity);
+    //Loop through the scene and create bodies for all scene objects
+    QVector<NewtonBody*> scBodies = curScn->getBodies();
+    for(int i = 0; i < scBodies.length(); i++){
+
+    }
     //TODO: create timer and callbacks
     //TODO: nofity simulationStart
     emit simulationStart();
