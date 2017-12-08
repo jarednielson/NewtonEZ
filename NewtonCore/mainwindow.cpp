@@ -135,6 +135,7 @@ void MainWindow::addInputBox(QString labelText, double inputBoxValue, bool input
     inputs.push_back(new QDoubleSpinBox());
     inputs.back()->setValue(inputBoxValue);
     inputs.back()->setEnabled(inputEnabled);
+    inputs.back()->setDecimals(4);
     layouts.push_back(new QHBoxLayout());
     layouts.back()->addWidget(labels.back());
     layouts.back()->addWidget(inputs.back());
