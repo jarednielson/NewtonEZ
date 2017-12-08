@@ -20,6 +20,7 @@ private:
     QVector<b2Body*> graphs;
     QVector<NewtonScene*> scenes;
     int currentSceneIndex;
+    bool simRunning;
 
     QGraphicsScene* graphicsScene;
     double evaluateFormulas(QJsonArray& formulas, QVector<float>& varVals);

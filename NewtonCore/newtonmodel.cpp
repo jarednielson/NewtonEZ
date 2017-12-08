@@ -288,9 +288,12 @@ void NewtonModel::prevScene(){
 }
 
 void NewtonModel::startSimulation(){
-    //TODO: check to make sure scene isn't running
+    //check to make sure scene isn't running
+    if(simRunning){
+        return;
+    }
+    simRunning = true;
     graphicsScene->clear();
-    emit simulationStart();
     //TODO: build box2d scene
     //TODO: create timer and callbacks
     //TODO: nofity simulationStart
