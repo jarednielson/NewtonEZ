@@ -80,6 +80,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // TODO: test
     connect(model, &NewtonModel::instructionTextChanged, this, &MainWindow::setProblemText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
+    connect(model, &NewtonModel::displayWidgetsChanged, this, &MainWindow::getDisplayForProblem);
     connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::cleanUpAfterSimulation);
     connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
@@ -89,6 +90,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // TODO: connect to model signals to actually change scene index
     connect(ui->actionPreviousScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
     connect(ui->actionNextScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
+    connect(ui->actionLoad_Default_Problem, &QAction::triggered, model, &NewtonModel::loadDefaultScene);
 }
 
 ///
@@ -185,10 +187,21 @@ void MainWindow::updateTime(int seconds){
 /// \param values
 /// \param enabled
 ///
-void MainWindow::getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled){
+void MainWindow::getInputsForProblem(QStringList widgetLabels){
+    for(int i = 0; i < widgetLabels.length(); i++){
+        addInputBox(widgetLabels[i]);
+    }
+}
+
+///
+/// \brief MainWindow::getDisplayForProblem
+/// \param widgetLabels
+/// \param values
+///
+void MainWindow::getDisplayForProblem(QStringList widgetLabels, QList<float> values ){
     clearInputBoxes();
     for(int i = 0; i < widgetLabels.length(); i++){
-        addInputBox(widgetLabels[i], values[i].toDouble(), enabled[i]);
+        addInputBox(widgetLabels[i], values[i], false);
     }
 }
 
@@ -239,4 +252,9 @@ void MainWindow::openFormulaSheet(){
     //TODO: get formula data from model
     //TODO: add formulas to widget in a nice way
     ui->formulaWidget->show();
+}
+
+void MainWindow::on_actionLoad_Default_Problem_triggered()
+{
+
 }

@@ -25,7 +25,8 @@ public:
 public slots:
     void setProblemText(QString text);
     void updateTime(int seconds);
-    void getInputsForProblem(QStringList widgetLabels, QStringList values, QList<bool> enabled);
+    void getInputsForProblem(QStringList widgetLabels);
+    void getDisplayForProblem(QStringList widgetLabels, QList<float> values);
     void prepareEnabledInputs();
     void cleanUpAfterSimulation();
     void createOpenFileDialog();
@@ -36,6 +37,9 @@ signals:
 
 protected slots:
     void onGraphicsViewReleased(int x, int y);
+
+private slots:
+    void on_actionLoad_Default_Problem_triggered();
 
 private:
     Ui::MainWindow *ui;

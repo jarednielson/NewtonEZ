@@ -260,9 +260,9 @@ void NewtonModel::setScene(int sceneIndex){
 
     answer = f->evaluate(args);
     //notify widgets changed
-    emit inputWidgetsChanged(currentScene->getEditableWidgetLabels());
     emit displayWidgetsChanged(currentScene->getDisplayWidgetLabels(),
                                currentScene->getDisplayWidgetValues());
+    emit inputWidgetsChanged(currentScene->getEditableWidgetLabels());
     //notify instructionTextChanged
     emit instructionTextChanged(currentScene->getTutorialText());
     //TODO: clear any box2d stuff
@@ -345,7 +345,7 @@ void NewtonModel::loadDefaultScene(){
     scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
     scene->addEditableWidget(QString("Time (sec)"),
-                             QString("function(a) { return Math.sqrt(a*2/9.8)}"));
+                             QString("(function(a, b) { return Math.sqrt(a*2/9.8);})"));
 
     scenes.push_back(scene);
     setScene(0);
@@ -357,5 +357,6 @@ void NewtonModel::clearModel(){
         delete scenes[i];
     }
     scenes.clear();
+    currentSceneIndex = -1;
     //TODO: free b2d resources if needed
 }
