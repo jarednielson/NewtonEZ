@@ -306,6 +306,12 @@ void NewtonModel::startSimulation(){
     QVector<NewtonBody*> scBodies = curScn->getBodies();
     for(int i = 0; i < scBodies.length(); i++){
 
+        b2BodyDef bdef;
+        bdef.position.set(scBodies[i]->getInitPos().x(),
+                          scBodies[i]->getInitPos().y());
+        if(scBodies[i]->isDynamic()){
+            bdef.type = b2_dynamicBody;
+        }
     }
     //TODO: create timer and callbacks
     //TODO: nofity simulationStart
