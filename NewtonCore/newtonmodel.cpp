@@ -85,31 +85,33 @@ void NewtonModel::loadFile(QString filePath){
         QJsonArray objs = currentScene["objects"].toArray();
         for(size_t j = 0; j < objs.size(); j++){
             QString shapeType = objs[i].toObject()["type"].toString();
+            QString indexKey = "{" + QString::number(j) + "}";
+
             float centerX;
             float centerY;
 
             //check for variable
-            if(std::all_of(objs[i].toObject()["centerX"].toString().toStdString().begin(), objs[i].toObject()["centerX"].toString().toStdString().end(), ::isdigit)){
+            if(objs[i].toObject()["centerX"].toString()[0] !='{'){
                 centerX = objs[i].toObject()["centerX"].toDouble();
             }
             else{
-                centerX = chosenRangeValues[(QString("{").append(QString().setNum(j)).append("}"))];
+                centerX = chosenRangeValues[indexKey];
             }
-            if(std::all_of(objs[i].toObject()["centerY"].toString().toStdString().begin(),objs[i].toObject()["centerY"].toString().toStdString().end(), ::isdigit)){
+            if(objs[i].toObject()["centerY"].toString()[0] !='{'){
                 centerY= objs[i].toObject()["centerY"].toDouble();
             }
             else{
-                centerY = chosenRangeValues[(QString("{").append(QString().setNum(j)).append("}"))];
+                centerY = chosenRangeValues[indexKey];
             }
             bool isDynamic = objs[i].toObject()["isDynamic"].toBool();
 
             //check for variable
             float mass;
-            if(std::all_of(objs[i].toObject()["mass"].toString().toStdString().begin(),objs[i].toObject()["mass"].toString().toStdString().end(), ::isdigit)){
+            if(objs[i].toObject()["mass"].toString()[0] !='{'){
                 mass = objs[i].toObject()["mass"].toDouble();
             }
             else{
-                mass = chosenRangeValues[(QString("{").append(QString().setNum(j)).append("}"))];
+                mass = chosenRangeValues[indexKey];
             }
 
             float angle = objs[i].toObject()["angle"].toDouble();
