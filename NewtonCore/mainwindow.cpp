@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QStyleFactory>
-#include <QDebug>
 #include <QFileDialog>
 #include <QDir>
 #include <QAction>
@@ -26,10 +25,6 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->formulaWidget->hide();
-    QPixmap picture;
-    picture.load("../../cs3505-f17-a8-edu-app-AdmiralOcelot-1/test.jpg");
-    ui->formulaImageLabel->setPixmap(picture);
-    ui->formulaImageLabel->show();
 
     ui->graphicsView->setScene(model->getGraphicsScene());
     ui->graphicsView->setBackgroundBrush(QBrush(Qt::white));
@@ -228,7 +223,6 @@ void MainWindow::createOpenFileDialog(){
                                                       QDir::homePath(),
                                                       "All files (*.*)");
 
-    qDebug() << filename;
     emit sendFilePath(filename);
 }
 
@@ -245,14 +239,12 @@ void MainWindow::prepToPlay(){
     if(isSimPlaying){
         ui->PlayStopButton->setText("Play");
         isSimPlaying = false;
-        ui->actionNextScene->setEnabled(!isSimPlaying);
-        ui->actionPreviousScene->setEnabled(!isSimPlaying);
+        animationEnableDisable();
         emit sendStopSimRequest();
     } else {
         ui->PlayStopButton->setText("Stop");
         isSimPlaying = true;
-        ui->actionNextScene->setEnabled(!isSimPlaying);
-        ui->actionPreviousScene->setEnabled(!isSimPlaying);
+        animationEnableDisable();
         emit sendPlaySimRequest();
     }
 }
@@ -260,11 +252,22 @@ void MainWindow::prepToPlay(){
 void MainWindow::simulationEnded(){
     ui->PlayStopButton->setText("Play");
     isSimPlaying = false;
-    ui->actionNextScene->setEnabled(!isSimPlaying);
-    ui->actionPreviousScene->setEnabled(!isSimPlaying);
+    animationEnableDisable();
 }
 
 void MainWindow::on_actionLoad_Default_Problem_triggered()
 {
 
+}
+
+void MainWindow::animationEnableDisable(){
+    ui->actionNextScene->setEnabled(!isSimPlaying);
+    ui->actionPreviousScene->setEnabled(!isSimPlaying);
+    if(isSimPlaying){
+        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    } else {
+        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    }
 }

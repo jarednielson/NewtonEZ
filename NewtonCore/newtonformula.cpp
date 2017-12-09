@@ -1,14 +1,12 @@
 #include "newtonformula.h"
 #include <QVector>
 #include <cfloat>
-#include <QDebug>
 
 NewtonFormula::NewtonFormula(QString formula, QObject *parent) : QObject(parent),
     formula(formula)
 {
     fun = engine.evaluate(formula);
     validFunc = !engine.hasUncaughtException();
-    qDebug() << validFunc;
 }
 
 float NewtonFormula::evaluate(const QVector<float>& vals)

@@ -10,7 +10,6 @@
 #include <QRegularExpressionMatch>
 #include <QtMath>
 #include <QTimer>
-#include <QDebug>
 
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {

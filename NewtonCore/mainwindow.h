@@ -56,6 +56,7 @@ private:
     void addInputBox(QString labelText, double inputBoxValue, bool inputEnabled);
     void clearInputBoxes();
     void openFormulaSheet();
+    void animationEnableDisable();
     QActionGroup *tools;
     NewtonModel *model;
     bool isSimPlaying;
