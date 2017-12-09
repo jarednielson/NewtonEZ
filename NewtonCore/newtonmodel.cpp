@@ -183,7 +183,7 @@ void NewtonModel::setScene(int sceneIndex){
        sceneIndex == currentSceneIndex){
         return;
     }
-
+    clearScene();
     currentSceneIndex = sceneIndex;
     NewtonScene* currentScene = scenes[currentSceneIndex];
 
@@ -239,7 +239,7 @@ void NewtonModel::setScene(int sceneIndex){
 
 void NewtonModel::nextScene(){
     if(currentSceneIndex < scenes.length() - 1){
-        setScene(++currentSceneIndex);
+        setScene(currentSceneIndex + 1);
         if(currentSceneIndex == scenes.length() - 1){
             emit lastSceneSelected();
         }
@@ -248,7 +248,7 @@ void NewtonModel::nextScene(){
 
 void NewtonModel::prevScene(){
     if(currentSceneIndex > 0){
-        setScene(--currentSceneIndex);
+        setScene(currentSceneIndex - 1);
         if(currentSceneIndex == 0){
             emit firstSceneSelected();
         }
@@ -402,17 +402,20 @@ void NewtonModel::updateBodies(){
     }
 }
 void NewtonModel::clearModel(){
-    if(simRunning){
-        endSimulation();
-    }
-    graphicsScene->clear();
-    scBodies.clear();
+    clearScene();
     for(int i = 0; i < scenes.length(); i++){
         delete scenes[i];
     }
     scenes.clear();
     currentSceneIndex = -1;
-    //TODO: free b2d resources if needed
+}
+
+void NewtonModel::clearScene(){
+    if(simRunning){
+        endSimulation();
+    }
+    graphicsScene->clear();
+    scBodies.clear();
 }
 
 float NewtonModel::convertToPixel(float meter){

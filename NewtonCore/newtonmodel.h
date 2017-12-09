@@ -70,6 +70,7 @@ signals:
 
 private:
     void clearModel();
+    void clearScene();
     void verifyScene(int sceneIndex);
     float convertToPixel(float meter);
     QPointF convertToPixel(QPointF meter);
