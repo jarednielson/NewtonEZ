@@ -45,7 +45,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(model, &NewtonModel::briefTextChanged, this, &MainWindow::setProblemText);
     connect(model, &NewtonModel::inputWidgetsChanged, this, &MainWindow::getInputsForProblem);
     connect(model, &NewtonModel::displayWidgetsChanged, this, &MainWindow::getDisplayForProblem);
-    connect(ui->startEndButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
+    connect(ui->checkAnswerButton, &QPushButton::clicked, this, &MainWindow::prepareEnabledInputs);
     connect(ui->actionOpen_Problem, &QAction::triggered, this, &MainWindow::createOpenFileDialog);
     connect(this, &MainWindow::sendFilePath, model, &NewtonModel::loadFile);
 
@@ -191,7 +191,7 @@ void MainWindow::prepareEnabledInputs(){
         }
     }
     // disable button...
-    ui->startEndButton->setEnabled(false);
+    ui->checkAnswerButton->setEnabled(false);
 
     // emit signal that will take this vector to the model
     emit sendEnabledInputs(enabledFloats);
@@ -203,9 +203,9 @@ void MainWindow::prepareEnabledInputs(){
 /// after a simulation here. Currently we are just re-enabling the startEndButton.
 ///
 void MainWindow::cleanUpAfterSimulation(QVector<bool> answers){
-    ui->startEndButton->setEnabled(true);
+    ui->checkAnswerButton->setEnabled(true);
     if(!answers.first()){
-        ui->startEndButton->setText("incorrect");
+        ui->checkAnswerButton->setText("Incorrect");
     }
 }
 
@@ -238,10 +238,14 @@ void MainWindow::prepToPlay(){
     if(isSimPlaying){
         ui->PlayStopButton->setText("Play");
         isSimPlaying = false;
+        ui->actionNextScene->setEnabled(!isSimPlaying);
+        ui->actionPreviousScene->setEnabled(!isSimPlaying);
         emit sendStopSimRequest();
     } else {
         ui->PlayStopButton->setText("Stop");
         isSimPlaying = true;
+        ui->actionNextScene->setEnabled(!isSimPlaying);
+        ui->actionPreviousScene->setEnabled(!isSimPlaying);
         emit sendPlaySimRequest();
     }
 }
@@ -249,6 +253,8 @@ void MainWindow::prepToPlay(){
 void MainWindow::simulationEnded(){
     ui->PlayStopButton->setText("Play");
     isSimPlaying = false;
+    ui->actionNextScene->setEnabled(!isSimPlaying);
+    ui->actionPreviousScene->setEnabled(!isSimPlaying);
 }
 
 void MainWindow::on_actionLoad_Default_Problem_triggered()
