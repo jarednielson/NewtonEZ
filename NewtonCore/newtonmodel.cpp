@@ -106,9 +106,13 @@ void NewtonModel::loadFile(QString filePath){
             QString shapeType = objs[j].toObject()["type"].toString();
             QString indexKey = "{" + QString::number(j) + "}";
 
+            //get initial velocites
             QJsonArray velocities = objs[j].toObject()["initialVelocity"].toArray();
-            QPointF veloPoint(velocities[0], velocities[1]);
+            QPointF veloPoint(velocities[0].toDouble(), velocities[1].toDouble());
 
+            //get forces
+            QJsonArray forces = objs[j].toObject()["forces"].toArray();
+            QPointF forcesXY(forces[0].toDouble(), forces[1].toDouble());
 
             float centerX;
             float centerY;
@@ -146,12 +150,14 @@ void NewtonModel::loadFile(QString filePath){
                 NewtonBody* rect = new NewtonBody(isDynamic, (float) mass, (float) centerX, (float) centerY, (float) width, (float) height, this);
                 rect->setInitOrientation(objs[j].toObject()["angle"].toDouble());
                 rect->setInitVelocity(veloPoint);
+                rect->setInitForce(forcesXY);
                 scene->addBody(rect);
             }
             else if(shapeType == "circ"){
                 float radius = objs[j].toObject()["radius"].toDouble();
                 NewtonBody* circle = new NewtonBody(isDynamic, mass, centerX, centerY, radius, this);
                    circle->setInitVelocity(veloPoint);
+                   circle->setInitForce(forcesXY);
                 scene->addBody(circle);
             }
 
