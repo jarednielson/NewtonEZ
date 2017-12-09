@@ -58,6 +58,8 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     // TODO: connect to model signals to actually change scene index
     connect(ui->actionPreviousScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
     connect(ui->actionNextScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
+    connect(ui->actionNextScene, &QAction::triggered, model, &NewtonModel::nextScene);
+    connect(ui->actionPreviousScene, &QAction::triggered, model, &NewtonModel::prevScene);
     connect(ui->actionLoad_Default_Problem, &QAction::triggered, model, &NewtonModel::loadDefaultScene);
 
     connect(this, &MainWindow::sendEnabledInputs, model, &NewtonModel::validateAnswer);
