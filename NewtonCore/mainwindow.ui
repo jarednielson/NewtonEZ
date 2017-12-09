@@ -266,6 +266,9 @@
      <height>50</height>
     </size>
    </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/FormulaSheet.jpg);</string>
+   </property>
    <property name="floating">
     <bool>false</bool>
    </property>
