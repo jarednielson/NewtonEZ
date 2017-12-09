@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QStyleFactory>
-#include <QDebug>
 #include <QFileDialog>
 #include <QDir>
 #include <QAction>
@@ -222,7 +221,6 @@ void MainWindow::createOpenFileDialog(){
                                                       QDir::homePath(),
                                                       "All files (*.*)");
 
-    qDebug() << filename;
     emit sendFilePath(filename);
 }
 
