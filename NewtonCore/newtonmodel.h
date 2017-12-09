@@ -29,7 +29,7 @@ class NewtonModel : public QObject{
     QVector<QGraphicsItem*> scBodies;
     QTimer* simTimer;
     QTimer* simSingleShot;
-    float answer;
+    QVector<float> answers;
 
     int currentSceneIndex;
     bool simRunning = false;

@@ -228,7 +228,7 @@ void NewtonModel::setScene(int sceneIndex){
         args.push_back(currentScene->getDisplayWidgetValues()[i]);
     }
 
-    answer = f->evaluate(args);
+    answers = f->evaluate(args);
     //notify widgets changed
     emit displayWidgetsChanged(currentScene->getDisplayWidgetLabels(),
                                currentScene->getDisplayWidgetValues());
@@ -351,13 +351,19 @@ void NewtonModel::getProblemDescriptions(QStringList& descriptions){
 
 void NewtonModel::validateAnswer(QVector<float> answers){
     QVector<bool> validaters;
-    //TODO: update anwswer to list of answers for multi input
-    for(int i = 0; i < answers.length(); i++){
-        float diff = NewtonModel::answer - answers[i];
+
+    for(int i = 0; i < answers.length() || i < NewtonModel::answers.length(); i++){
+        float diff = NewtonModel::answers[i] - answers[i];
         if(diff < 0){
             diff = diff * -1;
         }
         validaters.push_back(diff < TOL);
+    }
+
+    if(diff = answers.length() - NewtonModel::answers.length() > 0){
+        for(int i = 0; i < diff; i++){
+            validaters.push_back(false);
+        }
     }
 
     emit answerValidated(validaters);
