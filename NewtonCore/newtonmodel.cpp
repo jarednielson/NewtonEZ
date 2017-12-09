@@ -8,11 +8,16 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatchIterator>
 #include <QRegularExpressionMatch>
+#include <QtMath>
+#include <QTimer>
+#include <QDebug>
 
 NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
 {
     currentSceneIndex = 0;
     graphicsScene = new QGraphicsScene();
+    simTimer = new QTimer(this);
+    connect(simTimer, SIGNAL(timeout()), this, SLOT(updateBodies()));
 }
 
 NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
@@ -20,6 +25,8 @@ NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
     graphicsScene = new QGraphicsScene();
     loadFile(filePath);
     currentSceneIndex = 0;
+    simTimer = new QTimer(this);
+    connect(simTimer, SIGNAL(timeout()), this, SLOT(updateBodies()));
 }
 
 NewtonModel::~NewtonModel(){
@@ -156,67 +163,6 @@ void NewtonModel::loadFile(QString filePath){
     }
 }
 
-double NewtonModel::evaluateFormulas(QJsonArray& formulas, QVector<float>& varVals)
-{
-    QVector<QString> stringFormulas;
-
-    // Will match with any variable in the formulas and replace them with the chosen values
-    QRegularExpression regExp("\\[([a-z])\\]");
-    QRegularExpressionMatchIterator matches;
-
-    QScriptEngine eng;
-    QVector<double> answers;
-
-    // Replaces known variables with their values, adds the modified formulas to stringFormulas
-    for(int i = 0; i < formulas.size(); i++)
-    {
-        QString formula = formulas[i].toString();
-        matches = regExp.globalMatch(formula);
-
-        // Extracts each variable in the formula and replaces it with its corresponding value
-        // (e.g., a maps to index 0 of the varVals array, b maps to 1, and so on)
-        while(matches.hasNext())
-        {
-            QRegularExpressionMatch match = matches.next();
-
-            QChar variable = match.captured(1)[0];
-            int asciiVal = variable.toLatin1();
-
-            // 97 is the ascii value for 'a'
-            double varVal = varVals[asciiVal - 97];
-            formula.replace(match.captured(0), QString::number(varVal));
-        }
-
-        stringFormulas.push_back(formula);
-    }
-
-    // Begin solving the formulas
-    regExp.setPattern("\\[(\\d)\\]");
-
-    for(int i = 0; i < stringFormulas.size(); i++)
-    {
-        // Check for any unknowns. These values will be reliant upon a previous formula
-        matches = regExp.globalMatch(stringFormulas[i]);
-
-        while(matches.hasNext())
-        {
-            QRegularExpressionMatch match = matches.next();
-
-            double val = answers[match.captured(1).toInt()];
-
-            stringFormulas[i].replace(match.captured(0), QString::number(val));
-        }
-
-        QScriptValue answer = eng.evaluate(stringFormulas[i]);
-
-        answers.push_back(answer.toNumber());
-
-    }
-
-    return answers.last();
-
-
-}
 void NewtonModel::setScene(int sceneIndex){
     if(sceneIndex < 0 ||
        sceneIndex >= (int) scenes.length() ||
@@ -296,40 +242,81 @@ void NewtonModel::startSimulation(){
         return;
     }
     simRunning = true;
-    graphicsScene->clear();
+    //graphicsScene->clear();
     //build box2d scene
     NewtonScene* curScn = scenes[currentSceneIndex];
     b2Vec2 gravity = b2Vec2(0.0f,
                              curScn->getGravity());
-    b2World world(gravity);
+    world = new b2World(gravity);
     //Loop through the scene and create bodies for all scene objects
-    QVector<NewtonBody*> scBodies = curScn->getBodies();
-    for(int i = 0; i < scBodies.length(); i++){
-
+    QVector<NewtonBody*> scNBodies = curScn->getBodies();
+    for(int i = 0; i < scNBodies.length(); i++){
+        NewtonBody* curNt = scNBodies[i];
         b2BodyDef bdef;
-        bdef.position.set(scBodies[i]->getInitPos().x(),
-                          scBodies[i]->getInitPos().y());
-        if(scBodies[i]->isDynamic()){
+        bdef.position.Set(curNt->getInitPos().x(),
+                          curNt->getInitPos().y());
+        if(scNBodies[i]->isDynamic()){
             bdef.type = b2_dynamicBody;
         }
+        b2Body* body = world->CreateBody(&bdef);
+        if(curNt->getShapeType() == NewtonBody::Shape::Circle){
+            b2CircleShape bodyShape;
+
+            bodyShape.m_p = b2Vec2(0.0f, 0.0f);
+            bodyShape.m_radius = curNt->getShapeValue().circle.r;
+            float density;
+            if(curNt->isDynamic()){
+                density = curNt->getMass() / (M_PI *
+                                              curNt->getShapeValue().circle.r *
+                                              curNt->getShapeValue().circle.r);
+            } else {
+                density = 0.0f;
+            }
+            body->CreateFixture(&bodyShape, density);
+        } else if(curNt->getShapeType() == NewtonBody::Shape::Rect){
+            b2PolygonShape bodyShape;
+
+            bodyShape.SetAsBox(curNt->getShapeValue().rect.width / 2,
+                               curNt->getShapeValue().rect.height / 2);
+            float density;
+            if(curNt->isDynamic()){
+                density = curNt->getMass() /
+                          curNt->getShapeValue().rect.width *
+                          curNt->getShapeValue().rect.height;
+
+            } else {
+                density = 0.0f;
+            }
+            body->CreateFixture(&bodyShape, density);
+        }
+        body->SetUserData(scBodies[i]);
     }
-    //TODO: create timer and callbacks
-    //TODO: nofity simulationStart
+
+    simTimer->start(TIME_STEP * 1000);
+    //nofity simulationStart
     emit simulationStart();
-    //TODO: run simulation
-    //TODO: update graphics view as simulation goes
-    //TODO: end simulation
-    //TODO: reset graphicsScene
-    graphicsScene->clear();
-    //TODO: notify end simulation
-    emit simulationEnd();
+    //end simulation
+    QTimer::singleShot(TIME_OUT,this, &NewtonModel::endSimulation);
 }
 
 void NewtonModel::endSimulation(){
-    //TODO: check to make sure scene is running
-    //TODO: kill timer and callbacks
-    //TODO: restore graphisScene
-    graphicsScene->clear();
+    //check to make sure scene is running
+    if(!simRunning){
+        return;
+    }
+    simRunning = false;
+    //kill timer
+    simTimer->stop();
+    //restore graphisScene
+    delete world;
+    //graphicsScene->clear();
+
+    //Reset graphics view stuff
+    for(int i = 0; i < scBodies.length(); i++){
+        NewtonBody* ntBody = scenes[currentSceneIndex]->getBodies()[i];
+        QGraphicsItem* item = scBodies[i];
+        item->setPos(ntBody->getInitPos());
+    }
     //notify end simulation
     emit simulationEnd();
 }
@@ -378,8 +365,23 @@ void NewtonModel::loadDefaultScene(){
     setScene(0);
 }
 
+void NewtonModel::updateBodies(){
+    world->Step(TIME_STEP, VEL_ITER, POS_ITER);
+    int bodyCount = world->GetBodyCount();
+    b2Body* body = world->GetBodyList();
+    for(int i = 0; i < bodyCount; i++){
+        b2Vec2 pos = body->GetPosition();
+        QGraphicsItem* item =
+                static_cast<QGraphicsItem*>(body->GetUserData());
+
+        item->setPos(pos.x, pos.y);
+        body = body->GetNext();
+        //item->setRotation(bodies[i].GetAngle() * M_PI / 180.0f);
+    }
+}
 void NewtonModel::clearModel(){
     graphicsScene->clear();
+    //scBodies.clear();
     for(int i = 0; i < scenes.length(); i++){
         delete scenes[i];
     }

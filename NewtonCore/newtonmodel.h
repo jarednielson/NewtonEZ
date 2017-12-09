@@ -2,6 +2,10 @@
 #define NEWTONMODEL_H
 
 #define TOL 0.001f
+#define TIME_STEP 0.01666666666f
+#define TIME_OUT 10000
+#define VEL_ITER 8
+#define POS_ITER 3
 
 // This model needs to connect the view and model: listen to the view and repond to that by signal
 
@@ -12,6 +16,7 @@
 #include <QImage>
 #include <QScriptEngine>
 #include <QGraphicsItem>
+#include <QTimer>
 
 
 class NewtonModel : public QObject{
@@ -19,14 +24,15 @@ class NewtonModel : public QObject{
 private:
     // This is box2d simulation list, the list type maybe change to box2d type
     QVector<b2Body*> graphs;
+    b2World* world;
     QVector<NewtonScene*> scenes;
     QVector<QGraphicsItem*> scBodies;
+    QTimer* simTimer;
 
     int currentSceneIndex;
-    bool simRunning;
+    bool simRunning = false;
 
     QGraphicsScene* graphicsScene;
-    double evaluateFormulas(QJsonArray& formulas, QVector<float>& varVals);
 
 public:
     NewtonModel(QObject *parent = 0);
@@ -44,6 +50,7 @@ public slots:
     void getProblemDescriptions(QStringList& descriptions);
     void validateAnswer(QVector<float> answers);
     void loadDefaultScene();
+    void updateBodies();
 
 signals:
     // the button pressed will send this signal
