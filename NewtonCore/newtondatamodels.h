@@ -137,6 +137,8 @@ private:
     float m_Mass;
     Shape m_shape;
     NewtonShape shapeVal;
+    QPointF initVelocity;
+    QPointF initForce;
 };
 
 ///

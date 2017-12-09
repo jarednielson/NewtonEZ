@@ -8,7 +8,7 @@ NewtonBody::NewtonBody(QObject *parent) :
 {
     m_shape = NewtonBody::Rect;
     shapeVal.rect.width = 1.0f;
-    shapeVal.rect.height= 1.0f;
+    shapeVal.rect.height = 1.0f;
 }
 
 NewtonBody::NewtonBody(bool isDynamic, float mass, float centerX, float centerY, float radius, QObject *parent) :
