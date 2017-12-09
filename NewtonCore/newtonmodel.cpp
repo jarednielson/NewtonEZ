@@ -108,11 +108,11 @@ void NewtonModel::loadFile(QString filePath){
 
             //get initial velocites
             QJsonArray velocities = objs[j].toObject()["initialVelocity"].toArray();
-            QPointF veloPoint(velocities[0], velocities[1]);
+            QPointF veloPoint(velocities[0].toDouble(), velocities[1].toDouble());
 
             //get forces
             QJsonArray forces = objs[j].toObject()["forces"].toArray();
-            QPointF forcesXY(forces[0], forces[1]);
+            QPointF forcesXY(forces[0].toDouble(), forces[1].toDouble());
 
             float centerX;
             float centerY;
