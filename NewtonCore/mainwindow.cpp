@@ -54,7 +54,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 //    this->setPalette(darkPalette);
 
     ui->graphicsView->setScene(model->getGraphicsScene());
-    ui->graphicsView->setTransform(QTransform::fromScale(6.5, 6.5));
+    ui->graphicsView->setTransform(QTransform::fromScale(0.1, 0.1));
     setProblemText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
     isSimPlaying = false;
 
@@ -101,6 +101,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(ui->PlayStopButton, &QPushButton::clicked, this, &MainWindow::prepToPlay);
     connect(this, &MainWindow::sendPlaySimRequest, model, &NewtonModel::startSimulation);
     connect(this, &MainWindow::sendStopSimRequest, model, &NewtonModel::endSimulation);
+    connect(model, &NewtonModel::simulationEnd, this, &MainWindow::simulationEnded);
 }
 
 ///
@@ -282,6 +283,11 @@ void MainWindow::prepToPlay(){
         isSimPlaying = true;
         emit sendPlaySimRequest();
     }
+}
+
+void MainWindow::simulationEnded(){
+    ui->PlayStopButton->setText("Play");
+    isSimPlaying = false;
 }
 
 void MainWindow::on_actionLoad_Default_Problem_triggered()

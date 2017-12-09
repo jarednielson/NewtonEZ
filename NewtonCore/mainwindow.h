@@ -31,6 +31,7 @@ public slots:
     void cleanUpAfterSimulation(QVector<bool> answers);
     void createOpenFileDialog();
     void prepToPlay();
+    void simulationEnded();
 
 signals:
     void sendEnabledInputs(QVector<float> enabledInputs);

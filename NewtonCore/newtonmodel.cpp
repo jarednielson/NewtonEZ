@@ -18,6 +18,8 @@ NewtonModel::NewtonModel(QObject *parent) : QObject(parent)
     graphicsScene = new QGraphicsScene();
     simTimer = new QTimer(this);
     connect(simTimer, SIGNAL(timeout()), this, SLOT(updateBodies()));
+    simSingleShot = new QTimer(this);
+    connect(simSingleShot, SIGNAL(timeout()), this, SLOT(endSimulation()));
 }
 
 NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
@@ -27,6 +29,8 @@ NewtonModel::NewtonModel(QString filePath, QObject *parent) : QObject (parent)
     currentSceneIndex = 0;
     simTimer = new QTimer(this);
     connect(simTimer, SIGNAL(timeout()), this, SLOT(updateBodies()));
+    simSingleShot = new QTimer(this);
+    connect(simSingleShot, SIGNAL(timeout), this, SLOT(endSimulation()));
 }
 
 NewtonModel::~NewtonModel(){
@@ -182,19 +186,20 @@ void NewtonModel::setScene(int sceneIndex){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
             //TODO convert to graphcis scene coordinates
             //Track the returned graphics item so we can update it
-            QGraphicsItem* item =graphicsScene->addEllipse(curr->getInitPos().x() - 0.5 * shapeVal.circle.r,
-                                      curr->getInitPos().y() - 0.5 * shapeVal.circle.r,
-                                      shapeVal.circle.r,
-                                      shapeVal.circle.r);
+            QGraphicsItem* item =graphicsScene->addEllipse(
+                                      convertToPixel(curr->getInitPos().x() - shapeVal.circle.r),
+                                      convertToPixel(curr->getInitPos().y() - shapeVal.circle.r),
+                                      convertToPixel(shapeVal.circle.r * 2.0f),
+                                      convertToPixel(shapeVal.circle.r * 2.0f));
             scBodies.push_back(item);
 
         }
         else if(curr->getShapeType() == NewtonBody::Shape::Rect){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
-            QGraphicsItem* item = graphicsScene->addRect(curr->getInitPos().x()  - 0.5 * shapeVal.rect.width,
-                                   curr->getInitPos().y() - 0.5 * shapeVal.rect.height,
-                                   shapeVal.rect.width,
-                                   shapeVal.rect.height);
+            QGraphicsItem* item = graphicsScene->addRect(convertToPixel(curr->getInitPos().x() - 0.5 * shapeVal.rect.width),
+                                   convertToPixel(curr->getInitPos().y() - 0.5 * shapeVal.rect.height),
+                                   convertToPixel(shapeVal.rect.width),
+                                   convertToPixel(shapeVal.rect.height));
             scBodies.push_back(item);
         }
 
@@ -296,7 +301,8 @@ void NewtonModel::startSimulation(){
     //nofity simulationStart
     emit simulationStart();
     //end simulation
-    QTimer::singleShot(TIME_OUT,this, &NewtonModel::endSimulation);
+    simSingleShot->setSingleShot(true);
+    simSingleShot->start(TIME_OUT);
 }
 
 void NewtonModel::endSimulation(){
@@ -306,8 +312,8 @@ void NewtonModel::endSimulation(){
     }
     simRunning = false;
     //kill timer
+    simSingleShot->stop();
     simTimer->stop();
-    //restore graphisScene
     delete world;
     //graphicsScene->clear();
 
@@ -315,7 +321,7 @@ void NewtonModel::endSimulation(){
     for(int i = 0; i < scBodies.length(); i++){
         NewtonBody* ntBody = scenes[currentSceneIndex]->getBodies()[i];
         QGraphicsItem* item = scBodies[i];
-        item->setPos(ntBody->getInitPos());
+        item->setPos(convertToPixel(ntBody->getInitPos()));
     }
     //notify end simulation
     emit simulationEnd();
@@ -354,8 +360,9 @@ void NewtonModel::loadDefaultScene(){
                                          QString("Two Objects Falling"),
                                          this);
 
-    scene->addBody(new NewtonBody(true, 10, 5, 10, 5, 5, scene));
-    scene->addBody(new NewtonBody(true, 5, 20, 10, 5, scene));
+    scene->addBody(new NewtonBody(true, 10, 5, 10, 0.5, 0.5, scene));
+    scene->addBody(new NewtonBody(true, 5, 8, 10, 0.25, scene));
+    scene->addBody(new NewtonBody(false, 100, 10, 1, 20, 2, scene));
     scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
     scene->addEditableWidget(QString("Time (sec)"),
@@ -374,18 +381,27 @@ void NewtonModel::updateBodies(){
         QGraphicsItem* item =
                 static_cast<QGraphicsItem*>(body->GetUserData());
 
-        item->setPos(pos.x, pos.y);
+        item->setPos(convertToPixel(pos.x), convertToPixel(pos.y));
         body = body->GetNext();
         //item->setRotation(bodies[i].GetAngle() * M_PI / 180.0f);
     }
 }
 void NewtonModel::clearModel(){
     graphicsScene->clear();
-    //scBodies.clear();
+    scBodies.clear();
     for(int i = 0; i < scenes.length(); i++){
         delete scenes[i];
     }
     scenes.clear();
     currentSceneIndex = -1;
     //TODO: free b2d resources if needed
+}
+
+float NewtonModel::convertToPixel(float meter){
+    return meter * PIX_PER_METER;
+}
+
+QPointF NewtonModel::convertToPixel(QPointF meter){
+    return QPointF(meter.x() * PIX_PER_METER,
+                   meter.y() * PIX_PER_METER);
 }

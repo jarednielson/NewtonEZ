@@ -6,6 +6,7 @@
 #define TIME_OUT 10000
 #define VEL_ITER 8
 #define POS_ITER 3
+#define PIX_PER_METER 50
 
 // This model needs to connect the view and model: listen to the view and repond to that by signal
 
@@ -28,6 +29,7 @@ private:
     QVector<NewtonScene*> scenes;
     QVector<QGraphicsItem*> scBodies;
     QTimer* simTimer;
+    QTimer* simSingleShot;
 
     int currentSceneIndex;
     bool simRunning = false;
@@ -70,6 +72,8 @@ private:
     void clearModel();
     float answer;
     void verifyScene(int sceneIndex);
+    float convertToPixel(float meter);
+    QPointF convertToPixel(QPointF meter);
 };
 
 
