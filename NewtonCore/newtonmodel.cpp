@@ -219,16 +219,23 @@ void NewtonModel::setScene(int sceneIndex){
         }
 
     }
-    //set Initial value for problem
-    //Search for first editable widget
-    NewtonFormula* f = currentScene->getEditableFunctions()[0];
-    //Right now we are assuming EVERY display widget is used in order for hte func
+
+    //Right now we are assuming EVERY display widget is used in order for the func
     QVector<float> args;
     for(int i = 0; i < currentScene->getDisplayWidgetValues().length(); i++){
         args.push_back(currentScene->getDisplayWidgetValues()[i]);
     }
+    //All functions must use args in order
+    //Calculate values for each function
+    QList<NewtonFormula*> formulas = currentScene->getEditableFunctions();
+    for(int i = 0; i < formulas.length(); i++){
+        if(formulas[i]->isValid()){
+            answers.push_back(formulas[i]->evaluate(args));
+        } else {
+            answers.push_back(0.0f);
+        }
 
-    answers = f->evaluate(args);
+    }
     //notify widgets changed
     emit displayWidgetsChanged(currentScene->getDisplayWidgetLabels(),
                                currentScene->getDisplayWidgetValues());
@@ -360,7 +367,7 @@ void NewtonModel::validateAnswer(QVector<float> answers){
         validaters.push_back(diff < TOL);
     }
 
-    if(diff = answers.length() - NewtonModel::answers.length() > 0){
+    if(int diff = answers.length() - NewtonModel::answers.length() > 0){
         for(int i = 0; i < diff; i++){
             validaters.push_back(false);
         }
@@ -374,11 +381,11 @@ void NewtonModel::loadDefaultScene(){
 
     NewtonScene* scene = new NewtonScene(-9.8f,
                                          Q_NULLPTR,
-                                         QString("Two objects with mass m1 = 10kg and m2 = 5 kg ") +
+                                         QString("Two Objects Falling"),
+                                         QString("Two objects with mass M1 = 10kg and M2 = 5 kg ") +
                                          QString("are dropped from a height of 10 m. ") +
                                          QString("If gravity is -9.8 m/sec^2 at what time will ") +
                                          QString("they hit the ground?"),
-                                         QString("Two Objects Falling"),
                                          this);
 
     scene->addBody(new NewtonBody(true, 10, 5, 10, 0.5, 0.5, scene));
@@ -387,8 +394,10 @@ void NewtonModel::loadDefaultScene(){
     scene->addBody(new NewtonBody(false, 100, 10, 1, 20, 2, scene));
     scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
-    scene->addEditableWidget(QString("Time (sec)"),
+    scene->addEditableWidget(QString("T1 (sec)"),
                              QString("(function(a, b) { return Math.sqrt(a*2/9.8);})"));
+    scene->addEditableWidget(QString("T2 (sec"),
+                             QString("(function(a, b) { return Math.sqrt(a*2/9/8);})"));
 
     scenes.push_back(scene);
     setScene(0);
