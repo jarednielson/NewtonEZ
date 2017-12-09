@@ -51,7 +51,8 @@
 					"angle": 0.0,
 					"width": 2,
 					"height": 2,
-					"initialVelocity": [0,0]
+					"initialVelocity": [0,0],
+					"forces": [0,0]
 				},
 				{
 					"type": "rect",
@@ -62,7 +63,8 @@
 					"angle": 0.0,
 					"width": 50,
 					"height": 5,
-					"initialVelocity":[0,5] 
+					"initialVelocity":[0,5] ,
+					"forces": [0,0]
 				}
 			],
 			"varVals": [{
