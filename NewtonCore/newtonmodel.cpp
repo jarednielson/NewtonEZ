@@ -377,7 +377,8 @@ void NewtonModel::loadDefaultScene(){
                                          this);
 
     scene->addBody(new NewtonBody(true, 10, 5, 10, 0.5, 0.5, scene));
-    scene->addBody(new NewtonBody(true, 5, 10, 10, 0.25, scene));
+    scene->addBody(new NewtonBody(true, 5, 10, 5, 0.25, scene));
+    scene->getBodies()[1]->setInitVelocity(QPointF(0.0f, 5.0f));
     scene->addBody(new NewtonBody(false, 100, 10, 1, 20, 2, scene));
     scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
