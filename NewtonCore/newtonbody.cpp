@@ -83,3 +83,19 @@ QString NewtonBody::serialize() const {
     return QString("");
 }
 
+void NewtonBody::setInitVelocity(QPointF velocity){
+    m_InitVelocity = velocity;
+}
+
+QPointF NewtonBody::getInitVelocity(){
+    return m_InitVelocity;
+}
+
+void NewtonBody::setInitForce(QPointF force){
+    m_InitForce = force;
+}
+
+QPointF NewtonBody::getInitForce(){
+    return m_InitForce;
+}
+
