@@ -15,7 +15,7 @@
 			{
 				"type": "rect",
 				"centerX": 0.0,
-				"centerY": 10,
+				"centerY": 0.0,
 				"mass": 10,
 				"isDynamic": false,
 				"angle": 0.0,
