@@ -26,10 +26,6 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->formulaWidget->hide();
-    QPixmap picture;
-    picture.load("../../cs3505-f17-a8-edu-app-AdmiralOcelot-1/test.jpg");
-    ui->formulaImageLabel->setPixmap(picture);
-    ui->formulaImageLabel->show();
 
     ui->graphicsView->setScene(model->getGraphicsScene());
     ui->graphicsView->setBackgroundBrush(QBrush(Qt::white));
