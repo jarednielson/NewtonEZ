@@ -22,7 +22,6 @@
 
 class NewtonModel : public QObject{
     Q_OBJECT
-private:
     // This is box2d simulation list, the list type maybe change to box2d type
     QVector<b2Body*> graphs;
     b2World* world;
@@ -30,6 +29,7 @@ private:
     QVector<QGraphicsItem*> scBodies;
     QTimer* simTimer;
     QTimer* simSingleShot;
+    float answer;
 
     int currentSceneIndex;
     bool simRunning = false;
@@ -70,7 +70,6 @@ signals:
 
 private:
     void clearModel();
-    float answer;
     void verifyScene(int sceneIndex);
     float convertToPixel(float meter);
     QPointF convertToPixel(QPointF meter);

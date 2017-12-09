@@ -88,6 +88,8 @@ class NewtonBody : public NewtonSceneObject {
     Q_PROPERTY(bool isDynamic READ isDynamic MEMBER m_isDynamic)
     Q_PROPERTY(float mass READ getMass WRITE setMass MEMBER m_Mass NOTIFY massChanged)
     Q_PROPERTY(Shape shape READ getShapeType MEMBER m_shape)
+    Q_PROPERTY(QPointF initVelocity READ getInitVelocity WRITE setInitVelocity MEMBER m_InitVelocity)
+    Q_PROPERTY(QPointF initForce READ getInitForce WRITE setInitForce MEMBER m_InitForce)
 
 
 public:
@@ -126,6 +128,10 @@ public:
     NewtonShape getShapeValue();
     void setShape(float centerX, float centerY, float radius);
     void setShape(float centerX, float centerY, float width, float height);
+    void setInitVelocity(QPointF velocity);
+    QPointF getInitVelocity();
+    void setInitForce(QPointF force);
+    QPointF getInitForce();
 
     virtual QString serialize() const;
 
@@ -137,6 +143,8 @@ private:
     float m_Mass;
     Shape m_shape;
     NewtonShape shapeVal;
+    QPointF m_InitVelocity;
+    QPointF m_InitForce;
 };
 
 ///

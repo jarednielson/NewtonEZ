@@ -106,6 +106,14 @@ void NewtonModel::loadFile(QString filePath){
             QString shapeType = objs[j].toObject()["type"].toString();
             QString indexKey = "{" + QString::number(j) + "}";
 
+            //get initial velocites
+            QJsonArray velocities = objs[j].toObject()["initialVelocity"].toArray();
+            QPointF veloPoint(velocities[0].toDouble(), velocities[1].toDouble());
+
+            //get forces
+            QJsonArray forces = objs[j].toObject()["forces"].toArray();
+            QPointF forcesXY(forces[0].toDouble(), forces[1].toDouble());
+
             float centerX;
             float centerY;
 
@@ -141,12 +149,15 @@ void NewtonModel::loadFile(QString filePath){
                 float height = objs[j].toObject()["height"].toDouble();
                 NewtonBody* rect = new NewtonBody(isDynamic, (float) mass, (float) centerX, (float) centerY, (float) width, (float) height, this);
                 rect->setInitOrientation(objs[j].toObject()["angle"].toDouble());
+                rect->setInitVelocity(veloPoint);
+                rect->setInitForce(forcesXY);
                 scene->addBody(rect);
             }
             else if(shapeType == "circ"){
                 float radius = objs[j].toObject()["radius"].toDouble();
                 NewtonBody* circle = new NewtonBody(isDynamic, mass, centerX, centerY, radius, this);
-
+                   circle->setInitVelocity(veloPoint);
+                   circle->setInitForce(forcesXY);
                 scene->addBody(circle);
             }
 
@@ -298,6 +309,8 @@ void NewtonModel::startSimulation(){
             }
             body->CreateFixture(&bodyShape, density);
         }
+        QPointF initVelocity = curNt->getInitVelocity();
+        body->SetLinearVelocity(b2Vec2(initVelocity.x(), initVelocity.y()));
         body->SetUserData(scBodies[i]);
     }
 
@@ -364,7 +377,8 @@ void NewtonModel::loadDefaultScene(){
                                          this);
 
     scene->addBody(new NewtonBody(true, 10, 5, 10, 0.5, 0.5, scene));
-    scene->addBody(new NewtonBody(true, 5, 10, 10, 0.25, scene));
+    scene->addBody(new NewtonBody(true, 5, 10, 5, 0.25, scene));
+    scene->getBodies()[1]->setInitVelocity(QPointF(0.0f, 5.0f));
     scene->addBody(new NewtonBody(false, 100, 10, 1, 20, 2, scene));
     scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);

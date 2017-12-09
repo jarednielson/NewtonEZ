@@ -8,7 +8,7 @@ NewtonBody::NewtonBody(QObject *parent) :
 {
     m_shape = NewtonBody::Rect;
     shapeVal.rect.width = 1.0f;
-    shapeVal.rect.height= 1.0f;
+    shapeVal.rect.height = 1.0f;
 }
 
 NewtonBody::NewtonBody(bool isDynamic, float mass, float centerX, float centerY, float radius, QObject *parent) :
@@ -81,5 +81,21 @@ void NewtonBody::setShape(float centerX, float centerY, float width, float heigh
 
 QString NewtonBody::serialize() const {
     return QString("");
+}
+
+void NewtonBody::setInitVelocity(QPointF velocity){
+    m_InitVelocity = velocity;
+}
+
+QPointF NewtonBody::getInitVelocity(){
+    return m_InitVelocity;
+}
+
+void NewtonBody::setInitForce(QPointF force){
+    m_InitForce = force;
+}
+
+QPointF NewtonBody::getInitForce(){
+    return m_InitForce;
 }
 
