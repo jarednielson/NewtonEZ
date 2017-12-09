@@ -187,8 +187,8 @@ void NewtonModel::setScene(int sceneIndex){
             //TODO convert to graphcis scene coordinates
             //Track the returned graphics item so we can update it
             QGraphicsItem* item =graphicsScene->addEllipse(
-                                      convertToPixel(curr->getInitPos().x() - shapeVal.circle.r),
-                                      convertToPixel(curr->getInitPos().y() - shapeVal.circle.r),
+                                      convertToPixel(-1.0 * shapeVal.circle.r),
+                                      convertToPixel(-1.0 * shapeVal.circle.r),
                                       convertToPixel(shapeVal.circle.r * 2.0f),
                                       convertToPixel(shapeVal.circle.r * 2.0f));
             scBodies.push_back(item);
@@ -196,8 +196,9 @@ void NewtonModel::setScene(int sceneIndex){
         }
         else if(curr->getShapeType() == NewtonBody::Shape::Rect){
             NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
-            QGraphicsItem* item = graphicsScene->addRect(convertToPixel(curr->getInitPos().x() - 0.5 * shapeVal.rect.width),
-                                   convertToPixel(curr->getInitPos().y() - 0.5 * shapeVal.rect.height),
+            QGraphicsItem* item = graphicsScene->addRect(
+                                   convertToPixel(-0.5 * shapeVal.rect.width),
+                                   convertToPixel(-0.5 * shapeVal.rect.height),
                                    convertToPixel(shapeVal.rect.width),
                                    convertToPixel(shapeVal.rect.height));
             scBodies.push_back(item);
@@ -221,6 +222,12 @@ void NewtonModel::setScene(int sceneIndex){
     //notify instructionTextChanged
     emit briefTextChanged(currentScene->getBriefDescription());
     //TODO: clear any box2d stuff
+
+    for(int i = 0; i < scBodies.length(); i++){
+        scBodies[i]->setPos(convertToPixel(currentScene->getBodies()[i]->getInitPos().x()),
+                            convertToPixel(currentScene->getBodies()[i]->getInitPos().y()));
+
+    }
 }
 
 void NewtonModel::nextScene(){
@@ -315,13 +322,34 @@ void NewtonModel::endSimulation(){
     simSingleShot->stop();
     simTimer->stop();
     delete world;
-    //graphicsScene->clear();
+    graphicsScene->clear();
+    scBodies.clear();
 
     //Reset graphics view stuff
-    for(int i = 0; i < scBodies.length(); i++){
-        NewtonBody* ntBody = scenes[currentSceneIndex]->getBodies()[i];
-        QGraphicsItem* item = scBodies[i];
-        item->setPos(convertToPixel(ntBody->getInitPos()));
+    QVector<NewtonBody*> ntBodies = scenes[currentSceneIndex]->getBodies();
+    for(int i = 0; i < ntBodies.length(); i++){
+        NewtonBody* curr = ntBodies[i];
+        if(curr->getShapeType() == NewtonBody::Shape::Circle){
+            NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
+            //TODO convert to graphcis scene coordinates
+            //Track the returned graphics item so we can update it
+            QGraphicsItem* item = graphicsScene->addEllipse(
+                                      convertToPixel(-1.0 * shapeVal.circle.r),
+                                      convertToPixel(-1.0 * shapeVal.circle.r),
+                                      convertToPixel(shapeVal.circle.r * 2.0f),
+                                      convertToPixel(shapeVal.circle.r * 2.0f));
+            scBodies.push_back(item);
+
+        }
+        else if(curr->getShapeType() == NewtonBody::Shape::Rect){
+            NewtonBody::NewtonShape shapeVal = curr->getShapeValue();
+            QGraphicsItem* item = graphicsScene->addRect(
+                                   convertToPixel(-0.5 * shapeVal.rect.width),
+                                   convertToPixel(-0.5 * shapeVal.rect.height),
+                                   convertToPixel(shapeVal.rect.width),
+                                   convertToPixel(shapeVal.rect.height));
+            scBodies.push_back(item);
+        }
     }
     //notify end simulation
     emit simulationEnd();
@@ -361,7 +389,7 @@ void NewtonModel::loadDefaultScene(){
                                          this);
 
     scene->addBody(new NewtonBody(true, 10, 5, 10, 0.5, 0.5, scene));
-    scene->addBody(new NewtonBody(true, 5, 8, 10, 0.25, scene));
+    scene->addBody(new NewtonBody(true, 5, 10, 10, 0.25, scene));
     scene->addBody(new NewtonBody(false, 100, 10, 1, 20, 2, scene));
     scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
@@ -380,13 +408,18 @@ void NewtonModel::updateBodies(){
         b2Vec2 pos = body->GetPosition();
         QGraphicsItem* item =
                 static_cast<QGraphicsItem*>(body->GetUserData());
-
-        item->setPos(convertToPixel(pos.x), convertToPixel(pos.y));
+        if(i == 1){
+            qDebug() << ("(" + QString::number(pos.x) + ", " + QString::number(pos.y) + ")");
+        }
+        item->setPos(convertToPixel(QPointF(pos.x, pos.y)));
         body = body->GetNext();
         //item->setRotation(bodies[i].GetAngle() * M_PI / 180.0f);
     }
 }
 void NewtonModel::clearModel(){
+    if(simRunning){
+        endSimulation();
+    }
     graphicsScene->clear();
     scBodies.clear();
     for(int i = 0; i < scenes.length(); i++){
