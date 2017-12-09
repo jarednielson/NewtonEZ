@@ -106,7 +106,7 @@ void NewtonModel::loadFile(QString filePath){
             QString shapeType = objs[j].toObject()["type"].toString();
             QString indexKey = "{" + QString::number(j) + "}";
 
-            QJsonArray velocities = objs[j].toObject()["initialVelocity"];
+            QJsonArray velocities = objs[j].toObject()["initialVelocity"].toArray();
             QPointF veloPoint(velocities[0], velocities[1]);
 
 
@@ -303,6 +303,8 @@ void NewtonModel::startSimulation(){
             }
             body->CreateFixture(&bodyShape, density);
         }
+        QPointF initVelocity = curNt->getInitVelocity();
+        body->SetLinearVelocity(b2Vec2(initVelocity.x(), initVelocity.y()));
         body->SetUserData(scBodies[i]);
     }
 

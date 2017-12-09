@@ -131,7 +131,7 @@ public:
     void setInitVelocity(QPointF velocity);
     QPointF getInitVelocity();
     void setInitForce(QPointF force);
-    QPointF getInitVelocity();
+    QPointF getInitForce();
 
     virtual QString serialize() const;
 
