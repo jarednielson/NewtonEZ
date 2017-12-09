@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QAction>
 #include <QVector>
+#include <QPicture>
 
 ///
 /// \brief MainWindow::MainWindow
@@ -25,6 +26,10 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->formulaWidget->hide();
+    QPixmap picture;
+    picture.load("../../cs3505-f17-a8-edu-app-AdmiralOcelot-1/test.jpg");
+    ui->formulaImageLabel->setPixmap(picture);
+    ui->formulaImageLabel->show();
 
     // (nathan): Not a huge fan of how this is setting universal os styles, looking for a better way
 //    ui->menuBar->setStyleSheet("background-color:\"#353535\";color:\"white\"");
