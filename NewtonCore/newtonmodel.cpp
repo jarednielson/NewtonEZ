@@ -47,6 +47,7 @@ QGraphicsScene* NewtonModel::getGraphicsScene(){
 
 void NewtonModel::loadFile(QString filePath){
     clearModel();
+    emit progressUpdate(0);
     //open stream and read next unit as string
     QFile nextUnitFile(filePath);
     nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -363,6 +364,10 @@ void NewtonModel::getProblemDescriptions(QStringList& descriptions){
 
 void NewtonModel::validateAnswer(QVector<float> answers){
     QVector<bool> validaters;
+    if(scenes.length() == 0){
+        emit answerValidated(validaters);
+        return;
+    }
     bool allCorrect = true;
     for(int i = 0; i < answers.length() || i < NewtonModel::answers.length(); i++){
         float diff = NewtonModel::answers[i] - answers[i];
@@ -441,6 +446,7 @@ void NewtonModel::clearModel(){
     for(int i = 0; i < scenes.length(); i++){
         delete scenes[i];
     }
+    problemsComplete.clear();
     scenes.clear();
     currentSceneIndex = -1;
 }
@@ -452,7 +458,6 @@ void NewtonModel::clearScene(){
     graphicsScene->clear();
     scBodies.clear();
     answers.clear();
-    problemsComplete.clear();
 }
 
 float NewtonModel::convertToPixel(float meter){
