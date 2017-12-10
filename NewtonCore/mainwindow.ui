@@ -51,7 +51,7 @@
      <x>0</x>
      <y>0</y>
      <width>1071</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -81,6 +81,18 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>300</width>
+     <height>466</height>
+    </size>
+   </property>
    <property name="maximumSize">
     <size>
      <width>500</width>
@@ -183,7 +195,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>179</width>
+            <width>278</width>
             <height>248</height>
            </rect>
           </property>
@@ -295,7 +307,7 @@
     <string>Formula Sheet</string>
    </property>
    <property name="toolTip">
-    <string>Open Formula Sheet</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Displays the Formula Sheet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionPreviousScene">
@@ -304,6 +316,9 @@
    </property>
    <property name="text">
     <string>Previous Problem</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use to move to the previous problem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionNextScene">
@@ -314,7 +329,18 @@
     <string>Next Problem</string>
    </property>
    <property name="toolTip">
-    <string>Move to next problem</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use to move forward in the problems list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionMoveTool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>MoveTool</string>
+   </property>
+   <property name="toolTip">
+    <string>Use to move items around the scene</string>
    </property>
   </action>
   <action name="actionOpen_Problem">
