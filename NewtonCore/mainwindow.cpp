@@ -30,7 +30,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     ui->graphicsView->setScene(model->getGraphicsScene());
     ui->graphicsView->setBackgroundBrush(QBrush(Qt::white));
     //ui->graphicsView->setSceneRect(0.0f, 0.0f, 200, 200);
-    ui->graphicsView->setTransform(QTransform::fromScale(1, - 1));
+    ui->graphicsView->setTransform(QTransform::fromScale(0.7, - 0.7));
     isSimPlaying = false;
 
     updateTime(0);
@@ -52,8 +52,6 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
 
     connect(ui->actionFormulaSheet, &QAction::triggered, this, &MainWindow::openFormulaSheet);
     // TODO: connect to model signals to actually change scene index
-    connect(ui->actionPreviousScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
-    connect(ui->actionNextScene, &QAction::triggered, this, &MainWindow::clearInputBoxes);
     connect(ui->actionNextScene, &QAction::triggered, model, &NewtonModel::nextScene);
     connect(ui->actionPreviousScene, &QAction::triggered, model, &NewtonModel::prevScene);
     connect(ui->actionLoad_Default_Problem, &QAction::triggered, model, &NewtonModel::loadDefaultScene);

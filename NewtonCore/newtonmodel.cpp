@@ -172,9 +172,9 @@ void NewtonModel::loadFile(QString filePath){
         for(size_t j = 0; j < labels.size(); j++){
             scene->addDisplayWidget(labels[j].toString(),rangeVals[j]);
         }
-
-        setScene(0);
+        problemsComplete.push_back(false);
     }
+    setScene(0);
 }
 
 void NewtonModel::setScene(int sceneIndex){
@@ -265,6 +265,10 @@ void NewtonModel::prevScene(){
 void NewtonModel::startSimulation(){
     //check to make sure scene isn't running
     if(simRunning){
+        return;
+    }
+    if(scenes.isEmpty()){
+        emit simulationEnd();
         return;
     }
     simRunning = true;
@@ -437,6 +441,7 @@ void NewtonModel::clearScene(){
     }
     graphicsScene->clear();
     scBodies.clear();
+    answers.clear();
 }
 
 float NewtonModel::convertToPixel(float meter){
