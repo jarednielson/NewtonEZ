@@ -381,9 +381,10 @@ void NewtonModel::loadDefaultScene(){
 
     NewtonScene* scene = new NewtonScene(-9.8f,
                                          Q_NULLPTR,
-                                         QString("Two Objects Falling"),
-                                         QString("Two objects with mass M1 = 10kg and M2 = 5 kg ") +
-                                         QString("are dropped from a height of 10 m. ") +
+                                         QString("Projectile Motion"),
+                                         QString("An object with mass M1 = 10Kg is dropped from a height of ") +
+                                         QString("H1 = 10m. A second object has mass M1 = 5Kg and height H2 = 5m ") +
+                                         QString("and an initial y velocity Vy0 = 5 m/sec.\n") +
                                          QString("If gravity is -9.8 m/sec^2 at what time will ") +
                                          QString("they hit the ground?"),
                                          this);
@@ -391,10 +392,11 @@ void NewtonModel::loadDefaultScene(){
     scene->addBody(new NewtonBody(true, 10, 5, 10, 0.5, 0.5, scene));
     scene->addBody(new NewtonBody(true, 5, 10, 5, 0.25, scene));
     scene->getBodies()[1]->setInitVelocity(QPointF(0.0f, 5.0f));
-    scene->addBody(new NewtonBody(false, 100, 10, 1, 20, 2, scene));
-    scene->addDisplayWidget(QString("H1 (M)"), 10.0f);
-    scene->addDisplayWidget(QString("M1 (kg)"), 10.0f);
-    scene->addDisplayWidget(QString("M2 (kg)"), 5.0f);
+    scene->addBody(new NewtonBody(false, 100, 10, -1, 20, 2, scene));
+    scene->addDisplayWidget(QString("H1 (m)"), 10.0f);
+    scene->addDisplayWidget(QString("H2 (m)"), 10.0f);
+    scene->addDisplayWidget(QString("M1 (Kg)"), 10.0f);
+    scene->addDisplayWidget(QString("M2 (Kg)"), 5.0f);
     scene->addEditableWidget(QString("T1 (sec)"),
                              QString("(function(a, b, c) { return Math.sqrt(a*2/9.8);})"));
     scene->addEditableWidget(QString("T2 (sec"),
