@@ -172,9 +172,9 @@ void NewtonModel::loadFile(QString filePath){
         for(size_t j = 0; j < labels.size(); j++){
             scene->addDisplayWidget(labels[j].toString(),rangeVals[j]);
         }
-
-        setScene(0);
+        problemsComplete.push_back(false);
     }
+    setScene(0);
 }
 
 void NewtonModel::setScene(int sceneIndex){

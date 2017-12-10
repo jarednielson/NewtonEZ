@@ -32,6 +32,7 @@ class NewtonModel : public QObject{
     QTimer* simSingleShot;
     QTime simRuntime;
     QVector<float> answers;
+    QVector<bool> problemsComplete;
 
     int currentSceneIndex;
     bool simRunning = false;
@@ -71,6 +72,7 @@ signals:
     void answerValidated(QVector<bool> success);
     void lastSceneSelected();
     void firstSceneSelected();
+    void progressUpdate(int progressPercent);
 
 private:
     void clearModel();
