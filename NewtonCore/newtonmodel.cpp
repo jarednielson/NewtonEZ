@@ -267,6 +267,10 @@ void NewtonModel::startSimulation(){
     if(simRunning){
         return;
     }
+    if(scenes.isEmpty()){
+        emit simulationEnd();
+        return;
+    }
     simRunning = true;
     //graphicsScene->clear();
     //build box2d scene
