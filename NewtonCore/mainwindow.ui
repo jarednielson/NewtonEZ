@@ -51,7 +51,7 @@
      <x>0</x>
      <y>0</y>
      <width>1071</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -183,7 +183,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>157</width>
+            <width>179</width>
             <height>248</height>
            </rect>
           </property>
@@ -295,7 +295,7 @@
     <string>Formula Sheet</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add Dynamic Bodies&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>Open Formula Sheet</string>
    </property>
   </action>
   <action name="actionPreviousScene">
@@ -314,18 +314,7 @@
     <string>Next Problem</string>
    </property>
    <property name="toolTip">
-    <string>Use to add forces</string>
-   </property>
-  </action>
-  <action name="actionMoveTool">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>MoveTool</string>
-   </property>
-   <property name="toolTip">
-    <string>Use to move items around the scene</string>
+    <string>Move to next problem</string>
    </property>
   </action>
   <action name="actionOpen_Problem">

@@ -94,7 +94,11 @@ void MainWindow::addInputBox(QString labelText){
     enabledLabels.push_back(new QLabel());
     enabledLabels.back()->setText(labelText);
     enabledInputs.push_back(new QDoubleSpinBox());
+    enabledInputs.back()->setMinimum(-DBL_MAX);
+    enabledInputs.back()->setMaximum(DBL_MAX);
     enabledInputs.back()->setValue(0.0);
+    enabledInputs.back()->setMinimum(-1*DBL_MAX);
+    enabledInputs.back()->setMaximum(DBL_MAX);
     enabledInputs.back()->setEnabled(true);
     enabledInputs.back()->setDecimals(4);
     layouts.push_back(new QHBoxLayout());
@@ -108,6 +112,8 @@ void MainWindow::addDisplayBox(QString labelText, double value){
     disabledLabels.push_back(new QLabel());
     disabledLabels.back()->setText(labelText);
     disabledInputs.push_back(new QDoubleSpinBox());
+    disabledInputs.back()->setMinimum(-DBL_MAX);
+    disabledInputs.back()->setMaximum(DBL_MAX);
     disabledInputs.back()->setValue(value);
     disabledInputs.back()->setEnabled(false);
     disabledInputs.back()->setDecimals(4);
