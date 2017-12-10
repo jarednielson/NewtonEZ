@@ -64,7 +64,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(this, &MainWindow::sendPlaySimRequest, model, &NewtonModel::startSimulation);
     connect(this, &MainWindow::sendStopSimRequest, model, &NewtonModel::endSimulation);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::simulationEnded);
-
+    connect(model, &NewtonModel::progressUpdate, ui->progressBar, &QProgressBar::setValue);
     connect(model, &NewtonModel::updateClock, this, &MainWindow::updateTime);
 }
 

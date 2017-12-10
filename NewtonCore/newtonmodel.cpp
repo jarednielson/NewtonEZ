@@ -363,27 +363,39 @@ void NewtonModel::getProblemDescriptions(QStringList& descriptions){
 
 void NewtonModel::validateAnswer(QVector<float> answers){
     QVector<bool> validaters;
-
+    if(scenes.length() == 0){
+        emit answerValidated(validaters);
+        return;
+    }
+    bool allCorrect = true;
     for(int i = 0; i < answers.length() || i < NewtonModel::answers.length(); i++){
         float diff = NewtonModel::answers[i] - answers[i];
         if(diff < 0){
             diff = diff * -1;
         }
         validaters.push_back(diff < TOL);
+        allCorrect = allCorrect && diff < TOL;
     }
 
     if(int diff = answers.length() - NewtonModel::answers.length() > 0){
+        allCorrect = false;
         for(int i = 0; i < diff; i++){
             validaters.push_back(false);
         }
     }
-
+    problemsComplete[currentSceneIndex] = allCorrect;
+    int numCorrect = 0;
+    for(int i = 0; i < problemsComplete.length(); i++){
+        if(problemsComplete[i]){
+            numCorrect++;
+        }
+    }
+    emit progressUpdate((numCorrect / (float)problemsComplete.length()) * 100);
     emit answerValidated(validaters);
 }
 
 void NewtonModel::loadDefaultScene(){
     clearModel();
-
     NewtonScene* scene = new NewtonScene(-9.8f,
                                          Q_NULLPTR,
                                          QString("Projectile Motion"),
@@ -409,6 +421,7 @@ void NewtonModel::loadDefaultScene(){
                              QString("(function(a, c, b, d) { return (-1*b - Math.sqrt(b*b + 4 * 4.8 *  c)) / (-9.8);})"));
 
     scenes.push_back(scene);
+    problemsComplete.push_back(false);
     setScene(0);
 }
 
@@ -431,8 +444,10 @@ void NewtonModel::clearModel(){
     for(int i = 0; i < scenes.length(); i++){
         delete scenes[i];
     }
+    problemsComplete.clear();
     scenes.clear();
     currentSceneIndex = -1;
+    emit progressUpdate(0);
 }
 
 void NewtonModel::clearScene(){
