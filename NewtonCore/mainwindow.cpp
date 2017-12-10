@@ -236,9 +236,10 @@ void MainWindow::createOpenFileDialog(){
     QString filename =  QFileDialog::getOpenFileName( this,
                                                       "Open Problem",
                                                       QDir::homePath(),
-                                                      "All files (*.*)");
-
-    emit sendFilePath(filename);
+                                                      "Newton Problem Files (*.nez)");
+    if(filename != ""){
+        emit sendFilePath(filename);
+    }
 }
 
 void MainWindow::openFormulaSheet(){
