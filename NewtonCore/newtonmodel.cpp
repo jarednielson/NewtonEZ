@@ -394,13 +394,14 @@ void NewtonModel::loadDefaultScene(){
     scene->getBodies()[1]->setInitVelocity(QPointF(0.0f, 5.0f));
     scene->addBody(new NewtonBody(false, 100, 10, -1, 20, 2, scene));
     scene->addDisplayWidget(QString("H1 (m)"), 10.0f);
-    scene->addDisplayWidget(QString("H2 (m)"), 10.0f);
+    scene->addDisplayWidget(QString("H2 (m)"), 5.0f);
+    scene->addDisplayWidget(QString("Vy0 (m/sec)"), 5.0f);
     scene->addDisplayWidget(QString("M1 (Kg)"), 10.0f);
     scene->addDisplayWidget(QString("M2 (Kg)"), 5.0f);
     scene->addEditableWidget(QString("T1 (sec)"),
-                             QString("(function(a, b, c) { return Math.sqrt(a*2/9.8);})"));
-    scene->addEditableWidget(QString("T2 (sec"),
-                             QString("(function(a, b, c) { return Math.sqrt(a*2/9.8);})"));
+                             QString("(function(a, b, c, d) { return Math.sqrt(a*2/9.8);})"));
+    scene->addEditableWidget(QString("T2 (sec)"),
+                             QString("(function(a, c, b, d) { return (-1*b - Math.sqrt(b*b + 4 * 4.8 *  c)) / (-9.8);})"));
 
     scenes.push_back(scene);
     setScene(0);
