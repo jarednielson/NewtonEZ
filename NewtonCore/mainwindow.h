@@ -62,6 +62,7 @@ private:
     QActionGroup *tools;
     NewtonModel *model;
     bool isSimPlaying;
+    bool isSimLoaded;
 };
 
 #endif // MAINWINDOW_H

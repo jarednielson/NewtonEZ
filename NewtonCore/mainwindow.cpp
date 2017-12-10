@@ -23,6 +23,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     ui(new Ui::MainWindow),
     model(model)
 {
+    isSimLoaded = false;
     ui->setupUi(this);
     ui->formulaWidget->hide();
 
@@ -179,6 +180,7 @@ void MainWindow::getInputsForProblem(QStringList widgetLabels){
     for(int i = 0; i < widgetLabels.length(); i++){
         addInputBox(widgetLabels[i]);
     }
+    isSimLoaded = true;
 }
 
 ///
@@ -219,9 +221,9 @@ void MainWindow::cleanUpAfterSimulation(QVector<bool> answers){
     ui->checkAnswerButton->setEnabled(true);
     for(int i = 0; i < answers.length() || i < enabledInputs.size(); i++){
         if(answers[i]){
-            enabledInputs[i]->setStyleSheet(QString("background-color : #b3ffb3"));
+            enabledInputs[i]->setStyleSheet(QString("background-color : #b3ffb3; color:black"));
         }else {
-            enabledInputs[i]->setStyleSheet(QString("background-color : #ff8080"));
+            enabledInputs[i]->setStyleSheet(QString("background-color : #ff8080; color:white"));
         }
     }
 }
@@ -256,7 +258,7 @@ void MainWindow::prepToPlay(){
         isSimPlaying = false;
         animationEnableDisable();
         emit sendStopSimRequest();
-    } else {
+    } else if(isSimLoaded){
         ui->PlayStopButton->setText("Stop");
         isSimPlaying = true;
         animationEnableDisable();
