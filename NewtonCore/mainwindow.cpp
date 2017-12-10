@@ -97,6 +97,8 @@ void MainWindow::addInputBox(QString labelText){
     enabledInputs.back()->setMinimum(-DBL_MAX);
     enabledInputs.back()->setMaximum(DBL_MAX);
     enabledInputs.back()->setValue(0.0);
+    enabledInputs.back()->setMinimum(-1*DBL_MAX);
+    enabledInputs.back()->setMaximum(DBL_MAX);
     enabledInputs.back()->setEnabled(true);
     enabledInputs.back()->setDecimals(4);
     layouts.push_back(new QHBoxLayout());
