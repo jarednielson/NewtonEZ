@@ -47,7 +47,6 @@ QGraphicsScene* NewtonModel::getGraphicsScene(){
 
 void NewtonModel::loadFile(QString filePath){
     clearModel();
-    emit progressUpdate(0);
     //open stream and read next unit as string
     QFile nextUnitFile(filePath);
     nextUnitFile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -397,7 +396,6 @@ void NewtonModel::validateAnswer(QVector<float> answers){
 
 void NewtonModel::loadDefaultScene(){
     clearModel();
-
     NewtonScene* scene = new NewtonScene(-9.8f,
                                          Q_NULLPTR,
                                          QString("Projectile Motion"),
@@ -449,6 +447,7 @@ void NewtonModel::clearModel(){
     problemsComplete.clear();
     scenes.clear();
     currentSceneIndex = -1;
+    emit progressUpdate(0);
 }
 
 void NewtonModel::clearScene(){
