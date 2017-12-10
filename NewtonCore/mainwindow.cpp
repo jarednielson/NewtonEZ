@@ -30,7 +30,7 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     ui->graphicsView->setScene(model->getGraphicsScene());
     ui->graphicsView->setBackgroundBrush(QBrush(Qt::white));
     //ui->graphicsView->setSceneRect(0.0f, 0.0f, 200, 200);
-    ui->graphicsView->setTransform(QTransform::fromScale(1, - 1));
+    ui->graphicsView->setTransform(QTransform::fromScale(0.7, - 0.7));
     isSimPlaying = false;
 
     updateTime(0);
