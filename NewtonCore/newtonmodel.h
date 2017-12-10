@@ -18,6 +18,7 @@
 #include <QScriptEngine>
 #include <QGraphicsItem>
 #include <QTimer>
+#include <QTime>
 
 
 class NewtonModel : public QObject{
@@ -29,6 +30,7 @@ class NewtonModel : public QObject{
     QVector<QGraphicsItem*> scBodies;
     QTimer* simTimer;
     QTimer* simSingleShot;
+    QTime simRuntime;
     QVector<float> answers;
 
     int currentSceneIndex;
@@ -59,6 +61,8 @@ signals:
     // The parameters passed in may need to change
     void simulationStart();
     void simulationEnd();
+
+    void updateClock(double seconds);
 
     void briefTextChanged(QString newText);
     void inputWidgetsChanged(QStringList widgetLabels);

@@ -65,6 +65,8 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     connect(this, &MainWindow::sendPlaySimRequest, model, &NewtonModel::startSimulation);
     connect(this, &MainWindow::sendStopSimRequest, model, &NewtonModel::endSimulation);
     connect(model, &NewtonModel::simulationEnd, this, &MainWindow::simulationEnded);
+
+    connect(model, &NewtonModel::updateClock, this, &MainWindow::updateTime);
 }
 
 ///
@@ -149,8 +151,8 @@ void MainWindow::setProblemText(QString text){
 ///
 /// \param seconds - current seconds
 ///
-void MainWindow::updateTime(int seconds){
-    ui->simClock->setText(QString::number(seconds));
+void MainWindow::updateTime(double seconds){
+    ui->simClock->setText(QString::number(seconds, 'f', 1));
 }
 
 // We need to refactor this to two functions... because there are going to be two signals
@@ -208,6 +210,8 @@ void MainWindow::cleanUpAfterSimulation(QVector<bool> answers){
     ui->checkAnswerButton->setEnabled(true);
     if(!answers.first()){
         ui->checkAnswerButton->setText("Incorrect");
+        //Example of how to set red for false, green if true
+//        inputs.front()->setStyleSheet("background-color:\"red\";");
     }
 }
 
