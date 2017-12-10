@@ -1,6 +1,7 @@
 #include "newtonformula.h"
 #include <QVector>
 #include <cfloat>
+#include <QDebug>
 
 NewtonFormula::NewtonFormula(QString formula, QObject *parent) : QObject(parent),
     formula(formula)

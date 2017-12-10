@@ -49,11 +49,13 @@ private:
     Ui::MainWindow *ui;
 
     std::vector<QHBoxLayout*> layouts;
-    std::vector<QLabel*> labels;
-    std::vector<QDoubleSpinBox*> inputs;
+    std::vector<QLabel*> enabledLabels;
+    std::vector<QDoubleSpinBox*> enabledInputs;
+    std::vector<QLabel*> disabledLabels;
+    std::vector<QDoubleSpinBox*> disabledInputs;
 
     void addInputBox(QString labelText);
-    void addInputBox(QString labelText, double inputBoxValue, bool inputEnabled);
+    void addDisplayBox(QString labelText, double inputBoxValue);
     void clearInputBoxes();
     void openFormulaSheet();
     void animationEnableDisable();
