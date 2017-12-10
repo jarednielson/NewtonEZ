@@ -89,27 +89,30 @@ void MainWindow::onGraphicsViewReleased(int x, int y){
 /// \param labelText
 ///
 void MainWindow::addInputBox(QString labelText){
-    MainWindow::addInputBox(labelText, 0.0, true);
+    // can change min and max with setMaximum and setMinimun
+    enabledLabels.push_back(new QLabel());
+    enabledLabels.back()->setText(labelText);
+    enabledInputs.push_back(new QDoubleSpinBox());
+    enabledInputs.back()->setValue(0.0);
+    enabledInputs.back()->setEnabled(true);
+    enabledInputs.back()->setDecimals(4);
+    layouts.push_back(new QHBoxLayout());
+    layouts.back()->addWidget(enabledLabels.back());
+    layouts.back()->addWidget(enabledInputs.back());
+    ui->inputContainer->addLayout(layouts.back());
+    ui->inputContainer->activate();
 }
 
-///
-/// \brief MainWindow::addInputPair
-/// Helper method that will create a new input pair ( QLabel and QDoubleSpinBox ) placing it
-/// in its own new QHBoxLayout.
-///
-/// \param labelText
-///
-void MainWindow::addInputBox(QString labelText, double inputBoxValue, bool inputEnabled){
-    // can change min and max with setMaximum and setMinimun
-    labels.push_back(new QLabel());
-    labels.back()->setText(labelText);
-    inputs.push_back(new QDoubleSpinBox());
-    inputs.back()->setValue(inputBoxValue);
-    inputs.back()->setEnabled(inputEnabled);
-    inputs.back()->setDecimals(4);
+void MainWindow::addDisplayBox(QString labelText, double value){
+    disabledLabels.push_back(new QLabel());
+    disabledLabels.back()->setText(labelText);
+    disabledInputs.push_back(new QDoubleSpinBox());
+    disabledInputs.back()->setValue(value);
+    disabledInputs.back()->setEnabled(false);
+    disabledInputs.back()->setDecimals(4);
     layouts.push_back(new QHBoxLayout());
-    layouts.back()->addWidget(labels.back());
-    layouts.back()->addWidget(inputs.back());
+    layouts.back()->addWidget(disabledLabels.back());
+    layouts.back()->addWidget(disabledInputs.back());
     ui->inputContainer->addLayout(layouts.back());
     ui->inputContainer->activate();
 }
@@ -119,15 +122,23 @@ void MainWindow::addInputBox(QString labelText, double inputBoxValue, bool input
 /// Clears the inputContainer and the vectors holding the input
 ///
 void MainWindow::clearInputBoxes(){
+    for(int i = 0; i < disabledLabels.size(); i++){
+        delete disabledLabels[i];
+        delete disabledInputs[i];
+    }
 
+    for(int i = 0; i < enabledLabels.size(); i++){
+        delete enabledLabels[i];
+        delete enabledInputs[i];
+    }
     for(unsigned int i = 0; i < layouts.size(); i++){
-        delete labels[i];
-        delete inputs[i];
         delete layouts[i];
     }
 
-    labels.clear();
-    inputs.clear();
+    enabledLabels.clear();
+    enabledInputs.clear();
+    disabledLabels.clear();
+    disabledInputs.clear();
     layouts.clear();
 }
 
@@ -176,7 +187,7 @@ void MainWindow::getInputsForProblem(QStringList widgetLabels){
 void MainWindow::getDisplayForProblem(QStringList widgetLabels, QList<float> values ){
     clearInputBoxes();
     for(int i = 0; i < widgetLabels.length(); i++){
-        addInputBox(widgetLabels[i], values[i], false);
+        addDisplayBox(widgetLabels[i], values[i]);
     }
 }
 
@@ -187,10 +198,8 @@ void MainWindow::getDisplayForProblem(QStringList widgetLabels, QList<float> val
 ///
 void MainWindow::prepareEnabledInputs(){
     QVector<float> enabledFloats;
-    for(unsigned int i = 0; i < inputs.size(); i++){
-        if(inputs[i]->isEnabled()){
-            enabledFloats.push_back(inputs[i]->value());
-        }
+    for(unsigned int i = 0; i < enabledInputs.size(); i++){
+        enabledFloats.push_back(enabledInputs[i]->value());
     }
     // disable button...
     ui->checkAnswerButton->setEnabled(false);
@@ -206,8 +215,12 @@ void MainWindow::prepareEnabledInputs(){
 ///
 void MainWindow::cleanUpAfterSimulation(QVector<bool> answers){
     ui->checkAnswerButton->setEnabled(true);
-    if(!answers.first()){
-        ui->checkAnswerButton->setText("Incorrect");
+    for(int i = 0; i < answers.length() || i < enabledInputs.size(); i++){
+        if(answers[i]){
+            enabledInputs[i]->setStyleSheet(QString("background-color : #b3ffb3"));
+        }else {
+            enabledInputs[i]->setStyleSheet(QString("background-color : #ff8080"));
+        }
     }
 }
 
