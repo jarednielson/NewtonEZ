@@ -437,6 +437,7 @@ void NewtonModel::clearScene(){
     }
     graphicsScene->clear();
     scBodies.clear();
+    answers.clear();
 }
 
 float NewtonModel::convertToPixel(float meter){
