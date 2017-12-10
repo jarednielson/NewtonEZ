@@ -320,6 +320,7 @@ void NewtonModel::startSimulation(){
         body->SetUserData(scBodies[i]);
     }
 
+    simRuntime.start();
     simTimer->start(TIME_STEP * 1000);
     //nofity simulationStart
     emit simulationStart();
@@ -419,6 +420,7 @@ void NewtonModel::updateBodies(){
         body = body->GetNext();
         //item->setRotation(bodies[i].GetAngle() * M_PI / 180.0f);
     }
+    emit(updateClock(simRuntime.elapsed()/1000.0));
 }
 void NewtonModel::clearModel(){
     clearScene();

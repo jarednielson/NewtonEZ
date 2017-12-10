@@ -24,7 +24,7 @@ public:
 
 public slots:
     void setProblemText(QString text);
-    void updateTime(int seconds);
+    void updateTime(double seconds);
     void getInputsForProblem(QStringList widgetLabels);
     void getDisplayForProblem(QStringList widgetLabels, QList<float> values);
     void prepareEnabledInputs();
