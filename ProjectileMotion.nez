@@ -42,7 +42,6 @@
 			"units": "m",
 			"gravity": -9.8,
 			"objects": [{
-
 					"type": "circ",
 					"centerX": 2.0,
 					"centerY": "{1}",
@@ -51,7 +50,8 @@
 					"angle": 0.0,
 					"radius": 2,
 					"initialVelocity": [0,"{2}"],
-					"forces": [0,0]
+					"forces": [0,0],
+					"color": [0, 0, 0]
 				},
 				{
 					"type": "rect",
@@ -63,14 +63,22 @@
 					"width": 50,
 					"height": 5,
 					"initialVelocity":[0,0],
-					"forces": [0,0]
+					"forces": [0,0],
+					"color": [0, 0, 0]
 				}
 			],
 			"varVals": {
 				"{1}": [8, 11],
 				"{2}": [4, 6]
 			},
-			"varValLabels": ["Height", "Initial Velocity"],
+			"varValLabels": [
+				{ "name" : "Height",
+					"color" : [255, 255, 255]
+				},
+				{ "name" : "Initial Velocity",
+					"color" : [255, 255, 255]
+				}
+				],
 			"problemText": "A ball is thrown upwards from a height of %1 meters, with an initial y velocity Vy0 = +%2 m/sec how long does it take to hit the ground?",
 			"displayWidgets": ["s=.5at^2 + V0t + H0", "Initial Velocity"],
 			"solvingFormulas": ["(function(b, c) { return (-1 * b - Math.sqrt(b * b + 4 * 4.8 * c)) / -9.8;})"],
