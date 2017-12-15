@@ -21,6 +21,7 @@ float NewtonFormula::evaluate(const QVector<float>& vals)
     if(!res.isNumber()){
         return FLT_MAX;
     }
+    qDebug() << res.toNumber();
     return (float) res.toNumber();
 }
 
