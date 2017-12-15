@@ -72,12 +72,8 @@
 				"{2}": [4, 6]
 			},
 			"varValLabels": [
-				{ "name" : "Height",
-					"color" : [255, 255, 255]
-				},
-				{ "name" : "Initial Velocity",
-					"color" : [255, 255, 255]
-				}
+				 "Height",
+				 "Initial Velocity"
 				],
 			"problemText": "A ball is thrown upwards from a height of %1 meters, with an initial y velocity Vy0 = +%2 m/sec how long does it take to hit the ground?",
 			"displayWidgets": ["s=.5at^2 + V0t + H0", "Initial Velocity"],
