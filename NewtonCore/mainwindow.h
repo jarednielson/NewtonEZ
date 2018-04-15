@@ -45,6 +45,8 @@ protected slots:
 private slots:
     void on_actionLoad_Default_Problem_triggered();
 
+    void on_zoomSlider_sliderMoved(int position);
+
 private:
     Ui::MainWindow *ui;
 

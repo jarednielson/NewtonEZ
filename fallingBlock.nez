@@ -29,11 +29,11 @@
 
 				}
 			],
-			"varVals": [{
+			"varVals": {
 				"{0}": [8, 11]
-			}],
+			},
 			"varValLabels": ["height"],
-			"problemText": "A block falls from a height of {0} meters, how long does it take to hit the ground",
+			"problemText": "A block falls from a height of %1 meters, how long does it take to hit the ground",
 			"displayWidgets": ["s=.5at^2"],
 			"solvingFormulas": ["(function(a) { return Math.sqrt(a*2/9.8);})"],
 			"inputWidgetUnits": ["sec"]
@@ -67,11 +67,11 @@
 					"forces": [0,0]
 				}
 			],
-			"varVals": [{
+			"varVals": {
 				"{0}": [8, 11]
-			}],
+			},
 			"varValLabels": ["height"],
-			"problemText": "A block falls from a height of {0} meters, how long does it take to hit the ground",
+			"problemText": "A block falls from a height of %1 meters, how long does it take to hit the ground",
 			"displayWidgets": ["s=.5at^2"],
 			"solvingFormulas": ["(function(a) { return Math.sqrt(a*2/9.8);})"],
 			"inputWidgetUnits": ["sec"]

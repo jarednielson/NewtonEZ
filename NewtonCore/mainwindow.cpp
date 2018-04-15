@@ -28,9 +28,10 @@ MainWindow::MainWindow(NewtonModel *model, QWidget *parent) :
     ui->formulaWidget->hide();
 
     ui->graphicsView->setScene(model->getGraphicsScene());
-    ui->graphicsView->setBackgroundBrush(QBrush(Qt::white));
+    ui->graphicsView->setBackgroundBrush(QBrush(Qt::darkGray));
     //ui->graphicsView->setSceneRect(0.0f, 0.0f, 200, 200);
-    ui->graphicsView->setTransform(QTransform::fromScale(0.7, - 0.7));
+    ui->graphicsView->setTransform(QTransform::fromScale(0.7, -0.7));
+
     isSimPlaying = false;
 
     updateTime(0);
@@ -292,4 +293,9 @@ void MainWindow::animationEnableDisable(){
         ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }
+}
+
+void MainWindow::on_zoomSlider_sliderMoved(int position)
+{
+    ui->graphicsView->setTransform(QTransform::fromScale((float) position / 100, (float) position / -100));
 }

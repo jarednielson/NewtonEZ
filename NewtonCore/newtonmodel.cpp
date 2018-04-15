@@ -66,32 +66,25 @@ void NewtonModel::loadFile(QString filePath){
         float grav = currentScene["gravity"].toDouble();
         QString tutorial(currentScene["tutorial"].toString());
 
-
-
-        QJsonArray varVals = currentScene["varVals"].toArray();
+        QJsonObject varVals = currentScene["varVals"].toObject();
         QMap<QString, float> chosenRangeValues;
-        for(int curRange = 0; curRange < varVals.size(); curRange++){
-            QString indexKey = "{"+ QString::number(curRange) +"}";
-
+        for(QString key : varVals.keys()){
             // Extract ranges for each variable
-            float lowerBound = varVals[curRange].toObject()[indexKey].toArray()[0].toDouble();
-            float upperBound = varVals[curRange].toObject()[indexKey].toArray()[1].toDouble();
+            float lowerBound = varVals[key].toArray()[0].toDouble();
+            float upperBound = varVals[key].toArray()[1].toDouble();
 
             // Randomly select a value from the given range
             float calculated = lowerBound + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(upperBound-lowerBound)));
 
-            chosenRangeValues.insert(indexKey,calculated);
+            chosenRangeValues.insert(key,calculated);
         }
 
 
         //Swapping in ranged value pairs for the problem text
         QString problemText(currentScene["problemText"].toString());
 
-        for(QString key : chosenRangeValues.keys()){
-            int len;
-            while( (len = problemText.indexOf(key)) != -1){
-                problemText.replace(len,key.length(), QString().setNum(chosenRangeValues[key]));
-            }
+        for(float val : chosenRangeValues.values()){
+            problemText = problemText.arg(val);
         }
 
         //TODO: if meters pass nullptr, otherwise, pass conversion
@@ -102,58 +95,114 @@ void NewtonModel::loadFile(QString filePath){
         //get objects from document and populate the scene
         QJsonArray objs = currentScene["objects"].toArray();
         for(size_t j = 0; j < objs.size(); j++){
-            QString shapeType = objs[j].toObject()["type"].toString();
-            QString indexKey = "{" + QString::number(j) + "}";
+            QJsonObject obj = objs[j].toObject();
+            QString shapeType = obj["type"].toString();
+            QString indexKey;
 
             //get initial velocites
-            QJsonArray velocities = objs[j].toObject()["initialVelocity"].toArray();
-            QPointF veloPoint(velocities[0].toDouble(), velocities[1].toDouble());
+            QJsonArray velocities = obj["initialVelocity"].toArray();
+            float velX;
+            float velY;
+            if(velocities[0].isDouble()){
+                velX = velocities[0].toDouble();
+            } else {
+                indexKey = velocities[0].toString();
+                velX = chosenRangeValues[indexKey];
+            }
+            if(velocities[1].isDouble()){
+                velY = velocities[1].toDouble();
+            } else {
+                indexKey = velocities[1].toString();
+                velY = chosenRangeValues[indexKey];
+            }
+            QPointF veloPoint(velX, velY);
 
             //get forces
-            QJsonArray forces = objs[j].toObject()["forces"].toArray();
-            QPointF forcesXY(forces[0].toDouble(), forces[1].toDouble());
+            QJsonArray forces = obj["forces"].toArray();
+            float fX;
+            float fY;
+            if(forces[0].isDouble()){
+                fX = forces[0].toDouble();
+            } else {
+                indexKey = velocities[0].toString();
+                fX = chosenRangeValues[indexKey];
+            }
+            if(forces[1].isDouble()){
+                fY = forces[1].toDouble();
+            } else {
+                indexKey = forces[1].toString();
+                fY = chosenRangeValues[indexKey];
+            }
+            QPointF forcesXY(fX, fY);
 
             float centerX;
             float centerY;
 
             //check for variable
-            if(objs[j].toObject()["centerX"].toString()[0] !='{'){
-                centerX = objs[j].toObject()["centerX"].toDouble();
+            if(obj["centerX"].isDouble()){
+                centerX = obj["centerX"].toDouble();
             }
             else{
+                indexKey = obj["centerX"].toString();
                 centerX = chosenRangeValues[indexKey];
             }
-            if(objs[j].toObject()["centerY"].toString()[0] !='{'){
-                centerY= objs[j].toObject()["centerY"].toDouble();
+            if(obj["centerY"].isDouble()){
+                centerY= obj["centerY"].toDouble();
             }
             else{
+                indexKey = obj["centerY"].toString();
                 centerY = chosenRangeValues[indexKey];
             }
             //TODO: Get width, height, radius
-            bool isDynamic = objs[j].toObject()["isDynamic"].toBool();
+            bool isDynamic = obj["isDynamic"].toBool();
 
             //check for variable
             float mass;
-            if(objs[j].toObject()["mass"].toString()[0] !='{'){
-                mass = objs[j].toObject()["mass"].toDouble();
+            if(obj["mass"].isDouble()){
+                mass = obj["mass"].toDouble();
             }
             else{
+                indexKey = obj["mass"].toString();
+                mass = chosenRangeValues[indexKey];
+            }
+            float angle;
+            if(obj["angle"].isDouble()){
+                angle = obj["angle"].toDouble();
+            } else {
+                indexKey = obj["angle"].toString();
                 mass = chosenRangeValues[indexKey];
             }
 
-            float angle = objs[j].toObject()["angle"].toDouble();
-
             if(shapeType == "rect"){
-                float width = objs[j].toObject()["width"].toDouble();
-                float height = objs[j].toObject()["height"].toDouble();
+                float width;
+                float height;
+                if(obj["width"].isDouble()){
+                    width = obj["width"].toDouble();
+                } else {
+                    indexKey = obj["width"].toString();
+                    width = chosenRangeValues[indexKey];
+                }
+                if(obj["height"].isDouble()){
+                    height = obj["height"].toDouble();
+                } else {
+                    indexKey = obj["height"].toString();
+                    height = chosenRangeValues[indexKey];
+                }
+
                 NewtonBody* rect = new NewtonBody(isDynamic, (float) mass, (float) centerX, (float) centerY, (float) width, (float) height, this);
-                rect->setInitOrientation(objs[j].toObject()["angle"].toDouble());
+                rect->setInitOrientation(obj["angle"].toDouble());
                 rect->setInitVelocity(veloPoint);
                 rect->setInitForce(forcesXY);
                 scene->addBody(rect);
             }
             else if(shapeType == "circ"){
-                float radius = objs[j].toObject()["radius"].toDouble();
+                float radius;
+                if(obj["radius"].isDouble()){
+                    radius = obj["radius"].toDouble();
+                } else {
+                    indexKey = obj["radius"].toString();
+                    radius = chosenRangeValues[indexKey];
+                }
                 NewtonBody* circle = new NewtonBody(isDynamic, mass, centerX, centerY, radius, this);
                    circle->setInitVelocity(veloPoint);
                    circle->setInitForce(forcesXY);

@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1071</width>
+    <width>1170</width>
     <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Newton2D</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -43,6 +46,28 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="0">
+     <widget class="QSlider" name="zoomSlider">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="singleStep">
+       <number>1</number>
+      </property>
+      <property name="sliderPosition">
+       <number>70</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickInterval">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -50,8 +75,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1071</width>
-     <height>19</height>
+     <width>1170</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

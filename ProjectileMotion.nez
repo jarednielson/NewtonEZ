@@ -1,0 +1,128 @@
+{
+	"Problems": [{
+			"units": "m",
+			"gravity": -9.8,
+			"objects": [{
+
+					"type": "rect",
+					"centerX": 2.0,
+					"centerY": "{1}",
+					"mass": 5,
+					"isDynamic": true,
+					"angle": 0.0,
+					"width": 2,
+					"height": 2,
+					"initialVelocity": [0,0],
+					"forces":[0,0]
+				},
+				{
+					"type": "rect",
+					"centerX": 0.0,
+					"centerY": 0.0,
+					"mass": 10,
+					"isDynamic": false,
+					"angle": 0.0,
+					"width": 50,
+					"height": 5,
+					"initialVelocity":[0,0] ,
+					"forces": [0,0]
+
+				}
+			],
+			"varVals": {
+				"{1}": [8, 11]
+			},
+			"varValLabels": ["height"],
+			"problemText": "A block falls from a height of %1 meters, how long does it take to hit the ground?",
+			"displayWidgets": ["s=.5at^2"],
+			"solvingFormulas": ["(function(a) { return Math.sqrt(a*2/9.8);})"],
+			"inputWidgetUnits": ["sec"]
+		},
+		{
+			"units": "m",
+			"gravity": -9.8,
+			"objects": [{
+					"type": "circ",
+					"centerX": 2.0,
+					"centerY": "{1}",
+					"mass": 5,
+					"isDynamic": true,
+					"angle": 0.0,
+					"radius": 2,
+					"initialVelocity": [0,"{2}"],
+					"forces": [0,0],
+					"color": [0, 0, 0]
+				},
+				{
+					"type": "rect",
+					"centerX": 0.0,
+					"centerY": 0.0,
+					"mass": 10,
+					"isDynamic": false,
+					"angle": 0.0,
+					"width": 50,
+					"height": 5,
+					"initialVelocity":[0,0],
+					"forces": [0,0],
+					"color": [0, 0, 0]
+				}
+			],
+			"varVals": {
+				"{1}": [8, 11],
+				"{2}": [4, 6]
+			},
+			"varValLabels": [
+				 "Height",
+				 "Initial Velocity"
+				],
+			"problemText": "A ball is thrown upwards from a height of %1 meters, with an initial y velocity Vy0 = +%2 m/sec how long does it take to hit the ground?",
+			"displayWidgets": ["s=.5at^2 + V0t + H0", "Initial Velocity"],
+			"solvingFormulas": ["(function(b, c) { return (-1 * b - Math.sqrt(b * b + 4 * 4.8 * c)) / -9.8;})"],
+			"inputWidgetUnits": ["sec"]
+		},
+		{
+			"units": "m",
+			"gravity": -9.8,
+			"objects": [{
+					"type": "circ",
+					"centerX": 2.0,
+					"centerY": "{1}",
+					"mass": 5,
+					"isDynamic": true,
+					"angle": 0.0,
+					"radius": 2,
+					"initialVelocity": ["{2}","{3}"],
+					"forces": [0,0],
+					"color": [0, 0, 0]
+				},
+				{
+					"type": "rect",
+					"centerX": 0.0,
+					"centerY": 0.0,
+					"mass": 10,
+					"isDynamic": false,
+					"angle": 0.0,
+					"width": 50,
+					"height": 5,
+					"initialVelocity":[0,0],
+					"forces": [0,0],
+					"color": [0, 0, 0]
+				}
+			],
+			"varVals": {
+				"{1}": [8, 11],
+				"{2}": [4, 6],
+				"{3}": [4, 6]
+			},
+			"varValLabels": [
+				 "Height",
+				 "Initial X Velocity",
+				 "Initial Y Velocity"
+				],
+			"problemText": "A ball is thrown from a height of %1 meters, with an initial x velocityy velocity Vy0 = +%3 m/sec how long does it take to hit the ground?",
+			"displayWidgets": ["s=.5at^2 + V0t + H0", "Initial Velocity"],
+			"solvingFormulas": ["(function(b, d, c) { return (-1 * b - Math.sqrt(b * b + 4 * 4.8 * c)) / -9.8;})"],
+			"inputWidgetUnits": ["sec"]
+		}
+	]
+}
